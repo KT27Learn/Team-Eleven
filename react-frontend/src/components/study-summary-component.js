@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
-export default class StudySummary extends React.Component {
+export default class StudySummary extends Component {
   render() {
     return (
       <div>

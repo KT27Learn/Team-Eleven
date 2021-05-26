@@ -4,7 +4,7 @@ import axios from "axios";
 import alarm from "../timer-alarm.mp3";
 import Taskbar from "./timer-taskbar-component.js";
 
-export default class Timer extends React.Component {
+export default class Timer extends Component {
   constructor(props) {
     super(props);
 
