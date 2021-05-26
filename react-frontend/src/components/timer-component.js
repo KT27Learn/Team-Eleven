@@ -1,77 +1,148 @@
-/*import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+import React, { Component } from "react";
+import { render } from "react-dom";
+import { Link } from "react-router-dom";
+import axios from "axios";
+import alarm from "../timer-alarm.mp3";
+import Taskbar from "./timer-taskbar-component.js";
 
-export default class TimerCount extends Component {
+export default class Timer extends React.Component {
+  constructor(props) {
+    super(props);
 
-    constructor(props) {
-        super(props);
+    this.state = {
+      name: "",
+      studytime: 0,
+      breaktime: 0,
+      time: {},
+      minutes: 0,
+      seconds: 0,
+      minutesInString: "",
+      secondsInString: "00",
+      studyNow: true,
+      totalElaspedStudyTime: 0
+    };
 
-        this.startTime = this.startTime.bind(this);
-        this.pauseTime = this.pauseTime.bind(this);
+    this.timer = 0;
+    this.startTimer = this.startTimer.bind(this);
+    this.pauseTimer = this.pauseTimer.bind(this);
+    this.resetTimer = this.resetTimer.bind(this);
+    this.countDown = this.countDown.bind(this);
+    this.numberToString = this.numberToString.bind(this);
+  }
 
-        this.state = {
+  componentDidMount() {
+    axios
+      .get("http://localhost:5000/library/" + this.props.match.params.id)
+      .then((response) => {
+        this.setState({
+          name: response.data.name,
+          studytime: response.data.studytime,
+          breaktime: response.data.breaktime,
+          minutes: response.data.studytime,
+          minutesInString: this.numberToString(response.data.studytime)
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
-            name:'',
-            studytime: 0,
-            breaktime: 0,
-            studytime: true
-            
-        }
+  numberToString(val) {
+    const s = "" + val;
+    if (val < 10) {
+      return "0" + s;
+    } else {
+      return s;
     }
+  }
 
-    componentDidMount() {
-        //react always run this code when mounting the component
-        axios.get('http://localhost:5000/library/'+this.props.match.params.id)
-            .then(response => {
-                this.setState({
-                    name: response.data.username,
-                    studytime: response.data.studytime,
-                    breaktime: response.data.breaktime,
-                });
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+  startTimer() {
+    if (this.state.minutes === 0 && this.state.seconds === 0) {
+    } else {
+      this.timer = setInterval(this.countDown, 1000);
     }
+  }
 
-    useEffect(() => {
-        let interval = setInterval(() => {
-          clearInterval(interval);
-    
-          if (seconds === 0) {
-            if (minutes !== 0) {
-              setSeconds(59);
-              setMinutes(minutes - 1);
-            } else {
-              let minutes = displayMessage ? 24 : 4;
-              let seconds = 59;
-    
-              setSeconds(seconds);
-              setMinutes(minutes);
-              setDisplayMessage(!displayMessage);
-            }
-          } else {
-            setSeconds(seconds - 1);
-          }
-        }, 1000);
-      }, [seconds]);
-    
-      const timerMinutes = minutes < 10 ? `0${minutes}` : minutes;
-      const timerSeconds = seconds < 10 ? `0${seconds}` : seconds;
+  pauseTimer() {
+    clearInterval(this.timer);
+  }
 
-    render() {
-      return (
+  resetTimer() {
+    clearInterval(this.timer);
+    this.setState({
+      minutes: this.state.studytime,
+      seconds: 0,
+      minutesInString: this.numberToString(this.state.studytime),
+      secondsInString: this.numberToString(0)
+    });
+  }
+
+  countDown() {
+    // Remove one second, set state so a re-render happens.
+    if (this.state.seconds > 0) {
+      const newSeconds = this.state.seconds - 1;
+      this.setState({
+        seconds: newSeconds,
+        secondsInString: this.numberToString(newSeconds),
+        totalElaspedStudyTime: this.state.totalElaspedStudyTime + 1
+      });
+    } else if (this.state.seconds === 0 && this.state.minutes > 0) {
+      const newMinutes = this.state.minutes - 1;
+      this.setState({
+        minutes: newMinutes,
+        seconds: 59,
+        minutesInString: this.numberToString(newMinutes),
+        secondsInString: this.numberToString(59),
+        totalElaspedStudyTime: this.state.totalElaspedStudyTime + 1
+      });
+    } else {
+      //need to swap between study time and break time
+      clearInterval(this.timer);
+      new Audio(alarm).play();
+      if (this.state.studyNow) {
+        this.setState({
+          totalElaspedStudyTime: this.state.totalElaspedStudyTime + 1,
+          minutes: this.state.breaktime,
+          seconds: 0,
+          minutesInString: this.numberToString(this.state.breaktime),
+          secondsInString: this.numberToString(0),
+          studyNow: false
+        });
+      } else {
+        this.setState({
+          totalElaspedStudyTime: this.state.totalElaspedStudyTime + 1,
+          minutes: this.state.studytime,
+          seconds: 0,
+          minutesInString: this.numberToString(this.state.studytime),
+          secondsInString: this.numberToString(0),
+          studyNow: true
+        });
+      }
+    }
+  }
+
+  render() {
+    return (
+      <div>
+        <h1>{this.state.name}</h1>
+        <small>{this.state.studyNow ? "Time To Study!" : "Break Time"}</small>
         <div>
-            <h1>{this.name}</h1>
-            <p>{`${hrs.toString().padStart(2, '0')}:${mins
-            .toString()
-            .padStart(2, '0')}:${secs.toString().padStart(2, '0')}`}</p> 
-            <Link to="/"><button>
-              Finish  
-            </button>
+          <p>
+            {this.state.minutesInString} : {this.state.secondsInString}
+          </p>
         </div>
-
-      );
-    }
-}*/
+        <div>
+          <button onClick={this.startTimer}>Start</button>
+          <button onClick={this.pauseTimer}>Pause</button>
+          <button onClick={this.resetTimer}>Reset</button>
+        </div>
+        <div>
+          <Taskbar />
+        </div>
+        <div>
+          <Link to={"/summary"}>Log Study Session!</Link>
+        </div>
+      </div>
+    );
+  }
+}
