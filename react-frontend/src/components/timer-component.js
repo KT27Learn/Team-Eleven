@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { render } from "react-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import alarm from "../timer-alarm.mp3";
