@@ -168,7 +168,7 @@ export default class CreateRooms extends Component {
           <div className="form-group">
             <input
               type="submit"
-              value="Create Exercise Log"
+              value="Create Study Room"
               className="btn btn-primary"
             />
           </div>
