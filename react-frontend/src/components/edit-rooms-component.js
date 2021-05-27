@@ -25,7 +25,7 @@ export default class EditRooms extends Component {
   componentDidMount() {
     //react always run this code when mounting the component
     axios
-      .get("http://localhost:5000/rooms/" + this.props.match.params.id)
+      .get("https://team-eleven-backend.herokuapp.com/rooms/" + this.props.match.params.id)
       .then((response) => {
         this.setState({
           username: response.data.username,
@@ -39,7 +39,7 @@ export default class EditRooms extends Component {
       });
 
     axios
-      .get("http://localhost:5000/users/")
+      .get("https://team-eleven-backend.herokuapp.com/users/")
       .then((response) => {
         if (response.data.length > 0) {
           this.setState({
@@ -52,7 +52,7 @@ export default class EditRooms extends Component {
       });
 
     axios
-      .get("http://localhost:5000/library/")
+      .get("https://team-eleven-backend.herokuapp.com/library/")
       .then((response) => {
         if (response.data.length > 0) {
           this.setState({
@@ -103,7 +103,7 @@ export default class EditRooms extends Component {
 
     axios
       .post(
-        "http://localhost:5000/rooms/update/" + this.props.match.params.id,
+        "https://team-eleven-backend.herokuapp.com/rooms/update/" + this.props.match.params.id,
         room
       )
       .then((res) => console.log(res.data));
