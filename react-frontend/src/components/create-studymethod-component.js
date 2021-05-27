@@ -57,7 +57,7 @@ export default class CreateStudyMethods extends Component {
     console.log(studymethod);
 
     axios
-      .post("http://localhost:5000/library/add", studymethod)
+      .post("https://team-eleven-backend.herokuapp.com/library/add", studymethod)
       .then((res) => console.log(res.data));
 
     console.log(studymethod);
