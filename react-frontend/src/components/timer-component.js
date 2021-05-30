@@ -32,7 +32,7 @@ export default class Timer extends Component {
 
   componentDidMount() {
     axios
-      .get("http://localhost:5000/library/" + this.props.match.params.id)
+      .get("https://orbital-eleven-backend.herokuapp.com/library/" + this.props.match.params.id)
       .then((response) => {
         this.setState({
           name: response.data.name,

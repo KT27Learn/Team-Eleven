@@ -46,7 +46,7 @@ export default class RoomList extends Component {
   componentDidMount() {
     //react always run this code when mounting the component
     axios
-      .get("http://localhost:5000/rooms/")
+      .get("https://orbital-eleven-backend.herokuapp.com/rooms/")
       .then((response) => {
         this.setState({
           rooms: response.data
@@ -59,7 +59,7 @@ export default class RoomList extends Component {
 
   deleteRoom(id) {
     axios
-      .delete("http://localhost:5000/rooms/" + id)
+      .delete("https://orbital-eleven-backend.herokuapp.com/rooms/" + id)
       .then((res) => console.log(res.data));
 
     this.setState({
