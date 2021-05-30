@@ -3,12 +3,6 @@ import { Link } from "react-router-dom";
 import logo from "../Eleven-Logo-final.png";
 
 export default class Navbar extends Component {
-
-  constructor(props) {
-
-    super(props);    
-  
-  }
   
   render() {
     return (
