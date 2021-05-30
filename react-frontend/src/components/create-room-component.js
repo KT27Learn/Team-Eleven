@@ -23,7 +23,7 @@ export default class CreateRooms extends Component {
     //react always run this code when mounting the component
 
     axios
-      .get("https://orbital-eleven-backend.herokuapp.com/library/")
+      .get("https://team-eleven-backend.herokuapp.com/library/")
       .then((response) => {
         if (response.data.length > 0) {
           this.setState({
@@ -68,7 +68,7 @@ export default class CreateRooms extends Component {
     console.log(room);
 
     axios
-      .post("https://orbital-eleven-backend.herokuapp.com/rooms/add", room)
+      .post("https://team-eleven-backend.herokuapp.com/rooms/add", room)
       .then((res) => console.log(res.data));
 
     console.log(room);

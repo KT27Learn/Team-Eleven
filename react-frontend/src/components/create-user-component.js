@@ -28,7 +28,7 @@ export default class CreateUsers extends Component {
     };
 
     axios
-      .post("https://orbital-eleven-backend.herokuapp.com/users/add", user)
+      .post("https://team-eleven-backend.herokuapp.com/users/add", user)
       .then((res) => console.log(res.data));
     console.log(user);
     this.setState({

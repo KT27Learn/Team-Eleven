@@ -48,7 +48,7 @@ export default class LibraryList extends Component {
   componentDidMount() {
     //react always run this code when mounting the component
     axios
-      .get("https://orbital-eleven-backend.herokuapp.com/library/")
+      .get("https://team-eleven-backend.herokuapp.com/library/")
       .then((response) => {
         this.setState({
           library: response.data
@@ -61,7 +61,7 @@ export default class LibraryList extends Component {
 
   deleteStudyMethod(id) {
     axios
-      .delete("https://orbital-eleven-backend.herokuapp.com/library/" + id)
+      .delete("https://team-eleven-backend.herokuapp.com/library/" + id)
       .then((res) => console.log(res.data));
 
     this.setState({
