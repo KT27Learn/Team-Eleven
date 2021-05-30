@@ -57,7 +57,7 @@ export default class CreateStudyMethods extends Component {
     console.log(studymethod);
 
     axios
-      .post("https://team-eleven-backend.herokuapp.com/library/add", studymethod)
+      .post("http://localhost:5000/library/add", studymethod)
       .then((res) => console.log(res.data));
 
     console.log(studymethod);
@@ -66,59 +66,71 @@ export default class CreateStudyMethods extends Component {
   }
 
   render() {
+
     return (
       <div>
-        <h3>Create New Study Method</h3>
-        <form onSubmit={this.onSubmit}>
-          <div className="form-group">
-            <label>Name: </label>
-            <input
-              type="text"
-              required
-              className="form-control"
-              value={this.state.name}
-              onChange={this.onChangeName}
-            />
-          </div>
-          <div className="form-group">
-            <label>Description: </label>
-            <input
-              type="text"
-              required
-              className="form-control"
-              value={this.state.description}
-              onChange={this.onChangeDescription}
-            />
-          </div>
-          <div className="form-group">
-            <label>Study Interval: </label>
-            <input
-              type="text"
-              className="form-control"
-              value={this.state.studytime}
-              onChange={this.onChangeStudyTime}
-            />
-          </div>
-          <div className="form-group">
-            <label>Break Interval: </label>
-            <input
-              type="text"
-              required
-              className="form-control"
-              value={this.state.breaktime}
-              onChange={this.onChangeBreakTime}
-            />
-          </div>
+        { this.props.user === "Keifu" || this.props.user === "Xingweird" ? (
+          <>
+          
+            <h3>Create New Study Method</h3>
+            <form onSubmit={this.onSubmit}>
+              <div className="form-group">
+                <label>Name: </label>
+                <input
+                  type="text"
+                  required
+                  className="form-control"
+                  value={this.state.name}
+                  onChange={this.onChangeName}
+                />
+              </div>
+              <div className="form-group">
+                <label>Description: </label>
+                <input
+                  type="text"
+                  required
+                  className="form-control"
+                  value={this.state.description}
+                  onChange={this.onChangeDescription}
+                />
+              </div>
+              <div className="form-group">
+                <label>Study Interval: </label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={this.state.studytime}
+                  onChange={this.onChangeStudyTime}
+                />
+              </div>
+              <div className="form-group">
+                <label>Break Interval: </label>
+                <input
+                  type="text"
+                  required
+                  className="form-control"
+                  value={this.state.breaktime}
+                  onChange={this.onChangeBreakTime}
+                />
+              </div>
 
-          <div className="form-group">
-            <input
-              type="submit"
-              value="Create New Study Method"
-              className="btn btn-primary"
-            />
-          </div>
-        </form>
+              <div className="form-group">
+                <input
+                  type="submit"
+                  value="Create New Study Method"
+                  className="btn btn-primary"
+                />
+              </div>
+            </form>
+          
+          </>
+        ) : (
+          <>
+            <h1>You are not authorised to add study methods!</h1>
+          </>
+        )
+      }
       </div>
-    );
+    ); 
   }
 }

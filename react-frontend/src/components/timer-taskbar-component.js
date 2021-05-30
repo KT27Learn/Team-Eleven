@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function TaskManager() {
+function TaskManager(props) {
   const [tasks, setTasks] = useState([]);
   const [newTaskText, setNewTaskText] = useState("");
 
@@ -29,6 +29,24 @@ function TaskManager() {
     console.log(newTasks);
   }
 
+  function handleTaskCompletionToggled(toToggleTask, toToggleTaskIndex) {
+    
+    const newTasks = [ 
+      // Once again, this is the spread operator
+      ...tasks.slice(0, toToggleTaskIndex),
+      {
+        description: toToggleTask.description,
+        isComplete: !toToggleTask.isComplete
+      },
+      ...tasks.slice(toToggleTaskIndex + 1)
+    ];
+    // We set new tasks in such a complex way so that we maintain immutability
+    // Read this article to find out more:
+    // https://blog.logrocket.com/immutability-in-react-ebe55253a1cc/
+
+    setTasks(newTasks);
+  }
+
   return (
     <>
       <div>
@@ -49,11 +67,36 @@ function TaskManager() {
           <input type="submit" value="Add" />
         </form>
       </div>
-
       <div>
         <h2>Task List</h2>
         {tasks.length > 0 ? (
-          <TaskList tasks={tasks} setTasks={setTasks} />
+          <table style={{ margin: "0 auto", width: "100%" }}>
+          <thead>
+            <tr>
+              <th>No.</th>
+              <th>Task</th>
+              <th>Completed</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tasks.map((task, index) => (
+              // We should specify key here to help react identify
+              // what has updated
+              // https://reactjs.org/docs/lists-and-keys.html#keys
+              <tr key={task.description}>
+                <td>{index + 1}</td>
+                <td>{task.description}</td>
+                <td>
+                  <input
+                    type="checkbox"
+                    checked={task.isComplete}
+                    onChange={() => handleTaskCompletionToggled(task, index)}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
         ) : (
           <p>No tasks yet! Add one above!</p>
         )}
@@ -62,54 +105,5 @@ function TaskManager() {
   );
 }
 
-function TaskList(props) {
-  const { tasks, setTasks } = props;
-
-  function handleTaskCompletionToggled(toToggleTask, toToggleTaskIndex) {
-    const newTasks = [
-      // Once again, this is the spread operator
-      ...tasks.slice(0, toToggleTaskIndex),
-      {
-        description: toToggleTask.description,
-        isComplete: !toToggleTask.isComplete
-      },
-      ...tasks.slice(toToggleTaskIndex + 1)
-    ];
-    // We set new tasks in such a complex way so that we maintain immutability
-    // Read this article to find out more:
-    // https://blog.logrocket.com/immutability-in-react-ebe55253a1cc/
-
-    setTasks(newTasks);
-  }
-
-  return (
-    <table style={{ margin: "0 auto", width: "100%" }}>
-      <thead>
-        <tr>
-          <th>No.</th>
-          <th>Task</th>
-          <th>Completed</th>
-        </tr>
-      </thead>
-      <tbody>
-        {tasks.map((task, index) => (
-          // We should specify key here to help react identify
-          // what has updated
-          // https://reactjs.org/docs/lists-and-keys.html#keys
-          <tr key={task.description}>
-            <td>{index + 1}</td>
-            <td>{task.description}</td>
-            <td>
-              <input
-                type="checkbox"
-                checked={task.isComplete}
-                onChange={() => handleTaskCompletionToggled(task, index)}
-              />
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
-}
 export default TaskManager;
+

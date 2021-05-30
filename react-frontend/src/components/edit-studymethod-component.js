@@ -23,7 +23,7 @@ export default class EditStudyMethod extends Component {
   componentDidMount() {
     //react always run this code when mounting the component
     axios
-      .get("https://team-eleven-backend.herokuapp.com/" + this.props.match.params.id)
+      .get("http://localhost:5000/" + this.props.match.params.id)
       .then((response) => {
         this.setState({
           name: response.data.name,
@@ -75,7 +75,7 @@ export default class EditStudyMethod extends Component {
 
     axios
       .post(
-        "https://team-eleven-backend.herokuapp.com/library/update/" + this.props.match.params.id,
+        "http://localhost:5000/library/update/" + this.props.match.params.id,
         studymethod
       )
       .then((res) => console.log(res.data));

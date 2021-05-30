@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
 import axios from "axios";
 import alarm from "../timer-alarm.mp3";
 import Taskbar from "./timer-taskbar-component.js";
 
 export default class Timer extends Component {
   constructor(props) {
+
     super(props);
 
     this.state = {
@@ -27,11 +27,12 @@ export default class Timer extends Component {
     this.resetTimer = this.resetTimer.bind(this);
     this.countDown = this.countDown.bind(this);
     this.numberToString = this.numberToString.bind(this);
+    this.handleLog = this.handleLog.bind(this);
   }
 
   componentDidMount() {
     axios
-      .get("https://team-eleven-backend.herokuapp.com/library/" + this.props.match.params.id)
+      .get("http://localhost:5000/library/" + this.props.match.params.id)
       .then((response) => {
         this.setState({
           name: response.data.name,
@@ -57,8 +58,11 @@ export default class Timer extends Component {
 
   startTimer() {
     if (this.state.minutes === 0 && this.state.seconds === 0) {
+
     } else {
-      this.timer = setInterval(this.countDown, 1000);
+      if (this.timer === 0) {
+        this.timer = setInterval(this.countDown, 1000);
+      }
     }
   }
 
@@ -120,6 +124,12 @@ export default class Timer extends Component {
     }
   }
 
+  handleLog() {
+    const newStudyLog = this.state.totalElaspedStudyTime;
+    this.props.setStudyHours(newStudyLog);
+    this.props.history.push("/summary");
+  }
+
   render() {
     return (
       <div>
@@ -138,8 +148,12 @@ export default class Timer extends Component {
         <div>
           <Taskbar />
         </div>
-        <div>
-          <Link to={"/summary"}>Log Study Session!</Link>
+        <div className="form-group">
+            <input
+                onClick={this.handleLog}
+                value="Log Study Session!"
+                className="btn btn-primary"
+            />
         </div>
       </div>
     );

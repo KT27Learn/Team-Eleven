@@ -6,40 +6,24 @@ export default class CreateRooms extends Component {
   constructor(props) {
     super(props);
 
-    this.onChangeUsername = this.onChangeUsername.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeStudyMethod = this.onChangeStudyMethod.bind(this);
     this.onChangeSubject = this.onChangeSubject.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
 
     this.state = {
-      username: "",
       description: "",
       studymethod: "",
       subject: "",
-      users: [],
       studymethods: []
     };
   }
 
   componentDidMount() {
     //react always run this code when mounting the component
-    axios
-      .get("https://team-eleven-backend.herokuapp.com/users/")
-      .then((response) => {
-        if (response.data.length > 0) {
-          this.setState({
-            users: response.data.map((user) => user.username),
-            username: response.data[0].username
-          });
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
 
     axios
-      .get("https://team-eleven-backend.herokuapp.com/library/")
+      .get("http://localhost:5000/library/")
       .then((response) => {
         if (response.data.length > 0) {
           this.setState({
@@ -51,12 +35,6 @@ export default class CreateRooms extends Component {
       .catch((error) => {
         console.log(error);
       });
-  }
-
-  onChangeUsername(e) {
-    this.setState({
-      username: e.target.value
-    });
   }
 
   onChangeDescription(e) {
@@ -81,7 +59,7 @@ export default class CreateRooms extends Component {
     e.preventDefault();
 
     const room = {
-      username: this.state.username,
+      username: this.props.user,
       description: this.state.description,
       studymethod: this.state.studymethod,
       subject: this.state.subject
@@ -90,41 +68,33 @@ export default class CreateRooms extends Component {
     console.log(room);
 
     axios
-      .post("https://team-eleven-backend.herokuapp.com/rooms/add", room)
+      .post("http://localhost:5000/rooms/add", room)
       .then((res) => console.log(res.data));
 
     console.log(room);
 
     this.setState({
-      name: "",
       studymethod: ""
     });
 
-    window.location = "/";
+    this.props.history.push("/");
   }
 
   render() {
     return (
       <div>
+      {this.props.user !== null ? (
+        <>
         <h3>Create New Study Room</h3>
         <form onSubmit={this.onSubmit}>
           <div className="form-group">
             <label>Username: </label>
-            <select
-              ref="userInput"
+            <input
+              type="text"
               required
               className="form-control"
-              value={this.state.username}
-              onChange={this.onChangeUsername}
-            >
-              {this.state.users.map(function (user) {
-                return (
-                  <option key={user} value={user}>
-                    {user}
-                  </option>
-                );
-              })}
-            </select>
+              value={this.props.user}
+            />
           </div>
           <div className="form-group">
             <label>Description: </label>
@@ -173,6 +143,13 @@ export default class CreateRooms extends Component {
             />
           </div>
         </form>
+        </>
+      ) : (
+        <>
+        <h3>You are not signed in!</h3>
+        <p>You are not authorised to create a study room until you sign in!</p>
+        </>
+      )}
       </div>
     );
   }

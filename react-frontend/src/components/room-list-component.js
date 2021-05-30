@@ -9,15 +9,25 @@ const Room = (props) => (
     <td>{props.room.studymethod}</td>
     <td>{props.room.subject}</td>
     <td>
-      <Link to={"/room-edit/" + props.room._id}>edit</Link> |{" "}
-      <a
-        href="#!"
-        onClick={() => {
-          props.deleteRoom(props.room._id);
-        }}
-      >
-        delete
-      </a>
+      
+      {props.signedInUser !== props.room.username ? (
+        <>
+        <td>Enter</td>
+        </>
+      ) : (
+        <>
+        Enter | <Link to={"/room-edit/" + props.room._id}>Edit</Link> | {" "}
+        <a
+          href="#!"
+          onClick={() => {
+            props.deleteRoom(props.room._id);
+          }}
+        >
+          Delete
+        </a>
+        </>
+      )}
+      
     </td>
   </tr>
 );
@@ -36,7 +46,7 @@ export default class RoomList extends Component {
   componentDidMount() {
     //react always run this code when mounting the component
     axios
-      .get("https://team-eleven-backend.herokuapp.com/rooms/")
+      .get("http://localhost:5000/rooms/")
       .then((response) => {
         this.setState({
           rooms: response.data
@@ -49,7 +59,7 @@ export default class RoomList extends Component {
 
   deleteRoom(id) {
     axios
-      .delete("https://team-eleven-backend.herokuapp.com/rooms/" + id)
+      .delete("http://localhost:5000/rooms/" + id)
       .then((res) => console.log(res.data));
 
     this.setState({
@@ -62,6 +72,7 @@ export default class RoomList extends Component {
       return (
         <Room
           room={currentroom}
+          signedInUser={this.props.user}
           deleteRoom={this.deleteRoom}
           key={currentroom._id}
         />

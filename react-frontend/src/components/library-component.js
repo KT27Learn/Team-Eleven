@@ -9,16 +9,27 @@ const Library = (props) => (
     <td>{props.studymethod.studytime}</td>
     <td>{props.studymethod.breaktime}</td>
     <td>
-      <Link to={"/timer/" + props.studymethod._id}>Start</Link> |{" "}
-      <Link to={"/studymethod-edit/" + props.studymethod._id}>edit</Link> |{" "}
-      <a
-        href="#!"
-        onClick={() => {
-          props.deleteStudyMethod(props.studymethod._id);
-        }}
-      >
-        delete
-      </a>
+      <Link to={"/timer/" + props.studymethod._id}>Start</Link> 
+      {props.currentUser !== null && 
+      
+      (props.currentUser === "Keifu" || props.currentUser === "Xingweird") ? (
+        <>
+        |{" "}
+        <Link to={"/studymethod-edit/" + props.studymethod._id}>edit</Link> |{" "}
+        <a
+          href="#!"
+          onClick={() => {
+            props.deleteStudyMethod(props.studymethod._id);
+          }}
+        >
+          delete
+        </a>
+        </>
+      ) : (
+        <>
+        </>
+      )}
+      
     </td>
   </tr>
 );
@@ -37,7 +48,7 @@ export default class LibraryList extends Component {
   componentDidMount() {
     //react always run this code when mounting the component
     axios
-      .get("https://team-eleven-backend.herokuapp.com/library/")
+      .get("http://localhost:5000/library/")
       .then((response) => {
         this.setState({
           library: response.data
@@ -50,7 +61,7 @@ export default class LibraryList extends Component {
 
   deleteStudyMethod(id) {
     axios
-      .delete("https://team-eleven-backend.herokuapp.com/library/" + id)
+      .delete("http://localhost:5000/library/" + id)
       .then((res) => console.log(res.data));
 
     this.setState({
@@ -65,6 +76,7 @@ export default class LibraryList extends Component {
           studymethod={currentStudyMethod}
           deleteStudyMethod={this.deleteStudyMethod}
           key={currentStudyMethod._id}
+          currentUser={this.props.user}
         />
       );
     });
