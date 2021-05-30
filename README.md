@@ -40,4 +40,4 @@ As of Milestone 1, Eleven has been deployed for users to have a sneak preview of
 
 Simply visit the below link to visit our web app!
 
-[Deployment link](orbital-team-eleven-iq7vzshqa-kt27learn.vercel.app)
+[Deployment link](orbital-team-eleven.vercel.app)
