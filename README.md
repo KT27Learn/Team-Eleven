@@ -10,7 +10,7 @@ Orbital (Independent Software Development Project) is NUS School of Computing se
 
 **Project Poster:** [Link](https://drive.google.com/file/d/1J1SoVspMIXbZ-RvnQqcPzP4JZLPl35zY/view?usp=sharing)
 
-**Project Video:** [Link](https://drive.google.com/file/d/18064WwVSaaAyCNyc7yFvNzAebwFeAjoj/view?usp=sharing)
+**Project Video:** [Link](https://drive.google.com/file/d/1J1TUQjPVcsE0X7FLW4w9s76MoDYSREKA/view?usp=sharing)
 
 **Figma Wireframe:** [Link](https://www.figma.com/proto/qjk1LKUYCKJ9ps3xKnu61B/Orbital-Eleven?node-id=4%3A2&scaling=min-zoom&page-id=0%3A1)
 
