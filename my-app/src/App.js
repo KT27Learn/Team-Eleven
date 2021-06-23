@@ -9,8 +9,9 @@ import CreateRoom from './app/Rooms/createroom'
 import Timer from './app/Timer/timer';
 import Summary from './app/Timer/summary';
 //import LiveStudyRoom from './app/Rooms/Livestream/livestudyroom';
-import Chat from './app/Rooms/Livestream/Chat/chatroom';
 import Stream from './app/Rooms/Livestream/livestreamhome'
+import Broadcast from './app/Rooms/Livestream/broadcasthome';
+import Viewer from './app/Rooms/Livestream/viewerhome';
 import './App.css';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
@@ -29,6 +30,8 @@ const App = () => {
           <Route exact path="/timer/:id" exact component={Timer} />
           <Route exact path="/summary" exact component={Summary} />
           <Route path='/stream' exact component={Stream}/>
+          <Route path='/viewerstream' exact component={Viewer} />
+          <Route path='/broadcaststream' exact component={Broadcast} />
           <Route exact path="/auth" exact component={() => ( !user ? <Auth /> : <Redirect to="/"/>) }/>
           <Route exact path="/profile" exact component={Profile} />
           <Route exact path="/rooms" exact component={RoomsList} />
