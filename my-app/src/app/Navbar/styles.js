@@ -47,6 +47,11 @@ export default makeStyles((theme) => ({
   },
   linkContainer: {
     display: 'flex',
+    direction: "row",
     justifyContent: 'space-between',
+  },
+  navlink: {
+   marginLeft: '50px',
+    
   }
 }));
