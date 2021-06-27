@@ -82,6 +82,7 @@ const Navbar = () => {
           </div>
           <div >
             <Link
+              className={classes.link}
               component="button"
               variant="body2"
               onClick={() => {
