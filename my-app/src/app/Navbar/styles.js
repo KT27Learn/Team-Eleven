@@ -45,6 +45,6 @@ export default makeStyles((theme) => ({
     backgroundColor: deepPurple[500],
   },
   link: {
-    marginLeft: '45px',
+    marginLeft: theme.spacing(2),
   }
 }));
