@@ -26,8 +26,9 @@ Moreover, when your study companions or friends are too busy to meet for study s
 An all-in-one study social space enabling learners to plan their studies and be motivated by studying with friends or publicly live-streamed study sessions hosted by others. Users can browse and drop into relevant ‘study rooms’ based on studying methods (pomodoro), study subject (business, tech, science, math,...), personality (popular individual hosts: Ali Abdaal, Daniel Tamago). Users may also try different study methods, track study hours, plan study topics, explore study products and services, find others to share in group-plan services, among other planning and exploratory oriented features. 
 
 ### Current Features Implemented:
-* Accounts feature
-* Study Timer
+* Accounts feature 
+* Viewing past study session logs
+* Study Timer with to-do list feature
 * Library containing study methods
 * Study Rooms with real time chats and livestream
 * View collated study session history
