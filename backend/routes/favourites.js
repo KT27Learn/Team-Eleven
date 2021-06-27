@@ -2,6 +2,7 @@ const path = require('path');
 const router = require('express').Router();
 let Favourites = require('../models/favourite-records-model');
 
+//get a specific user's favourites log
 router.route('/userlog').post(async(req, res) => {
 
     const { userid } = req.body;
@@ -18,11 +19,9 @@ router.route('/userlog').post(async(req, res) => {
         console.log(error);
     }
 
-
-
-
 });
 
+//update a user's favourites log by adding a newly favourited study method
 router.route('/favourite').post(async (req, res) => {
     
     const { userid, googleId, studymethodid, studymethodname } = req.body;
@@ -67,6 +66,7 @@ router.route('/favourite').post(async (req, res) => {
 
 });
 
+//update a user's favourites log by removing a current favourited study method
 router.route('/unfavourite').post(async (req, res) => {
     
     const { userid, studymethodid } = req.body;

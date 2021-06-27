@@ -8,7 +8,8 @@ const roomSchema = new Schema({
     roomname: { type: String, required: true},
     description: { type: String, required: true},
     studymethod: { type: String, required: false},
-    subject: { type: String, required: false}
+    subject: { type: String, required: false},
+    profileurl: { type: String, required: false},
     
 }, {
     timestamps: true,

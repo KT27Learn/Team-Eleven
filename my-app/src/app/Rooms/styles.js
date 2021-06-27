@@ -9,6 +9,9 @@ export default makeStyles((theme) => ({
     },
     searchBar: {
         margin: theme.spacing(1),
-    }
+    },
+    formControl: {
+        minWidth: 165,
+      },
     
   }));

@@ -1,22 +1,15 @@
 import React, { useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-
-import { Container, Grow, Grid, Chip, Paper } from '@material-ui/core';
 
 import StudyRooms from '../Rooms/studyrooms';
-import Profile from './profile/profile';
+import Profile from '../Profile/profile';
+
+import { Container, Grow, Grid } from '@material-ui/core';
 
 
-function useQuery() {
-
-  return new URLSearchParams(useLocation().search);
-
-}
 
 const RoomsList = () => {
 
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+  const [user] = useState(JSON.parse(localStorage.getItem('profile')));
 
   return (
     <Grow in>

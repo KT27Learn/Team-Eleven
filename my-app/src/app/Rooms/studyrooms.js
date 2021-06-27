@@ -1,74 +1,81 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useHistory, useLocation  } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
-import { Typography, TextField, IconButton, Grid, CircularProgress, Paper, Button } from '@material-ui/core';
-import { Pagination, PaginationItem } from '@material-ui/lab';
+import { Typography, TextField, Grid, CircularProgress, Button } from '@material-ui/core';
+import { Pagination } from '@material-ui/lab';
 import SearchIcon from '@material-ui/icons/Search';
 
 import StudyRoom from './Room/room';
-import { selectAllRooms, fetchRooms, selectNumberOfRooms } from './roomsslice';
+import { selectAllRooms, fetchRooms } from './roomsslice';
 import useStyles from './styles';
 
 function StudyRooms() {
 
-    const dispatch = useDispatch();
-    const roomlist = useSelector(selectAllRooms);
-    const roomStatus = useSelector((state) => state.rooms.status);
-    const totalNumberOfStudyRooms = useSelector(selectNumberOfRooms);
-    const error = useSelector((state) => state.rooms.error);
-    const classes = useStyles();
-  
-    const [search, setSearch] = useState('');
-    const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 5;
-    const numberOfRooms = totalNumberOfStudyRooms;
-    const [totalPage] = useState(Math.ceil(numberOfRooms / itemsPerPage));
-    const history = useHistory();
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const classes = useStyles();
 
-    useEffect(() => {
-      if (roomStatus === 'idle') {
-        dispatch(fetchRooms())
-      }
-    }, [roomStatus, dispatch])
+  const [user] = useState(JSON.parse(localStorage.getItem('profile')));
+  const roomlist = useSelector(selectAllRooms);
+  const roomStatus = useSelector((state) => state.rooms.status);
+  const [search, setSearch] = useState('');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
 
-    
+  useEffect(() => {
+    if (roomStatus === 'idle') {
+      dispatch(fetchRooms())
+    }
 
+  }, [roomStatus, dispatch])
 
+  /*
+   * Sets the search term variable
+   *
+   * @param {Event} e event when user enters anything into the search bar
+   *
+   */
   const handleSearchChange = (e) => {
 
     setSearch(e.target.value);
-
+    
   } 
 
+  /*
+   * Changes the current page to the value received
+   *
+   * @param {Event} e event when user clicks on the pagination buttons
+   * @param {Value} value next page number
+   *
+   */
   const handlePaginationChange = (event, value) => {
 
     setCurrentPage(value);
 
   };
 
-  
-  const handleKeyPress = (e) => {
-    
-    if (e.keyCode === 13) {
-      searchRooms();
-    }
-
-  }
-
-  const searchRooms = () => {
-
-  }
-
+  /*
+   * Count total number of pages for pagination
+   * 
+   * @param {Array} arr list of all study methods
+   * 
+   */
   const countPages = (arr) => {
 
     return Math.ceil(arr.length / itemsPerPage);
 
   }
 
+  /*
+   * Checks whether study method contains any words that matches the search term
+   *
+   * @param {Object} studymethod studymethod to checked
+   *
+   */
   const searchFilter = (room) => {
 
-    if (search == '') {
+    if (search === '') {
       return room
     } else if (room.username.toLowerCase().includes(search.toLowerCase())) {
       return room
@@ -84,9 +91,36 @@ function StudyRooms() {
 
   }
 
+  /*
+   * Routes user to create room page
+   *
+   */
   const createRoom = () => {
 
     history.push('/createroom');
+
+  }
+
+  /*
+   * Reverses the order of the array given to the function
+   *
+   * @param {Array} array array to be reversed
+   *
+   */
+  const reverseArray = (arr) => {
+
+    if (arr) {
+
+      const lens = arr.length;
+      let newSortedRooms = [];
+    
+      for (let i = 0; i < lens; i ++) {
+  
+        newSortedRooms.push(arr[lens - i - 1]);
+  
+      }
+      return newSortedRooms;
+    }
 
   }
 
@@ -107,21 +141,29 @@ function StudyRooms() {
                   label="Filter Rooms" 
                   variant="outlined" 
                   value={search}
-                  onKeyDown={handleKeyPress}
                   onChange={handleSearchChange}
                 />
               </form>  
             </Grid>
             <Grid>
-              <Button variant="contained" color="secondary" onClick={createRoom}>
-                Create Room
-              </Button>
+              {user ? (
+                <Button variant="contained" color="secondary" onClick={createRoom}>
+                  Create Room
+                </Button>
+
+              ) : (
+
+                <>
+                </>
+
+              )}
+              
             </Grid>
           </Grid>
         </div>
         {roomStatus === 'loading' || roomStatus === 'error'  ? <CircularProgress /> : (
             <>
-              {roomlist.filter((room) => searchFilter(room)).slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((room) => (
+              {reverseArray(roomlist).filter((room) => searchFilter(room)).slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((room) => (
                 <Grid key={room._id} item xs={12} sm={6} md={6}>
                   <StudyRoom room={room} />
                 </Grid>

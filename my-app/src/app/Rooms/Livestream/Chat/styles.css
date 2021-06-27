@@ -2,8 +2,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   height: 100vh;
-  background-color: #1A1A1D;
+  padding: 20px;
+  background-color: #000000;
 }
 
 .container {
@@ -12,7 +14,7 @@
   justify-content: space-between;
   background: #FFFFFF;
   border-radius: 8px;
-  height: 60%;
+  height: 60vh;
   width: 35%;
 }
 

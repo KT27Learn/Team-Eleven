@@ -25,6 +25,8 @@ export default makeStyles((theme) => ({
       height: 150,
       margin: 100
       
-
+    },
+    table: {
+        minWidth: 650,
     },
   }));

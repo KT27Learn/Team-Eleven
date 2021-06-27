@@ -2,6 +2,7 @@ const path = require('path');
 const router = require('express').Router();
 let Rooms = require('../models/room-model');
 
+//returns all study rooms in db
 router.route('/').get((req, res) => {
 
   Rooms.find()
@@ -10,27 +11,8 @@ router.route('/').get((req, res) => {
 
 });
 
-router.route('/search').get(async (req, res) => {
-  //returns all study rooms in db
-
-  const { searchQuery } = req.query;
-
-  try {
-    const title = new RegExp(searchQuery, 'i')
-    
-    const rooms = await Rooms.find( {title} )
-
-    res.json({data: rooms});
-    
-  } catch (error) {
-
-    res.status(404).json({ message: error.message });
-
-  }
-});
-
+//add a new study room to db
 router.route('/add').post(async (req, res) => {
-    //add a new study room to db
 
     try {
 
@@ -51,29 +33,36 @@ router.route('/add').post(async (req, res) => {
 
     }
     
+});
 
+//find a particular study room and delete it
+router.route('/delete').post((req, res) => {
+  const RoomId = req.body.roomID;
+  const result = Rooms.findOneAndRemove({ creatorid: RoomId}, (err, docs) => {
 
+    if (err) {
 
-  
+      console.log(err);
+      res.status(404).json({message: err.message});
+    
+    } else {
+      res.status(200).json({ id: RoomId });
+    }
+  });
 
 });
 
+//find a particular study room for its details
 router.route('/:id').get((req, res) => {
-    //find a particular study room for its details
+    
     Rooms.findById(req.params.id)
       .then(room => res.json(room))
       .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/:id').delete((req, res) => {
-    //find a particular study room and delete it
-    Rooms.findByIdAndDelete(req.params.id)
-      .then(() => res.json('Room deleted.'))
-      .catch(err => res.status(400).json('Error: ' + err));
-});
-
+//update a particular rooms details
 router.route('/update/:id').post((req, res) => {
-    //update a particular rooms details
+    
     Rooms.findById(req.params.id)
       .then(room => {
         room.username = req.body.username;

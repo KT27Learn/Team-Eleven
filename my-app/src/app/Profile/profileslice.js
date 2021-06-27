@@ -17,9 +17,7 @@ export const profileSlice = createSlice({
   // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     fetchPastSessionsLog: (state, action) => {
-
         state.pastlogs = action?.data;
-
     },
     
   },

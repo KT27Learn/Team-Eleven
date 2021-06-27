@@ -21,26 +21,19 @@ export const addNewRoom = createAsyncThunk(
   }
 )
 
+export const deleteRoom = createAsyncThunk(
+  'rooms/deleteRoom',
+  async (deletedRoom) => {
+    const response = await api.deleteRoom(deletedRoom);
+    return response.data;
+  }
+)
 
 const roomsSlice = createSlice({
   name: 'rooms',
   initialState,
   reducers: {
-    reactionAdded(state, action) {
-      const { postId, reaction } = action.payload;
-      const existingPost = state.posts.find((post) => post.id === postId);
-      if (existingPost) {
-        existingPost.reactions[reaction]++;
-      }
-    },
-    postUpdated(state, action) {
-      const { id, title, content } = action.payload
-      const existingPost = state.posts.find((post) => post.id === id);
-      if (existingPost) {
-        existingPost.title = title;
-        existingPost.content = content;
-      }
-    },
+
   },
   extraReducers: {
     [fetchRooms.pending]: (state, action) => {
@@ -60,6 +53,9 @@ const roomsSlice = createSlice({
     [addNewRoom.fulfilled]: (state, action) => {
       state.rooms.push(action.payload.result);
     },
+    [deleteRoom.fulfilled]: (state, action) => {
+      state.rooms.filter(room => room._id !== action.payload.id);
+    },
   },
 })
 
@@ -70,6 +66,9 @@ export default roomsSlice.reducer;
 export const selectAllRooms = (state) => state.rooms.rooms;
 
 export const selectNumberOfRooms = (state) => state.rooms.totalNumber;
+
+export const selectRoomByCreatorId = (state, creatorId) => 
+  state.rooms.rooms.find((room) => room.creatorid === creatorId);
 
 export const selectRoomById = (state, roomId) =>
   state.rooms.rooms.find((room) => room.id === roomId)

@@ -2,6 +2,7 @@ const path = require('path');
 const router = require('express').Router();
 let Session = require('../models/session-model');
 
+//log a newly completed study session to the database
 router.route('/log').post(async (req, res) => {
     
     const { userid, googleId, studymethod, cumulatedtime, tasks } = req.body;
@@ -20,6 +21,7 @@ router.route('/log').post(async (req, res) => {
 
 });
 
+//retrieve all previously completed study session by a user from the database
 router.route('/past').post(async (req, res) => {
     
     const { userid } = req.body;

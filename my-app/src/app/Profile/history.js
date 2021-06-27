@@ -1,67 +1,123 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
-import { Grid, CircularProgress, Typography } from '@material-ui/core';
+import useStyles from './styles';
+import { selectAllPastLogs, fetchSessions } from './profileslice';
 
-const History = ( {log} ) => {
+import { Grid, Paper, Typography, Table, TableHead ,TableContainer, TableCell, TableRow, TableBody, CircularProgress } from '@material-ui/core';
 
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
+const History = () => {
+
+    const classes = useStyles();
+    const dispatch = useDispatch();
+
+    const [user] = useState(JSON.parse(localStorage.getItem('profile')));
     const historyStatus = useSelector((state) => state.profile.status);
-    
-    const calculateTime = (arr) => {
+    const historyList = useSelector(selectAllPastLogs);
+    const [completedTasks] = useState([]);
+    const [uncompletedTasks] = useState([]);
+    const [sortProgress, setSortProgress] = useState(false);
 
-        let totalTime = 0;
-        for (let i = 0; i < arr.length; i++) {
-            totalTime += arr[i].cumulatedtime;
-        }
+    useEffect(() => {
 
-        return totalTime;
-
-    }
-
-    const filterTasks = (arr) => {
-
+        if (historyStatus === 'idle') {
+          dispatch(fetchSessions({ userid : user.result._id}));
+        } 
         
-        let completedTasks = [];
-        for (let i = 0; i < arr.length; i++) {
-            const log = arr[i].tasks
+        if (historyStatus === 'succeeded') {
+            sortTasks(historyList.session);
+        }
+      
+        // eslint-disable-next-line    
+    }, [historyStatus, dispatch]);
 
-            if (log.length > 0) {
-                const completedTasksLog = log.filter(task => task.isComplete);
-                completedTasks = [...completedTasks, ...completedTasksLog];
+    /*
+     * Sorts all tasks in past logs into completed tasks array and 
+     * uncompleted tasks arrays
+     *
+     * @param {Array} arr array to be sorted
+     * 
+     */
+    const sortTasks = (arr) => {
 
+        if (arr) {
+            for (let i = 0; i < arr.length; i++) {
+                const currentLog = arr[i].tasks;
+
+                if (currentLog) {
+                    // eslint-disable-next-line
+                    currentLog.map((task) => {
+                        if (task.isComplete) {
+                            completedTasks.push(task);
+                        } else {
+                            uncompletedTasks.push(task);
+                        }
+                    })
+                }
             }
-            
-
         }
-
-        return completedTasks
-
+        setSortProgress(true);
     }
 
-    
     return (
-
         <>
-        { historyStatus === 'succeeded' ? (
-            <Grid>
+            {sortProgress ? (
                 <>
-                    <Typography variant='h6'>Cumulative Study Hours: </Typography>
-                    <Typography variant='subtitle2'>{calculateTime(log.session)} seconds</Typography> 
-                    <Typography variant='h6'>Completed Tasks: </Typography>
-                    {filterTasks(log.session).map((task) => (
-                        <Typography variant="subtitle2" align="center">{task.description}</Typography>
-                    ))}
+                    <Grid> 
+                        <Typography variant="h4" align="center">Completed Tasks:</Typography>
+                        <TableContainer component={Paper}>
+                            <Table className={classes.table} aria-label="simple table">
+                            <TableHead>
+                                <TableRow>
+                                <TableCell align="left">No.</TableCell>
+                                <TableCell align="left">Description</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody>
+                                {completedTasks.map((task, index) => (
+
+                                <TableRow key={index}>
+                                    <TableCell align="left">{index}</TableCell>
+                                    <TableCell align="left">{task.description}</TableCell>
+                                </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                        </TableContainer>
+                    </Grid>
+                    <br />
+                    <br />
+                    <Grid>  
+                        <Typography variant="h4" align="center">Uncompleted Tasks:</Typography>
+                        <TableContainer component={Paper}>
+                            <Table className={classes.table} aria-label="simple table">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell align="left">No.</TableCell>
+                                        <TableCell align="left">Description</TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {uncompletedTasks.map((task, index) => (
+                                        <TableRow key={index}>
+                                                <TableCell align="left">{index}</TableCell>
+                                                <TableCell align="left">{task.description}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    </Grid>
                 </>
-            </Grid>
+                
+            ) : (
+                
+                <CircularProgress />
 
-        ) : (
-            <CircularProgress />
-        )}
+            )}
+                
         </>
-        
     )
-
 }
 
 export default History;

@@ -1,9 +1,14 @@
 import React, { useRef ,useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory } from 'react-router-dom';
 import io from "socket.io-client";
 import queryString from 'query-string';
 
-import { Typography, Container } from '@material-ui/core';
+import useStyles from './styles';
+
+import { Typography, Button, Card, CardContent } from '@material-ui/core';
+import VolumeOffIcon from '@material-ui/icons/VolumeOff';
+import VolumeUpIcon from '@material-ui/icons/VolumeUp';
+import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 
 const config = {
     iceServers: [
@@ -30,8 +35,11 @@ const connectionOptions =  {
 export default function Viewer() {
     
     let peerConnection;
-    const [roomID, setRoomID] = useState('');
+    const [broadcastStatus, setBroadCastStatus] = useState(false);
+    const [muteStream, setMuteStream] = useState(false);
     const location = useLocation();
+    const history = useHistory();
+    const classes = useStyles();
 
     const socketRef = useRef();
     const streamVideo = useRef();
@@ -39,10 +47,11 @@ export default function Viewer() {
     useEffect(() => {
 
         const { room } = queryString.parse(location.search);
-        setRoomID(room);
         socketRef.current = io(ENDPOINT, connectionOptions);
 
         socketRef.current.on("offer", (id, description) => {
+            setBroadCastStatus(true);
+            // eslint-disable-next-line
             peerConnection = new RTCPeerConnection(config);
             peerConnection
               .setRemoteDescription(description)
@@ -50,7 +59,7 @@ export default function Viewer() {
               .then(sdp => peerConnection.setLocalDescription(sdp))
               .then(() => {
                 socketRef.current.emit("answer", id, peerConnection.localDescription);
-              });
+              }).catch(err => console.log(err));
             peerConnection.ontrack = event => {
                 streamVideo.current.srcObject = event.streams[0];
             };
@@ -75,6 +84,11 @@ export default function Viewer() {
         socketRef.current.on("broadcaster", () => {
             socketRef.current.emit("watcher", room);
         });
+
+        socketRef.current.on("end broadcast", () => {
+            alert("Livestream has ended! Please join another room!")
+            setBroadCastStatus(false);
+        });
           
         window.onunload = window.onbeforeunload = () => {
             socketRef.current.close();
@@ -83,15 +97,131 @@ export default function Viewer() {
 
     })
 
+    /*
+     * Leaves the current room and redirects user to the home page
+     * 
+     */
+    const leaveRoom = () => {
+
+        history.push('/');
+
+    }
+
+    /*
+     * Toggles whether audio from the stream is played
+     * 
+     */
+    const toggleAudio = () => {
+
+        setMuteStream(!muteStream);
+        streamVideo.current.srcObject.getAudioTracks()[0].enabled =
+        !(streamVideo.current.srcObject.getAudioTracks()[0].enabled)
+
+    }
+
 
     return (
         <>
-        <Container>
-            <video muted ref={streamVideo} autoPlay playsInline /> 
-            <Typography variant='h6'>
-                 Number of people in the room: 
-            </Typography>
-        </Container>
+        
+            {broadcastStatus ? (
+                <>
+                    <Button
+                        color="secondary"
+                        variant="contained"
+                        startIcon={<ArrowBackIcon />}
+                        onClick={leaveRoom}
+                    >
+                    Leave Room
+                    </Button>
+                    { muteStream ? (
+
+                        <>
+                            <Button
+                                className={classes.streamerMuteAudioButton}
+                                color="secondary"
+                                variant="contained"
+                                endIcon={<VolumeUpIcon />}
+                                onClick={toggleAudio}
+                            >
+                                Unmute Audio
+                            </Button>
+                        </>
+
+                        ): (
+
+                        <>
+                            <Button
+                                className={classes.streamerMuteAudioButton}
+                                color="secondary"
+                                variant="contained"
+                                endIcon={<VolumeOffIcon />}
+                                onClick={toggleAudio}
+                            >
+                                Mute Audio
+                            </Button>
+                        </>
+
+                    )}
+                    <br />
+                    <br />
+                    <video muted={muteStream} ref={streamVideo} autoPlay playsInline /> 
+                    
+                </>
+                
+
+            ) : (
+                <>
+                    <Button
+                        color="secondary"
+                        variant="contained"
+                        startIcon={<ArrowBackIcon />}
+                        onClick={leaveRoom}
+                    >
+                        Leave Room
+                    </Button>
+                    { muteStream ? (
+
+                        <>
+                            <Button
+                                className={classes.streamerMuteAudioButton}
+                                color="secondary"
+                                variant="contained"
+                                endIcon={<VolumeUpIcon />}
+                                onClick={toggleAudio}
+                            >
+                                Unmute Audio 
+                            </Button>
+                        </>
+
+                        ): (
+
+                        <>
+                            <Button
+                                className={classes.streamerMuteAudioButton}
+                                color="secondary"
+                                variant="contained"
+                                endIcon={<VolumeOffIcon />}
+                                onClick={toggleAudio}
+                            >
+                                Mute Audio
+                            </Button>
+                        </>
+
+                    )}
+                    <br />
+                    <br />
+                    <Card className={classes.videoCard}>
+                        <CardContent className={classes.videoContent}>
+                            <Typography className={classes.videoText} variant="h5" color="white">No Livestream Feed Available</Typography>
+                        </CardContent>
+                    </Card>
+                    
+                </>
+
+            )
+            }
+                
+        
         </>
     )
 

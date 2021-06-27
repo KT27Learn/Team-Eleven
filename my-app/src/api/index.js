@@ -8,6 +8,7 @@ export const googleSignIn = (googleData) => API.post('/users/googlesignin', goog
 export const fetchLibrary = () => API.get('/library/');
 export const fetchRooms = () => API.get('/rooms/');
 export const addRoom = (RoomDetails) => API.post('/rooms/add', RoomDetails);
+export const deleteRoom = (RoomDetails) => API.post('/rooms/delete', RoomDetails);
 export const fetchTimerById = (id) => API.get('/library/' + id);
 export const logSession = (sessionDetails) => API.post('/session/log', sessionDetails);
 export const fetchUserSession = (userDetails) => API.post('/session/past', userDetails);

@@ -1,25 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-import { Card, Grid, CardMedia, Button, Typography } from '@material-ui/core/';
+import { Card, Grid, Button, Typography } from '@material-ui/core';
 import useStyles from './styles';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
 
 function StudyRoom({ room }) {
 
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     const classes = useStyles();
-    //const image = method.image;
+    const history = useHistory();
+
+    const roomName = room.roomname;
     const roomCreator = room.username;
     const description = room.description;
     const studymethod = room.studymethod;
     const subject = room.subject;
-    const history = useHistory();
 
+    /*
+     * Enters the livestream room of the current study room
+     * 
+     */
     const joinRoom = () => {
 
-        history.push(`/stream?room=${room.creatorid}`);
+        history.push(`/viewerstream?room=${room.creatorid}`);
 
     }
         
@@ -34,15 +38,18 @@ function StudyRoom({ room }) {
             >
                 <div className={classes.roomContent}>
                     <Typography component="h5" variant="h5">
+                        {roomName}
+                    </Typography>
+                    <Typography variant="subtitle2" color="textSecondary">
                         {roomCreator}
                     </Typography>
-                    <Typography variant="subtitle1" color="textSecondary">
+                    <Typography variant="subtitle2" color="textSecondary">
                         {description}
                     </Typography>
-                    <Typography variant="subtitle1" color="textSecondary">
+                    <Typography variant="subtitle2" color="textSecondary">
                         {studymethod}
                     </Typography>
-                    <Typography variant="subtitle1" color="textSecondary">
+                    <Typography variant="subtitle2" color="textSecondary">
                         {subject}
                     </Typography>
                 </div>

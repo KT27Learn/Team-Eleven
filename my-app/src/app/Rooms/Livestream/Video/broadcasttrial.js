@@ -1,23 +1,16 @@
 import React, { useRef ,useState ,useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useLocation, useHistory } from 'react-router-dom';
 import io from "socket.io-client";
 import queryString from 'query-string';
 
-import { Typography, Container } from '@material-ui/core';
+import { deleteRoom } from '../../roomsslice';
+import useStyles from './styles';
 
-const Video = ( {peer} ) => {
-    const ref = useRef();
-
-    useEffect(() => {
-        peer.on("stream", stream => {
-            ref.current.srcObject = stream;
-        })
-    }, []);
-
-    return (
-        <video playsInline autoPlay ref={ref} />
-    );
-}
+import { Container, Button } from '@material-ui/core';
+import VolumeOffIcon from '@material-ui/icons/VolumeOff';
+import VolumeUpIcon from '@material-ui/icons/VolumeUp';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const peerConnections = {};
 const config = {
@@ -44,10 +37,14 @@ const connectionOptions =  {
 
 export default function Broadcast() {
 
-    const [peerConnection, setPeerConnections] = useState([]);
-    const [roomID, setRoomID] = useState('');
     const location = useLocation();
+    const history = useHistory();
+    const dispatch = useDispatch();
+    const classes = useStyles();
 
+    const [peerConnection] = useState([]);
+    const [roomID, setRoomID] = useState('');
+    const [muteStream, setMuteStream] = useState(false);
     const socketRef = useRef();
     const userVideo = useRef();
 
@@ -82,33 +79,119 @@ export default function Broadcast() {
         });
 
         socketRef.current.on("answer", (id, description) => {
-            peerConnections[id].setRemoteDescription(description);
+
+            if (peerConnections[id] && description) {
+
+                peerConnections[id].setRemoteDescription(description);
+
+            }
+            
         });
 
         socketRef.current.on("candidate", (id, candidate) => {
-            peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate));
+
+            if (peerConnections[id]) {
+
+                peerConnections[id].addIceCandidate(new RTCIceCandidate(candidate))
+
+            }
+            
         });
 
         socketRef.current.on("disconnectPeer", id => {
-            peerConnections[id].close();
-            delete peerConnections[id];
+            
+            if (peerConnection[id]) {
+                peerConnections[id].close();
+                delete peerConnections[id];
+            }
+            
         });
 
-        window.onunload = window.onbeforeunload = () => {
-            socketRef.current.close();
-        };
-
+        return () => {
+            if (userVideo.current) {
+                // eslint-disable-next-line
+                userVideo.current.srcObject.getTracks().forEach(track => {
+                    track.stop();
+                });
+                socketRef.current.close();
+            }
+        }
+        // eslint-disable-next-line
     }, []);
 
+    /*
+     * Ends the current livestream and emits to the backend to signal
+     * the end of the livestream
+     * 
+     */
+    const endStream = () => {
+        const deletedRoom = { roomID };
+        dispatch(deleteRoom( deletedRoom ));
+        userVideo.current.srcObject.getTracks().forEach(track => {
+            track.stop();
+        });
+        socketRef.current.emit("end broadcast", roomID);
+        history.push('/');
+
+    }
+
+    /*
+     * Toggles whether audio is transmitted to the rest of the viewers
+     * 
+     */
+    const toggleAudio = () => {
+
+        setMuteStream(!muteStream);
+        userVideo.current.srcObject.getAudioTracks()[0].enabled =
+        !(userVideo.current.srcObject.getAudioTracks()[0].enabled)
+
+    }
     
 
     return (
         <>
         <Container>
             <video muted ref={userVideo} autoPlay playsInline /> 
-            <Typography variant='h6'>
-                 Number of people in the room: {peerConnections.length}
-            </Typography>
+            <br />
+            <br />
+            <Button
+                color="secondary"
+                variant="contained"
+                endIcon={<DeleteIcon />}
+                onClick={endStream}
+            >
+                End Stream
+            </Button>
+            { muteStream ? (
+
+                <>
+                    <Button
+                        className={classes.streamerMuteAudioButton}
+                        color="secondary"
+                        variant="contained"
+                        endIcon={<VolumeUpIcon />}
+                        onClick={toggleAudio}
+                    >
+                        Unmute Audio for Viewers
+                    </Button>
+                </>
+
+            ): (
+
+                <>
+                    <Button
+                        className={classes.streamerMuteAudioButton}
+                        color="secondary"
+                        variant="contained"
+                        endIcon={<VolumeOffIcon />}
+                        onClick={toggleAudio}
+                    >
+                        Mute Audio for Viewers
+                    </Button>
+                </>
+
+            )}
+            
         </Container>
         </>
     )

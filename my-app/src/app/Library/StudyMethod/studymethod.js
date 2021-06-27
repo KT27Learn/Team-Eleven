@@ -1,11 +1,11 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useHistory } from 'react-router-dom';
 
 import useStyles from './styles';
-import { favouriteMethod, unfavouriteMethod, selectAllFavouriteStudyMethods } from '../LibrarySlice';
+import { favouriteMethod, unfavouriteMethod } from '../LibrarySlice';
 
-import { Card, CardContent, Grid, Button, Typography, IconButton, CircularProgress } from '@material-ui/core/';
+import { Card, Grid, Button, Typography, IconButton } from '@material-ui/core/';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
@@ -13,24 +13,19 @@ import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 
 function StudyMethod( { method, favLog }) {
 
-    const user = JSON.parse(localStorage.getItem('profile'));
-    //const fsm = JSON.parse(localStorage.getItem('favouriteStudyMethods'));
-
-    //const fsm = useSelector(selectAllFavouriteStudyMethods);
     const classes = useStyles();
     const dispatch = useDispatch();
-    const favouritesStatus = useSelector((state) => state.library.favouritesStatus);
+    const history = useHistory();
 
-    //const fsmLog = fsm.result.favouriteslog.filter(sm => sm.studymethodid === method._id);
-
-
-    //const image = method.image;
+    const user = JSON.parse(localStorage.getItem('profile'));
     const id = method._id;
     const studyMethodName = method.name;
     const description = method.description;
-    const history = useHistory();
 
-
+    /*
+     * Dispatches the method to be favourited to our backend server
+     *
+     */
     const favouriteStudyMethod = () => {
 
         const studyMethodDetails = {
@@ -39,35 +34,41 @@ function StudyMethod( { method, favLog }) {
             googleId: user?.result.googleId,
             studymethodid: id ,
             studymethodname: studyMethodName ,
-
-
         }
 
         dispatch(favouriteMethod(studyMethodDetails));
 
     }
 
+    /*
+     * Dispatches the method to be unfavourited to our backend server
+     *
+     */
     const unfavouriteStudyMethod = () => {
 
         const studyMethodDetails = {
-
             userid: user?.result._id,
             studymethodid: method._id ,
-            
-
         }
 
         dispatch(unfavouriteMethod(studyMethodDetails));
-        
 
     }
 
+    /*
+     * Routes the page to the timer page
+     *
+     */
     const handleClick = () => {
 
         history.push('/timer/' + method._id);
 
     }
 
+    /*
+     * Checks whether study method is favourited by the current user
+     *
+     */
     const showFavourite = () => {
 
         if (!user) {
@@ -79,7 +80,6 @@ function StudyMethod( { method, favLog }) {
            return favLog.filter(sm => sm.studymethodid === id).length > 0;
 
         }
-
     }
         
     return (   

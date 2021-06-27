@@ -1,33 +1,48 @@
-import React, { useState, useEffect } from 'react';
-import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
-import useStyles from './styles';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Input from './input';
-import Icon from './icon';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';   
 import { useDispatch } from 'react-redux'
-import { login, signup, signin, googleSignIn } from './authSlice';
-import { useHistory } from 'react-router-dom';
+
+import useStyles from './styles';
+import Input from './input';
+import Icon from './icon';
+import { signup, signin, googleSignIn } from './authSlice';
+
+
+import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
 const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword:''};
 
 const Auth = () => {
+
     const classes = useStyles();
     const dispatch = useDispatch();
-    const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')))
     const [showPassword, setShowPassword] = useState(false);
     const [isSignup, setIsSignup] = useState(false);
     const [formData, setFormData] = useState(initialState);
     const handleShowPassword = () => setShowPassword(!showPassword);
     const history = useHistory();
 
+    /*
+     * Saves any input in the form with their corresponding variables above
+     *
+     * @param {Event} e event when user changes any of the form data
+     *
+     */
     const handleChange = (e) => {
 
         setFormData( { ...formData, [e.target.name]: e.target.value } );
 
-
     }
 
+    /*
+     * Dispatches the user details to our backend according to whether
+     * the user is signing up or logging in
+     * 
+     * @param {Event} e event when user submits a form
+     *
+     */
     const handleSubmit = (e) => {
         
         e.preventDefault();
@@ -44,12 +59,24 @@ const Auth = () => {
 
     }
     
+    /*
+     * Switches the form between the sign up form and the login form
+     *
+     */
     const switchMode = () => {
         
         setIsSignup((prevIsSignup) => !prevIsSignup);
         setShowPassword(false);
     };
 
+    /*
+     * Dispatches the user details obtained from google authentication
+     * to our backend server
+     *
+     * @async
+     * @param {res} res response from the google authentication
+     *
+     */
     const googleSuccess = async (res) => {
         
         const newUser = { 
@@ -61,10 +88,13 @@ const Auth = () => {
         }
 
         dispatch(googleSignIn(newUser, history));
-        history.push('/')
     
       };
     
+    /*
+     * Alerts the user that google authenticaion has failed
+     *
+     */
     const googleError = () => alert('Google Sign In was unsuccessful. Try again later');
 
     return (
@@ -86,13 +116,16 @@ const Auth = () => {
                     <Input name="password" label="Password" handleChange={handleChange} type={showPassword ? 'text' : 'password'} handleShowPassword={handleShowPassword} />
                     { isSignup && <Input name="confirmPassword" label="Repeat Password" handleChange={handleChange} type="password" /> }
                 </Grid>
+                <br />
                 <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
                     { isSignup ? 'Sign Up' : 'Sign In' }
                 </Button>
+                <br />
+                <br />
                 <GoogleLogin
                     clientId="957735014776-mk5n07i08ounim5fqh3tnspv3dq2kp46.apps.googleusercontent.com"
                     render={(renderProps) => (
-                    <Button className={classes.googleButton} color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Icon />} variant="contained">
+                    <Button className={classes.googleButton} color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Icon/>} variant="contained">
                         Google Sign In
                     </Button>
                     )}

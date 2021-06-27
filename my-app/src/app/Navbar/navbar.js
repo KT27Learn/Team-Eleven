@@ -1,23 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { Link, useHistory, useLocation } from 'react-router-dom';
-import { AppBar, Typography, Toolbar, Avatar, Button, Tabs, Tab, Menu, MenuItem } from '@material-ui/core';
-import useStyles from './styles';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { logout } from '../Auth/authSlice';
-import elevenlogo from '../../Eleven-Logo-final.png';
+import { Link as link, useHistory, useLocation } from 'react-router-dom';
 
+import useStyles from './styles';
+import { logout } from '../Auth/authSlice';
+import elevenlogo from '../../assets/Eleven-Logo-final.png';
+
+import { AppBar, Typography, Toolbar, Avatar, Button, Menu, MenuItem, Link } from '@material-ui/core';
 
 const Navbar = () => {
 
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
-    const [value, setValue] = React.useState(0);
     const [anchorEl, setAnchorEl] = React.useState(null);
     const classes = useStyles();
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
 
+    /*
+     * Ensures user profile is displayed in the navbar whenever page is changed
+     */
+    useEffect(() => {
+      
+      setUser(JSON.parse(localStorage.getItem('profile')));
+
+    }, [location])
+
+    /*
+     * Logs the current user out 
+     */
     const navLogOut = () => {
 
       dispatch(logout());
@@ -27,50 +38,26 @@ const Navbar = () => {
 
     }
 
-    useEffect(() => {
-      const token = user?.token;
-
-      setUser(JSON.parse(localStorage.getItem('profile')));
-    }, [location])
-
-    const StyledTabs = withStyles({
-      indicator: {
-        display: 'flex',
-        justifyContent: 'center',
-        backgroundColor: 'transparent',
-        '& > span': {
-          maxWidth: 30,
-          width: '100%',
-          backgroundColor: '#ffffff',
-        },
-      },
-    })((props) => <Tabs {...props} TabIndicatorProps={{ children: <span /> }} />);
-    
-    const StyledTab = withStyles((theme) => ({
-      root: {
-        textTransform: 'none',
-        color: '#000000',
-        fontWeight: theme.typography.fontWeightRegular,
-        fontSize: theme.typography.pxToRem(15),
-        marginRight: theme.spacing(1),
-        '&:focus': {
-          opacity: 1,
-        },
-      },
-    }))((props) => <Tab disableRipple {...props} />);
-
-    const handleChange = (event, newValue) => {
-      setValue(newValue);
-    };
-
+    /*
+     * Ensures user profile menu is displayed in the navbar whenever page is changed
+     *
+     * @param {Event} event event when user clicks on username in navbar
+     * 
+     */
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
   
+    /*
+     * Ensures user profile menu closes when user clicks elsewhere
+     */
     const handleClose = () => {
         
     };
 
+    /*
+     * Routes the current page to profile details
+     */
     const enterProfile = () => {
 
       setAnchorEl(null);
@@ -78,17 +65,41 @@ const Navbar = () => {
       
     }
 
+    /*
+     * Routes the current page to login page
+     */
+    const routeToSignIn = () => {
+
+      history.push('/auth')
+
+    }
+
     return (
         <AppBar className={classes.appBar} position="static" color="inherit">
           <div className={classes.brandContainer}>
-            <Typography component={Link} to="/" className={classes.heading} variant="h2" align="center">Eleven</Typography>
+            <Typography component={link} to="/" className={classes.heading} variant="h2" align="center">Eleven</Typography>
             <img className={classes.image} src={elevenlogo} alt="icon"   height="120" />
           </div>
           <div >
-            <StyledTabs value={value} onChange={handleChange} aria-label="styled tabs">
-              <StyledTab label="Rooms" containerElement={<Link to="/"/>} />
-              <StyledTab label="Library" containerElement={<Link to="/library"/>} />
-            </StyledTabs>
+            <Link
+              component="button"
+              variant="body2"
+              onClick={() => {
+                history.push('/');
+              }}
+            >
+              Rooms
+            </Link>
+            <Link
+              className={classes.link}
+              component="button"
+              variant="body2"
+              onClick={() => {
+                history.push('/library');
+              }}
+            >
+              Library
+            </Link>
           </div>
           <Toolbar className={classes.toolbar}>
             {user ? (
@@ -110,7 +121,7 @@ const Navbar = () => {
                 
               </div>
             ) : (
-              <Button component={Link} to="/auth" variant="contained" color="primary">Sign In</Button>
+              <Button onClick={routeToSignIn} variant="contained" color="primary">Sign In</Button>
             )}
           </Toolbar>
         </AppBar>

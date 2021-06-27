@@ -8,11 +8,11 @@ const mongoose = require('mongoose');
 
 const port = process.env.PORT || 5000;
 
-//instance of socket io
-
+//setting up of backend server with CORS
 app.use(cors());
 app.use(express.json());
 
+//instance of socket io
 const io = require("socket.io")(server, {
 	cors: {
 		origin: "http://localhost:3000",
@@ -24,6 +24,12 @@ const users = {};
 const roomToBroadCaster = {};
 const socketToRoom = {};
 
+/*
+ * Removes disconnected user from arrays above
+ *
+ * @param {String} id Socket.Id of disconnected user
+ *
+ */
 function removeDisconnectedID(id) {
 
     const roomID = socketToRoom[id];
@@ -35,6 +41,8 @@ function removeDisconnectedID(id) {
 io.on('connect', (socket) => {
     
     //video streaming
+
+    //New Livestream started
     socket.on("create broadcaster", (roomID) => {
         
         users[roomID] = [socket.id]
@@ -43,6 +51,8 @@ io.on('connect', (socket) => {
         socket.join(roomID);
         socket.broadcast.emit("broadcaster");
     });
+
+    //New Viewer entered live study room
     socket.on("watcher", (roomID) => {
 
         if (!users[roomID]) {
@@ -55,6 +65,7 @@ io.on('connect', (socket) => {
         socket.join(roomID);
         socket.to(roomToBroadCaster[roomID]).emit("watcher", socket.id);
     });
+
     socket.on("offer", (id, message) => {
         socket.to(id).emit("offer", socket.id, message);
     });
@@ -64,50 +75,31 @@ io.on('connect', (socket) => {
     socket.on("candidate", (id, message) => {
         socket.to(id).emit("candidate", socket.id, message);
     });
-    /*socket.on("disconnect", () => {
-        socket.to(broadcaster).emit("disconnectPeer", socket.id);
-    });*/
-    /*socket.on("enter room", roomID => {
-        if (users[roomID]) {
-            const length = users[roomID].length;
-            if (length === 4) {
-                socket.emit("room full");
-                return;
-            }
-            users[roomID].push(socket.id);
-        } else {
-            users[roomID] = [socket.id];
-        }
-        socketToRoom[socket.id] = roomID;
-        const usersInThisRoom = users[roomID].filter(id => id !== socket.id);
 
-        socket.emit("all users", usersInThisRoom);
-    });
+    //Livestreamer ends broadcast
+    socket.on("end broadcast", roomID => {
+        socket.to(roomID).emit("end broadcast");
+    }) 
 
-    socket.on("sending signal", payload => {
-        io.to(payload.userToSignal).emit('user joined', { signal: payload.signal, callerID: payload.callerID });
-    });
+    //chat function
 
-    socket.on("returning signal", payload => {
-        io.to(payload.callerID).emit('receiving returned signal', { signal: payload.signal, id: socket.id });
-    });*/
-
-    //messaging
-    socket.on('join', ({ name, room }, callback) => {
+    //New user enters study room
+    socket.on('join chat', ({ name, room }, callback) => {
       const { error, user } = addUser({ id: socket.id , name , room });
   
       if(error) return callback(error);
   
       socket.join(user.room);
   
-      socket.emit('message', { user: 'admin', text: `${user.name}, welcome to room ${user.room}.`});
+      socket.emit('message', { user: 'admin', text: `Welcome to the room ${user.name}!`});
       socket.broadcast.to(user.room).emit('message', { user: 'admin', text: `${user.name} has joined!` });
   
       io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room) });
   
       callback();
     });
-  
+    
+    //New message is sent to a chatroom
     socket.on('sendMessage', (message, callback) => {
       const user = getUser(socket.id);
   
@@ -116,6 +108,7 @@ io.on('connect', (socket) => {
       callback();
     });
   
+    //user leaves studyroom
     socket.on('disconnect', () => {
       //chat
       const user = removeUser(socket.id);
@@ -125,25 +118,18 @@ io.on('connect', (socket) => {
         io.to(user.room).emit('roomData', { room: user.room, users: getUsersInRoom(user.room)});
       }
       //video
-      /*const roomID = socketToRoom[socket.id];
-        let room = users[roomID];
-        if (room) {
-            room = room.filter(id => id !== socket.id);
-            users[roomID] = room;
-        }*/
         const broadcasterID = roomToBroadCaster[socketToRoom[socket.id]];
         removeDisconnectedID(socket.id);
         socket.to(broadcasterID).emit("disconnectPeer", socket.id);
     })
   });
 
-  
-
 app.use(function (req, res, next) {
     req.io = io;
     next();
 })
 
+//connect to MongoDB database
 const uri = "mongodb+srv://keifu2707:Orbital1@@cluster0.thtmz.mongodb.net/Eleven?retryWrites=true&w=majority";
 mongoose.connect(uri, { 
     useNewUrlParser: true, 
@@ -155,6 +141,7 @@ connection.once('open', () => {
     console.log("MongoDB database connection established successfully");
 });
 
+//Routes to the different routes
 const roomRouter = require('./routes/rooms');
 const libraryRouter = require('./routes/library');
 const usersRouter = require('./routes/users');

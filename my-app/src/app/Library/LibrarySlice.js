@@ -24,31 +24,14 @@ const librarySlice = createSlice({
   name: 'library',
   initialState,
   reducers: {
-    reactionAdded(state, action) {
-      const { postId, reaction } = action.payload;
-      const existingPost = state.posts.find((post) => post.id === postId);
-      if (existingPost) {
-        existingPost.reactions[reaction]++;
-      }
-    },
-    postUpdated(state, action) {
-      const { id, title, content } = action.payload
-      const existingPost = state.posts.find((post) => post.id === id);
-      if (existingPost) {
-        existingPost.title = title;
-        existingPost.content = content;
-      }
-    },
     favouriteMethods(state, action) {
 
-      //localStorage.setItem('favouriteStudyMethods', JSON.stringify({ ...action?.payload }));
       state.favouritesStudyMethods = action?.data;
       window.location.reload();
       
     },
     fetchFavouritesMethods(state, action) {
 
-      //localStorage.setItem('favouriteStudyMethods', JSON.stringify({ ...action?.payload }));
       state.favouritesStudyMethods = action?.data;
 
     },
@@ -118,7 +101,6 @@ export const selectAllStudyMethods = (state) => state.library.studyMethods;
 export const selectAllFavouriteStudyMethods = (state) => state.library.favouriteStudyMethods;
 
 export const selectNumberOfStudyMethods = (state) => state.library.totalNumber;
-
 
 export const selectMethodById = (state, methodId) =>
 state.library.studyMethods.find((method) => method._id === methodId)

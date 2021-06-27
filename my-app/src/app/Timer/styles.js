@@ -2,17 +2,23 @@ import { makeStyles } from '@material-ui/core/styles';
 import { deepPurple } from '@material-ui/core/colors';
 
 export default makeStyles((theme) => ({
+    container: {
+      
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column'
+    },
     button: {
         margin: theme.spacing(1),
       },
       timerButton: {
-        justifyContent: 'center',
-        marginLeft: 60,
+        alignItems: 'center',
+        justifyContent: 'center'
       },
       rootCard: {
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent:'center'
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
    
       },
       purple: {
@@ -24,4 +30,8 @@ export default makeStyles((theme) => ({
         
   
       },
+      table: {
+        minWidth: 650,
+      },
+
   }));

@@ -9,7 +9,6 @@ const initialState = {
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
-  // The `reducers` field lets us define reducers and generate associated actions
   reducers: {
     login: (state, action) => {
         localStorage.setItem('profile', JSON.stringify({ ...action?.payload }));
@@ -22,9 +21,7 @@ export const authSlice = createSlice({
     fetchPastSessionsLog: (state, action) => {
       localStorage.setItem('pastSessionsLog', JSON.stringify({ ...action?.payload }));
       state.authData = action?.data;
-  },
-  
-    
+    },  
   }
 });
 

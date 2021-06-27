@@ -4,8 +4,10 @@ const router = require('express').Router();
 let UserModal = require('../models/user-model');
 const jwt = require('jsonwebtoken');
 
+//secret token that is used to sign our JSON web tokens
 const SECRET_TOKEN = 'adjwjiqejojqwpjwqpjdwqp';
 
+//To verify the registration of a new user
 router.route('/signup').post(async (req, res) => {
     
     const { email, password, firstName, lastName } = req.body;
@@ -32,6 +34,7 @@ router.route('/signup').post(async (req, res) => {
 
 });
 
+//To verify the sign in of a user
 router.route('/signin').post(async (req, res) => {
     
     const { email, password } = req.body;
@@ -58,6 +61,7 @@ router.route('/signin').post(async (req, res) => {
     
 });
 
+//To verify the google sign in of a user
 router.route('/googlesignin').post(async (req, res) => {
     
     const { name, email, imageUrl, googleId } = req.body;
