@@ -6,7 +6,7 @@ Orbital (Independent Software Development Project) is NUS School of Computing se
 
 ## élèven
 
-<img src="https://github.com/KT27Learn/Team-Eleven/blob/main/react-frontend/src/Eleven-Logo-final.png">
+<img src="https://github.com/KT27Learn/Team-Eleven/blob/main/my-app/src/assets/Eleven-Logo-final.png">
 
 **Project Poster:** [Link](https://drive.google.com/file/d/1J1SoVspMIXbZ-RvnQqcPzP4JZLPl35zY/view?usp=sharing)
 
@@ -29,10 +29,15 @@ An all-in-one study social space enabling learners to plan their studies and be 
 * Accounts feature
 * Study Timer
 * Library containing study methods
+* Study Rooms with real time chats and livestream
+* View collated study session history
+* 'Favourite' favourite study methods
 
 ### Milestones:
 
 **Milestone 1:** [Link to report](https://docs.google.com/document/d/1S_jRJ7nAw3r9DfxrVbhVZ2AA6zKMEGAQ6c4-XBwGQMc/edit?usp=sharing)
+
+**Milestone 2:** [Link to report](https://docs.google.com/document/d/1I0Y-GmkIGglrLGpt1A1H2gwPp2F8ec0U2gz5783TxHQ/edit?usp=sharing)
 
 ### Deployment:
 
