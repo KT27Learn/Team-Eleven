@@ -19,7 +19,7 @@ import useStyles from './chatroomstyles';
 import { fetchRooms } from '../../roomsslice';
 
 let socket;
-const ENDPOINT = 'http://localhost:5000'
+const ENDPOINT = 'https://team-eleven-backend.herokuapp.com/'
 
 function Chatroom( { roomDetails } ) {
 
