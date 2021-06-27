@@ -26,7 +26,7 @@ const config = {
   ]
 };
 
-const ENDPOINT = 'http://localhost:5000'
+const ENDPOINT = 'https://team-eleven-backend.herokuapp.com/'
 
 const connectionOptions =  {
     "force new connection" : true,
