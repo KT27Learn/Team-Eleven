@@ -39,7 +39,7 @@ export default makeStyles((theme) => ({
   brandContainer: {
     display: 'flex',
     alignItems: 'center',
-    marginRight: '100px',
+    marginRight: '50px',
   },
   purple: {
     color: theme.palette.getContrastText(deepPurple[500]),
@@ -47,8 +47,9 @@ export default makeStyles((theme) => ({
   },
   linkContainer: {
     display: 'flex',
-    direction: "row",
-    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginRight: '50px',
+    
   },
   navlink: {
    marginLeft: '50px',
