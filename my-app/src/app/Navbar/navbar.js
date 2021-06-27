@@ -81,27 +81,24 @@ const Navbar = () => {
             <Typography component={link} to="/" className={classes.heading} variant="h2" align="center">Élèven</Typography>
             <img className={classes.image} src={elevenlogo} alt="icon"   height="120" />
           </div>
-          <div className={classes.linkContainer}>
-            <Link
-              component="button"
-              variant="body2"
-              onClick={() => {
-                history.push('/');
-              }}
-            >
-              Rooms
-            </Link>
-            <Link
-              className={classes.navLink}
-              component="button"
-              variant="body2"
-              onClick={() => {
-                history.push('/library');
-              }}
-            >
-              Library
-            </Link>
-          </div>
+          <Link
+            component="button"
+            variant="body2"
+            onClick={() => {
+              history.push('/');
+            }}
+          >
+            Rooms
+          </Link>
+          <Link
+            component="button"
+            variant="body2"
+            onClick={() => {
+              history.push('/library');
+            }}
+          >
+            Library
+          </Link>
           <Toolbar className={classes.toolbar}>
             {user ? (
               <div className={classes.profile}>
