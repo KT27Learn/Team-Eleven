@@ -1,47 +1,98 @@
 const path = require('path');
+const bcrypt = require('bcryptjs');
 const router = require('express').Router();
-let User = require('../models/user-model');
+let UserModal = require('../models/user-model');
+const jwt = require('jsonwebtoken');
 
-router.route('/login').post((req, res) => {
-    //get a user details from the db
-    const {email, password} = req.body;
-    const authUser = {
-        email: email,
-        password: password
+//secret token that is used to sign our JSON web tokens
+const SECRET_TOKEN = 'adjwjiqejojqwpjwqpjdwqp';
+
+//To verify the registration of a new user
+router.route('/signup').post(async (req, res) => {
+    
+    const { email, password, firstName, lastName } = req.body;
+
+    try {
+        const oldUser = await UserModal.findOne({ email });
+
+        if (oldUser) return res.status(400).json({ message: "User already exists" });
+
+        const hashedPassword = await bcrypt.hash(password, 12);
+
+        const result = await UserModal.create({ email, password: hashedPassword, name: `${firstName} ${lastName}` });
+
+        const token = jwt.sign( { email: result.email, id: result._id }, SECRET_TOKEN, { expiresIn: "1h" } );
+
+        res.status(201).json({ result, token });
+
+    } catch (error) {
+
+        res.status(500).json({ message: "Something went wrong" });
+        
+        console.log(error);
     }
 
-    User.findOne(authUser,
-    (err, result) => {
-        if (err) {
-            res.json({msg: 'Invalid Details'});
-        } else {
-            if (result === null) {
-                res.json({msg:'Invalid Details'})
-            } else {
-                res.json(result);
-            }      
-        }
-    });
-        
 });
 
-router.route('/add').post((req, res) => {
-    //add a new user detail to the db
-    const {username, email, password} = req.body;
-
-    const newUser = new User({
-        
-        username: username,
-        email: email,
-        password: password
+//To verify the sign in of a user
+router.route('/signin').post(async (req, res) => {
     
-    });
+    const { email, password } = req.body;
 
-    newUser.save()
-        .then(() => res.json({msg:'User added!'}))
-        .catch(err => res.status(400).json({msg: 'Error: ' + err}));
+    try {
 
+        const oldUser = await UserModal.findOne({ email });
+
+        if (!oldUser) return res.status(404).json({ message: "User doesn't exist" });
+
+        const isPasswordCorrect = await bcrypt.compare(password, oldUser.password);
+
+        if (!isPasswordCorrect) return res.status(400).json({ message: "Invalid credentials" });
+
+        const token = jwt.sign({ email: oldUser.email, id: oldUser._id }, SECRET_TOKEN, { expiresIn: "1h" });
+
+        res.status(200).json({ result: oldUser, token });
+
+    } catch (err) {
+
+        res.status(500).json({ message: "Something went wrong" });
+
+    }
+    
 });
+
+//To verify the google sign in of a user
+router.route('/googlesignin').post(async (req, res) => {
+    
+    const { name, email, imageUrl, googleId } = req.body;
+
+    try {
+
+        const signInBefore = await UserModal.findOne({ email });
+        
+        if (!signInBefore) {
+
+            const result = await UserModal.create({name, email, googleId, imageUrl});
+            const token = jwt.sign({email: result.email, id: result._id}, SECRET_TOKEN, { expiresIn: '1h'});
+            res.status(200).json({result,token})
+
+        } else {
+
+            signInBefore.googleId = googleId;
+            signInBefore.imageUrl = imageUrl;
+            await signInBefore.save();
+            const result = await UserModal.findOne({email});
+            const token = jwt.sign({email: result.email, id: result._id}, SECRET_TOKEN, { expiresIn: '1h'});
+            res.status(200).json({ result, token })
+
+        }
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: "Something went wrong" });
+    }
+    
+});
+
 
 module.exports = router;
-
