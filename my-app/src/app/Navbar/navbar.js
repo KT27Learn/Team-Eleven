@@ -91,9 +91,8 @@ const Navbar = () => {
             >
               Rooms
             </Link>
-            <br />
-            <br />
             <Link
+              className={classes.navLink}
               component="button"
               variant="body2"
               onClick={() => {
