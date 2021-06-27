@@ -5,8 +5,6 @@ export default makeStyles((theme) => ({
   appBar: {
     borderRadius: 15,
     margin: '30px 0',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'center',
     padding: '10px 50px',
     background: '#8AD5FF',
