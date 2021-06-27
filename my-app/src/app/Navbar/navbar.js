@@ -77,7 +77,7 @@ const Navbar = () => {
     return (
         <AppBar className={classes.appBar} position="static" color="inherit">
           <div className={classes.brandContainer}>
-            <Typography component={link} to="/" className={classes.heading} variant="h2" align="center">Eleven</Typography>
+            <Typography component={link} to="/" className={classes.heading} variant="h2" align="center">Élèven</Typography>
             <img className={classes.image} src={elevenlogo} alt="icon"   height="120" />
           </div>
           <div >
