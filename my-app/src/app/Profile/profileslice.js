@@ -6,10 +6,11 @@ const initialState = {
     status: 'idle',
   };
 
-export const fetchSessions = createAsyncThunk('library/fetchSessions', async (userDetails) => {
+export const fetchSessions = createAsyncThunk('profile/fetchSessions', async (userDetails) => {
   const response = await api.fetchUserSession(userDetails);
   return response.data;
 });
+
 
 export const profileSlice = createSlice({
   name: 'profile',
@@ -37,7 +38,7 @@ export const profileSlice = createSlice({
   }
 });
 
-export const { fetchPastSessionsLog } = profileSlice.actions;
+export const { fetchPastSessionsLog, updateSelfBio } = profileSlice.actions;
 
 export default profileSlice.reducer;
 

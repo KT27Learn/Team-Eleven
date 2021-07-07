@@ -79,7 +79,7 @@ function BroadcasterProfile( {room} ) {
                                 <Typography variant="subtitle2">{getRoom(roomsList).description}</Typography>
                                 <br />
                                 <Typography variant="h6">About Me:</Typography>
-                                <Typography variant="subtitle2">To implement bio feature</Typography>
+                                <Typography variant="subtitle2">{getRoom(roomsList).bio ?? 'No bio at the moment'}</Typography>
                         </ Grid>
                     </Card>
                     <br />

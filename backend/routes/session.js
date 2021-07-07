@@ -5,11 +5,12 @@ let Session = require('../models/session-model');
 //log a newly completed study session to the database
 router.route('/log').post(async (req, res) => {
     
-    const { userid, googleId, studymethod, cumulatedtime, tasks } = req.body;
+    const { userid, googleId, studymethod, cumulatedtime, cumulatedstudytime, cumulatedbreaktime ,tasks } = req.body;
+    const now = new Date();
 
     try {
         
-        const session = await Session.create({userid, googleId, studymethod, cumulatedtime, tasks});
+        const session = await Session.create({userid, googleId, date: now ,studymethod, cumulatedtime, cumulatedstudytime, cumulatedbreaktime ,tasks});
         res.status(201).json({ session });
         
     } catch (error) {

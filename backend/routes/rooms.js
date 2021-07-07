@@ -22,8 +22,9 @@ router.route('/add').post(async (req, res) => {
       const description = req.body.description;
       const studymethod = req.body.studymethod ?? '';
       const subject = req.body.subject ?? '';
+      const bio = req.body.bio ?? '';
 
-      const result = await Rooms.create({ username, roomname, creatorid ,description, studymethod, subject });
+      const result = await Rooms.create({ username, roomname, creatorid ,description, studymethod, subject, bio });
 
       res.status(200).json({result});
 

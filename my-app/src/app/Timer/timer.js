@@ -41,6 +41,8 @@ function Timer( { match } ) {
   const [breakTime, setBreakTime] = useState(0);
   const [[m, s], setTime] = useState([0, 0]);
   const [cumulatedSeconds, setCumulatedSeconds] = useState(0);
+  const [cumulatedStudySeconds, setCumulatedStudySeconds] = useState(0);
+  const [cumulatedBreakSeconds, setCumulatedBreakSeconds] = useState(0);
 
   useEffect(() => {
 
@@ -72,6 +74,12 @@ function Timer( { match } ) {
     } else {
 
       setCumulatedSeconds((prev) => prev + 1);
+      if (studyCycle) {
+        setCumulatedStudySeconds((prev) => prev + 1);
+      }
+      if (!studyCycle) {
+        setCumulatedBreakSeconds((prev) => prev + 1);
+      }
 
       if (m === 0 && s === 0) {
 
@@ -130,6 +138,8 @@ function Timer( { match } ) {
         googleId: user.result?.googleId,
         studymethod: timerName,
         cumulatedtime: cumulatedSeconds,
+        cumulatedstudytime: cumulatedStudySeconds,
+        cumulatedbreaktime: cumulatedBreakSeconds,
         tasks: [ ...tasks ],
   
       }
@@ -142,6 +152,8 @@ function Timer( { match } ) {
 
         studymethod: timerName,
         cumulatedtime: cumulatedSeconds,
+        cumulatedstudytime: cumulatedStudySeconds,
+        cumulatedbreaktime: cumulatedBreakSeconds,
         tasks: [ ...tasks ],
       }
 

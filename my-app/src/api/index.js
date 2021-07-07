@@ -5,6 +5,8 @@ const API = axios.create({ baseURL: 'http://localhost:5000' });
 export const signIn = (formData) => API.post('/users/signin', formData);
 export const signUp = (formData) => API.post('/users/signup', formData);
 export const googleSignIn = (googleData) => API.post('/users/googlesignin', googleData);
+export const updateProfilePicture = (pictureDetails) => API.post('/users/uploadprofilepicture', pictureDetails);
+export const updateBio = (newBio) => API.post('/users/updatebio', newBio);
 export const fetchLibrary = () => API.get('/library/');
 export const fetchRooms = () => API.get('/rooms/');
 export const addRoom = (RoomDetails) => API.post('/rooms/add', RoomDetails);

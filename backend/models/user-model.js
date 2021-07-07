@@ -9,6 +9,7 @@ const userSchema = mongoose.Schema({
     googleId: {type: String },
     id: { type: String },
     imageUrl: {type: String},
+    bio: {type: String},
 
 });
 

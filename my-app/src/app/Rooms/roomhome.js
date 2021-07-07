@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import StudyRooms from '../Rooms/studyrooms';
-import Profile from '../Profile/profile';
+import Profile from './profile';
 
 import { Container, Grow, Grid } from '@material-ui/core';
 

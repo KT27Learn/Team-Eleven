@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles'
 
 export default makeStyles((theme) => ({
   paper: {
@@ -16,6 +16,8 @@ export default makeStyles((theme) => ({
   avatar: {
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
+    width: 125,
+    height: 125,
   },
   form: {
     width: '100%', // Fix IE 11 issue.
@@ -26,5 +28,15 @@ export default makeStyles((theme) => ({
   },
   googleButton: {
     marginBottom: theme.spacing(2),
+  }, 
+  profileAvatar: {
+    width: 150,
+    height: 150,
   },
+  textContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column',
+
+  }
 }));

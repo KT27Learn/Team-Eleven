@@ -10,6 +10,7 @@ const roomSchema = new Schema({
     studymethod: { type: String, required: false},
     subject: { type: String, required: false},
     profileurl: { type: String, required: false},
+    bio: { type: String, required: false},
     
 }, {
     timestamps: true,
