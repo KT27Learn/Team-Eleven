@@ -49,6 +49,7 @@ function CreateRoom() {
                     creatorid: id,
                     roomname: roomName,
                     description,
+                    bio: user.result.bio,
                     studymethod: studyMethod,
                     subject,
                     profileurl: user.result.imageUrl,

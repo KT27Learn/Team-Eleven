@@ -4,9 +4,10 @@ import { deepPurple } from '@material-ui/core/colors';
 export default makeStyles((theme) => ({
     container: {
       
-        display: 'flex',
-        alignItems: 'center',
-        flexDirection: 'column'
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: 'column',
+      
     },
     button: {
         margin: theme.spacing(1),

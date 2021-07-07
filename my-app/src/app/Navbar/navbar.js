@@ -52,6 +52,8 @@ const Navbar = () => {
      * Ensures user profile menu closes when user clicks elsewhere
      */
     const handleClose = () => {
+
+      setAnchorEl(null);
         
     };
 
@@ -62,6 +64,13 @@ const Navbar = () => {
 
       setAnchorEl(null);
       history.push('/profile');
+      
+    }
+
+    const enterLogs = () => {
+
+      setAnchorEl(null);
+      history.push('/log');
       
     }
 
@@ -116,6 +125,7 @@ const Navbar = () => {
                   onClose={handleClose}
                 >
                   <MenuItem onClick={enterProfile}>Profile</MenuItem>
+                  <MenuItem onClick={enterLogs}>Past Logs</MenuItem>
                   <MenuItem onClick={navLogOut}>Logout</MenuItem>
                 </Menu>
                 

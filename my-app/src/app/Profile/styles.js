@@ -17,6 +17,7 @@ export default makeStyles((theme) => ({
     },
     profileContent: {
         backgroundColor: "#FFB673",
+        alignItems: 'center',
     },
     purple: {
       color: theme.palette.getContrastText(deepPurple[500]),
@@ -29,4 +30,42 @@ export default makeStyles((theme) => ({
     table: {
         minWidth: 650,
     },
+    input: {
+        display: 'none',
+        color: "#FFB673",
+        backgroundColor: "#FFB673",
+        alignItems: 'center',
+      },
+    pictureForm: {
+        color: "#FFB673",
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column',
+
+    },
+
+    detailedSessionContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column',
+    },
+    bioCard: {
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column',
+    },
+    detailedSessionPagination: {
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column',
+
+    },
+    cancelButton: {
+        marginLeft: '30px'
+    },
+    changePassword: {
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column',
+    }
   }));

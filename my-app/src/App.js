@@ -2,9 +2,13 @@ import React from 'react';
 import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 
 import Auth from './app/Auth/auth';
+import ActivateUser from './app/Auth/activateuser';
+import PasswordReset from './app/Auth/passwordreset';
+import ChangePassword from './app/Auth/changepassword';
 import Navbar from './app/Navbar/navbar';
 import Library from './app/Library/libraryhome';
 import ProfileHome from './app/Profile/profilehome';
+import DetailedSession from './app/Profile/detailedsession';
 import RoomsList from './app/Rooms/roomhome';
 import CreateRoom from './app/Rooms/createroom'
 import Timer from './app/Timer/timer';
@@ -31,7 +35,11 @@ const App = () => {
           <Route path='/viewerstream' exact component={Viewer} />
           <Route path='/broadcaststream' exact component={Broadcast} />
           <Route path="/auth" exact component={() => ( !user ? <Auth /> : <Redirect to="/"/>) }/>
+          <Route path="/activateuser/:activation_token" exact component={ActivateUser}/>
+          <Route path="/passwordreset/:token" exact component={PasswordReset}/>
+          <Route path="/changepassword" exact component={ChangePassword}/>
           <Route path="/profile" exact component={ProfileHome} />
+          <Route path="/log" exact component={DetailedSession} />
           <Route path="/rooms" exact component={RoomsList} />
           <Route path="/createroom" exact component={CreateRoom} />
           <Route path="/" exact component={() => <Redirect to="/rooms" />} />
