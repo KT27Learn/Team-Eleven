@@ -48,11 +48,48 @@ export const authSlice = createSlice({
       args["result"]["bio"] = action?.payload.bio;
       //Update the localStorage with new value
       localStorage.setItem("profile", JSON.stringify(args));
-    }
+    },
+    updateFriendList: (state, action) => {
+
+      var args = JSON.parse(window.localStorage.getItem("profile"));
+      args["result"]["friends"] = action?.payload.friends;
+      args["result"]["friendrequests"] = action?.payload.friendrequests;
+      //Update the localStorage with new value
+      localStorage.setItem("profile", JSON.stringify(args));
+      window.location.reload();
+
+    },
+    updateRemovedFriend: (state, action) => {
+
+      var args = JSON.parse(window.localStorage.getItem("profile"));
+      args["result"]["friends"] = action?.payload.friends;
+      //Update the localStorage with new value
+      localStorage.setItem("profile", JSON.stringify(args));
+      window.location.reload();
+
+    },
+    updateSendFriendRequest: (state, action) => {
+
+      var args = JSON.parse(window.localStorage.getItem("profile"));
+      args["result"]["friendrequests"].push(action?.payload.friend);
+      //Update the localStorage with new value
+      localStorage.setItem("profile", JSON.stringify(args));
+      window.location.reload();
+
+    },
+    updateRemovedFriendRequest: (state, action) => {
+
+      var args = JSON.parse(window.localStorage.getItem("profile"));
+      args["result"]["friendrequests"] = action?.payload.friendrequests;
+      //Update the localStorage with new value
+      localStorage.setItem("profile", JSON.stringify(args));
+      window.location.reload();
+
+    },
   },
 });
 
-export const { login, logout, fetchPastSessionsLog, changeProfilePic, updateSelfBio } = authSlice.actions;
+export const { login, logout, fetchPastSessionsLog, changeProfilePic, updateSelfBio, updateFriendList, updateRemovedFriend, updateSendFriendRequest, updateRemovedFriendRequest} = authSlice.actions;
 
 export const updateProfilePicture = (pictureDetails) => async (dispatch) => {
 
@@ -62,6 +99,87 @@ export const updateProfilePicture = (pictureDetails) => async (dispatch) => {
     dispatch(changeProfilePic(data));
 
   } catch(error ) {
+
+    alert(error.message);
+    console.log(error);
+
+  }
+
+}
+
+export const sendFriendRequest = (usersdetails) => async (dispatch) => {
+
+  try {
+
+    const { data } = await api.sendFriendRequest(usersdetails);
+    dispatch(updateSendFriendRequest(data));
+
+  } catch(error ) {
+
+    alert(error.message);
+    console.log(error);
+
+  }
+
+}
+
+export const acceptFriendRequest = (usersdetails) => async (dispatch) => {
+
+  try {
+
+    const { data } = await api.acceptFriendRequest(usersdetails);
+    dispatch(updateFriendList(data));
+
+  } catch(error) {
+
+    alert(error.message);
+    console.log(error);
+
+  }
+
+}
+
+export const removeFriend = (usersdetails) => async (dispatch) => {
+
+  try {
+
+    const { data } = await api.removeFriend(usersdetails);
+    dispatch(updateRemovedFriend(data));
+
+  } catch(error) {
+
+    alert(error.message);
+    console.log(error);
+
+  }
+
+}
+
+export const removeFriendRequest = (usersdetails) => async (dispatch) => {
+
+  try {
+
+    const { data } = await api.removeFriendRequest(usersdetails);
+    dispatch(updateRemovedFriendRequest(data));
+
+  } catch(error) {
+
+    alert(error.message);
+    console.log(error);
+
+  }
+
+}
+
+export const updateFriends = (userid) => async (dispatch) => {
+
+  try {
+
+    const { data } = await api.updateFriends(userid);
+    console.log(data);
+    dispatch(updateFriendList(data));
+
+  } catch(error) {
 
     alert(error.message);
     console.log(error);

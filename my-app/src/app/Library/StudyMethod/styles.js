@@ -5,7 +5,7 @@ export default makeStyles((theme) => ({
     
         display: 'flex',
         alignItems: 'center',
-        width:'63vw',
+        width:'60vw',
         
     },
     methodContent: {
@@ -18,4 +18,12 @@ export default makeStyles((theme) => ({
         marginRight: '20px'
 
     },
+    purple: {
+        margin: '10px',
+        width: '150px',
+        height: '150px',
+    },
+    startButton : {
+        marginRight: '20px',
+    }
   }));

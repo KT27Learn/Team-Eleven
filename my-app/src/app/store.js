@@ -4,6 +4,7 @@ import libraryReducer from './Library/LibrarySlice';
 import roomsReducer from './Rooms/roomsslice';
 import timerReducer from './Timer/timerslice';
 import profileReducer from './Profile/profileslice';
+import discoverReducer from './Discover/discoverslice';
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     rooms: roomsReducer,
     timer: timerReducer,
     profile: profileReducer,
+    discover: discoverReducer,
 
   },
 });

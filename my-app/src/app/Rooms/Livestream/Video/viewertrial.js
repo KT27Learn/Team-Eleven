@@ -85,6 +85,11 @@ export default function Viewer() {
             socketRef.current.emit("watcher", room);
         });
 
+        socketRef.current.on("broadcaster left", () => {
+            alert("Broadcaster has left the room")
+            setBroadCastStatus(false);
+        });
+
         socketRef.current.on("end broadcast", () => {
             alert("Livestream has ended! Please join another room!")
             setBroadCastStatus(false);

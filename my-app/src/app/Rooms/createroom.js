@@ -5,6 +5,7 @@ import { v1 as uuid } from "uuid";
 
 import { addNewRoom } from './roomsslice';
 import { fetchMethods, selectAllStudyMethods } from '../Library/LibrarySlice';
+import { selectAllRooms, fetchRooms } from './roomsslice';
 import useStyles from './styles'
 
 import { TextField, Button, FormControl, MenuItem, InputLabel, Select, CircularProgress } from '@material-ui/core';
@@ -18,6 +19,8 @@ function CreateRoom() {
     const [user] = useState(JSON.parse(localStorage.getItem('profile')));
     const libraryList = useSelector(selectAllStudyMethods);
     const libraryStatus = useSelector((state) => state.library.status);
+    const roomlist = useSelector(selectAllRooms);
+    const roomStatus = useSelector((state) => state.rooms.status);
     const [roomName, setRoomName] = useState('');
     const [description, setDescription] = useState('');
     const [studyMethod, setStudyMethod] = useState('');
@@ -33,6 +36,13 @@ function CreateRoom() {
 
     }, [libraryStatus, dispatch]);
 
+    useEffect(() => {
+        if (roomStatus === 'idle') {
+          dispatch(fetchRooms())
+        }
+    
+    }, [roomStatus, dispatch])
+
     /*
      * Creates a new study room and dispatches the details to
      * backend server to be saved into the database
@@ -44,8 +54,17 @@ function CreateRoom() {
 
         try {
             const id = uuid();
-            dispatch(addNewRoom({
+            const roomAlrExist = roomlist.filter(room => room.userid === user.result._id);
+
+            if (roomAlrExist.length > 0) {
+
+                alert("Delete existing room before creating a new room!");
+                history.push('/');
+
+            } else {
+                dispatch(addNewRoom({
                     username: user.result.name,
+                    userid: user.result._id,
                     creatorid: id,
                     roomname: roomName,
                     description,
@@ -53,9 +72,12 @@ function CreateRoom() {
                     studymethod: studyMethod,
                     subject,
                     profileurl: user.result.imageUrl,
-                })
-            );
-            history.push(`/broadcaststream?room=${id}`);
+                    })
+                );
+                history.push(`/broadcaststream?room=${id}`);
+
+            }
+            
 
         } catch (error) {
             alert(error);
@@ -77,7 +99,7 @@ function CreateRoom() {
 
     return (
         <>
-        { libraryStatus === 'idle' ? (
+        { libraryStatus === 'idle' || roomStatus === 'idle' ? (
 
             <> 
             <CircularProgress />

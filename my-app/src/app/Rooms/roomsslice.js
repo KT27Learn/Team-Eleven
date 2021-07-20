@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+
 import * as api from '../../api/index';
 
 const initialState = {
@@ -16,8 +17,11 @@ export const fetchRooms = createAsyncThunk('rooms/fetchRooms', async () => {
 export const addNewRoom = createAsyncThunk(
   'rooms/addNewRoom',
   async (newRoom) => {
+    
     const response = await api.addRoom(newRoom);
-    return response.data
+
+    return response.data;
+
   }
 )
 
@@ -52,6 +56,7 @@ const roomsSlice = createSlice({
     },
     [addNewRoom.fulfilled]: (state, action) => {
       state.rooms.push(action.payload.result);
+      
     },
     [deleteRoom.fulfilled]: (state, action) => {
       state.rooms.filter(room => room._id !== action.payload.id);

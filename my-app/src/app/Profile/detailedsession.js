@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -309,6 +308,14 @@ export default function DetailedSession() {
         ) : (
 
           <>
+          <br />
+          <br />
+            <Grid>
+              <Typography component="h1" variant="h5" align="center"> 
+                Look at individual sessions:
+              </Typography>
+            </Grid>
+            <br />
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <Grid container className={classes.detailedSessionContainer}>
                 <DatePicker

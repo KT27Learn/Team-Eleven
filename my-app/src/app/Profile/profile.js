@@ -247,11 +247,15 @@ function Profile() {
                                 value={fileInputState}
                                 onChange={handleFileInputChange}
                             />
-                            <label htmlFor="contained-button-file">
-                                <Button variant="contained" color="primary" component="span" align="center" type="submit">
-                                    Change Profile Picture
-                                </Button>
-                            </label>
+                            { !previewSource && 
+                                <>
+                                <label htmlFor="contained-button-file">
+                                    <Button variant="contained" color="primary" component="span" align="center" type="submit">
+                                        Change Profile Picture 
+                                    </Button>
+                                </label>
+                                </>
+                            }
                         </form>
                         <br />
                         <Grid className={classes.changePassword}>
@@ -344,6 +348,7 @@ function Profile() {
                     </Grid>
                     <br />
                 </Card>
+                
                 </>
             ) : (
                 <CircularProgress />

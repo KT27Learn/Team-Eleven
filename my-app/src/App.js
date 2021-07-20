@@ -8,13 +8,16 @@ import ChangePassword from './app/Auth/changepassword';
 import Navbar from './app/Navbar/navbar';
 import Library from './app/Library/libraryhome';
 import ProfileHome from './app/Profile/profilehome';
-import DetailedSession from './app/Profile/detailedsession';
+import FriendList from './app/Profile/FriendList/friendlist';
 import RoomsList from './app/Rooms/roomhome';
 import CreateRoom from './app/Rooms/createroom'
 import Timer from './app/Timer/timer';
 import Summary from './app/Timer/summary';
 import Broadcast from './app/Rooms/Livestream/broadcasthome';
 import Viewer from './app/Rooms/Livestream/viewerhome';
+import DiscoverHome from './app/Discover/discoverhome';
+import DiscoverProfileHome from './app/Discover/Profile/discoverprofilehome';
+import CreatePost from './app/Discover/createpost';
 import './App.css';
 
 import { Container } from '@material-ui/core';
@@ -30,6 +33,8 @@ const App = () => {
         <Navbar />
         <Switch>
           <Route path="/library" exact component={Library} />
+          <Route path="/discover" exact component={DiscoverHome} />
+          <Route path="/createpost" exact component={CreatePost} />
           <Route path="/timer/:id" exact component={Timer} />
           <Route path="/summary" exact component={Summary} />
           <Route path='/viewerstream' exact component={Viewer} />
@@ -39,7 +44,8 @@ const App = () => {
           <Route path="/passwordreset/:token" exact component={PasswordReset}/>
           <Route path="/changepassword" exact component={ChangePassword}/>
           <Route path="/profile" exact component={ProfileHome} />
-          <Route path="/log" exact component={DetailedSession} />
+          <Route path="/discoverprofile/:id" exact component={DiscoverProfileHome} />
+          <Route path="/friendlist" exact component={FriendList} />
           <Route path="/rooms" exact component={RoomsList} />
           <Route path="/createroom" exact component={CreateRoom} />
           <Route path="/" exact component={() => <Redirect to="/rooms" />} />

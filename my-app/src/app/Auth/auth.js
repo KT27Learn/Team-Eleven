@@ -190,6 +190,8 @@ const Auth = () => {
                 </Grid>
                 </form>
             </Paper>
+            <br />
+            <br />
             </Container>
     );
 }

@@ -67,11 +67,11 @@ const Navbar = () => {
       
     }
 
-    const enterLogs = () => {
+    const enterFriendList = () => {
 
       setAnchorEl(null);
-      history.push('/log');
-      
+      history.push('/friendlist');
+
     }
 
     /*
@@ -109,6 +109,16 @@ const Navbar = () => {
             >
               Library
             </Link>
+            <Link
+              className={classes.link}
+              component="button"
+              variant="body2"
+              onClick={() => {
+                history.push('/discover');
+              }}
+            >
+              Discover
+            </Link>
           </div>
           <Toolbar className={classes.toolbar}>
             {user ? (
@@ -124,8 +134,8 @@ const Navbar = () => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={enterProfile}>Profile</MenuItem>
-                  <MenuItem onClick={enterLogs}>Past Logs</MenuItem>
+                  <MenuItem onClick={enterProfile}>Profile Information</MenuItem>
+                  <MenuItem onClick={enterFriendList}>Friend Requests</MenuItem>
                   <MenuItem onClick={navLogOut}>Logout</MenuItem>
                 </Menu>
                 
