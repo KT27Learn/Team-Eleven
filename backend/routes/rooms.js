@@ -17,13 +17,20 @@ router.route('/add').post(async (req, res) => {
     try {
 
       const username = req.body.username;
+      const avatarurl = req.body.avatarurl;
+      const userid = req.body.userid;
       const creatorid = req.body.creatorid;
       const roomname = req.body.roomname;
       const description = req.body.description;
       const studymethod = req.body.studymethod ?? '';
       const subject = req.body.subject ?? '';
+      const bio = req.body.bio ?? '';
 
-      const result = await Rooms.create({ username, roomname, creatorid ,description, studymethod, subject });
+      const existing = await Rooms.findOne({ userid });
+
+      if (existing) return res.status(200).json({ message: "End your current study room before creating another!" });
+
+      const result = await Rooms.create({ username, userid, avatarurl, roomname, creatorid ,description, studymethod, subject, bio });
 
       res.status(200).json({result});
 

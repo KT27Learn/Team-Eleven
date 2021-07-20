@@ -21,6 +21,7 @@ function StudyRooms() {
   const roomStatus = useSelector((state) => state.rooms.status);
   const [search, setSearch] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [myRooms, setMyRooms] = useState(false);
   const itemsPerPage = 5;
 
   useEffect(() => {
@@ -124,6 +125,20 @@ function StudyRooms() {
 
   }
 
+  const showMyRooms = (arr) => {
+
+    if (myRooms) {
+
+      return arr.filter(room => room.userid === user.result._id)
+
+    } else {
+
+      return arr;
+
+    }
+
+  }
+
     return (   
 
         <>
@@ -160,16 +175,27 @@ function StudyRooms() {
               
             </Grid>
           </Grid>
+          <br />
+          <Grid>
+            { user && 
+              <>
+                <Button variant="contained" color="primary" onClick={() => setMyRooms(!myRooms)}>
+                  { myRooms ? ('Show all rooms') : ('Show only my rooms')}
+                </Button>
+              </>
+            }
+          </Grid>
+          <br />
         </div>
         {roomStatus === 'loading' || roomStatus === 'error'  ? <CircularProgress /> : (
             <>
-              {reverseArray(roomlist).filter((room) => searchFilter(room)).slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((room) => (
+              {reverseArray(showMyRooms(roomlist)).filter((room) => searchFilter(room)).slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((room) => (
                 <Grid key={room._id} item xs={12} sm={6} md={6}>
                   <StudyRoom room={room} />
                 </Grid>
               ))}
               <Pagination 
-                count={countPages(roomlist.filter(room => searchFilter(room)))}
+                count={countPages(showMyRooms(roomlist).filter(room => searchFilter(room)))}
                 page={currentPage}
                 onChange={handlePaginationChange}
                 defaultPage={1}

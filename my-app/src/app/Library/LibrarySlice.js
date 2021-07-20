@@ -52,12 +52,14 @@ const librarySlice = createSlice({
       state.error = action.payload;
     },
     [fetchFavourites.pending]: (state, action) => {
-      state.favouritesstatus = 'loading';
+      state.favouritesStatus = 'loading';
     },
     [fetchFavourites.fulfilled]: (state, action) => {
-      state.favouritesstatus = 'succeeded';
+      state.favouritesStatus = 'succeeded';
       // Add any fetched rooms to the array
-      state.favouriteStudyMethods = state.favouriteStudyMethods.concat(action.payload.favouriteslog);
+      if (action.payload) {
+        state.favouriteStudyMethods = state.favouriteStudyMethods.concat(action.payload.favouriteslog);
+      }
     },
     [fetchFavourites.rejected]: (state, action) => {
       state.favouritesstatus = 'failed';

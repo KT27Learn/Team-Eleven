@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import useStyles from './styles';
 import { favouriteMethod, unfavouriteMethod } from '../LibrarySlice';
 
-import { Card, Grid, Button, Typography, IconButton } from '@material-ui/core/';
+import { Card, Grid, Button, Typography, IconButton, Avatar } from '@material-ui/core/';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import FavoriteBorderIcon from '@material-ui/icons/FavoriteBorder';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
@@ -21,6 +21,7 @@ function StudyMethod( { method, favLog }) {
     const id = method._id;
     const studyMethodName = method.name;
     const description = method.description;
+    const imageurl = method.imageUrl;
 
     /*
      * Dispatches the method to be favourited to our backend server
@@ -88,44 +89,49 @@ function StudyMethod( { method, favLog }) {
                     <Grid
                         container
                         direction="row"
-                        justify="space-between"
+                        justify="flex-start"
                         alignItems="center"
                     >   
-                        <div className={classes.methodContent}>
+                        { imageurl &&
+                            <>
+                            <Grid>
+                                <Avatar className={classes.purple} align="center" alt={studyMethodName} src={imageurl} >{studyMethodName.charAt(0)}</Avatar>
+                            </Grid>
+                            </>
+                        }
+                        <Grid className={classes.methodContent}>
                             <Typography component="h5" variant="h5">
                                 {studyMethodName}
                             </Typography>
                             <Typography variant="subtitle1" color="textSecondary">
                                 {description}
                             </Typography>
-                        </div>
-                        <div className={classes.methodButton}>
-                            {showFavourite() && 
-                                (
-                                    <>
-                                    <IconButton onClick={unfavouriteStudyMethod}>
-                                        <FavoriteIcon />
-                                    </IconButton>
-                                    </>
-
-                                ) 
-                            }
-                            {!showFavourite() &&
-                                (
-                                    <>
-                                    <IconButton onClick={favouriteStudyMethod}>
-                                        <FavoriteBorderIcon />
-                                    </IconButton>
-                                    </>
-                                    
+                        </Grid>
+                    </Grid>
+                    <Grid className={classes.methodButton}>
+                        {showFavourite() && 
+                            (
+                                <>
+                                <IconButton onClick={unfavouriteStudyMethod}>
+                                    <FavoriteIcon />
+                                </IconButton>
+                                </>
+                            ) 
+                        }
+                        {!showFavourite() &&
+                            (
+                                <>
+                                <IconButton onClick={favouriteStudyMethod}>
+                                    <FavoriteBorderIcon />
+                                </IconButton>
+                                </>                            
                                 )
-                            }
-
-                            <Button variant="contained" color="default" endIcon={<PlayArrowIcon/>} onClick={handleClick} >
-                                Start
-                            </Button>
-                        </div>
-                        
+                        }
+                    </Grid>
+                    <Grid>
+                        <Button className={classes.startButton} variant="contained" color="default" endIcon={<PlayArrowIcon/>} onClick={handleClick} >
+                            Start
+                        </Button>
                     </Grid>
                 </Card>
             

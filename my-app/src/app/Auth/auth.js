@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { GoogleLogin } from 'react-google-login';   
 import { useDispatch } from 'react-redux'
+import axios from 'axios';
 
 import useStyles from './styles';
 import Input from './input';
@@ -12,29 +13,21 @@ import { signup, signin, googleSignIn } from './authSlice';
 import { Avatar, Button, Paper, Grid, Typography, Container } from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 
-const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword:''};
-
 const Auth = () => {
 
     const classes = useStyles();
     const dispatch = useDispatch();
+
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState(''); 
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [isSignup, setIsSignup] = useState(false);
-    const [formData, setFormData] = useState(initialState);
+    const [isResetPassword, setIsResetPassword] = useState(false);
     const handleShowPassword = () => setShowPassword(!showPassword);
     const history = useHistory();
-
-    /*
-     * Saves any input in the form with their corresponding variables above
-     *
-     * @param {Event} e event when user changes any of the form data
-     *
-     */
-    const handleChange = (e) => {
-
-        setFormData( { ...formData, [e.target.name]: e.target.value } );
-
-    }
 
     /*
      * Dispatches the user details to our backend according to whether
@@ -46,14 +39,16 @@ const Auth = () => {
     const handleSubmit = (e) => {
         
         e.preventDefault();
+
+        const newUser = {firstName, lastName, email, password, confirmPassword};
         
         if (isSignup) {
 
-            dispatch(signup(formData, history));
+            dispatch(signup(newUser, history));
 
         } else {
 
-            dispatch(signin(formData, history))
+            dispatch(signin(newUser, history))
         
         }
 
@@ -97,42 +92,88 @@ const Auth = () => {
      */
     const googleError = () => alert('Google Sign In was unsuccessful. Try again later');
 
+    const handleReset = async () => {
+        
+        try {
+
+            const res = await axios.post('https://team-eleven-backend.herokuapp.com/users/forgotpassword', {email})
+            alert(res.data.message);
+            history.push('/');
+
+        } catch (err) {
+            alert(err.response.data.message) 
+        }
+
+    }
+
+    const setReset = () => {
+
+        setIsResetPassword(!isResetPassword);
+
+    }
+
     return (
         <Container component="main" maxWidth="xs">
             <Paper className={classes.paper} elevation={3}>
                 <Avatar className={classes.avatar}>
                 <LockOutlinedIcon />
                 </Avatar>
-                <Typography component="h1" variant="h5">{ isSignup ? 'Sign up' : 'Sign in' }</Typography>
+                { isResetPassword ? (
+
+                    <Typography component="h1" variant="h5">Reset Password</Typography>
+
+                ) : (
+
+                    <Typography component="h1" variant="h5">{ isSignup ? 'Sign up' : 'Sign in' }</Typography>
+
+                )
+                }
+                
                 <form className={classes.form} onSubmit={handleSubmit}>
                 <Grid container spacing={2}>
-                    { isSignup && (
+                    { isSignup && !isResetPassword && (
                     <>
-                    <Input name="firstName" label="First Name" handleChange={handleChange} autoFocus half />
-                    <Input name="lastName" label="Last Name" handleChange={handleChange} half />
+                    <Input name="firstName" label="First Name" value={firstName} handleChange={e => setFirstName(e.target.value)} autoFocus half />
+                    <Input name="lastName" label="Last Name" value={lastName} handleChange={e => setLastName(e.target.value)} half />
                     </>
                     )}
-                    <Input name="email" label="Email Address" handleChange={handleChange} type="email" />
-                    <Input name="password" label="Password" handleChange={handleChange} type={showPassword ? 'text' : 'password'} handleShowPassword={handleShowPassword} />
-                    { isSignup && <Input name="confirmPassword" label="Repeat Password" handleChange={handleChange} type="password" /> }
+                    <Input name="email" label="Email Address" value={email} handleChange={e => setEmail(e.target.value)} type="email" />
+                    { !isResetPassword && <Input name="password" label="Password" value={password} handleChange={e => setPassword(e.target.value)} type={showPassword ? 'text' : 'password'} handleShowPassword={handleShowPassword} />}
+                 
+                    { isSignup && !isResetPassword && <Input name="confirmPassword" label="Repeat Password" value={setConfirmPassword} handleChange={e => setConfirmPassword(e.target.value)} type="password" /> }
                 </Grid>
                 <br />
-                <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
-                    { isSignup ? 'Sign Up' : 'Sign In' }
-                </Button>
-                <br />
-                <br />
-                <GoogleLogin
-                    clientId="957735014776-mk5n07i08ounim5fqh3tnspv3dq2kp46.apps.googleusercontent.com"
-                    render={(renderProps) => (
-                    <Button className={classes.googleButton} color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Icon/>} variant="contained">
-                        Google Sign In
+                {isResetPassword ? (
+                    <>
+                    <Button onClick={handleReset} fullWidth variant="contained" color="primary" className={classes.submit}>
+                        Reset Password
                     </Button>
-                    )}
-                    onSuccess={googleSuccess}
-                    onFailure={googleError}
-                    cookiePolicy="single_host_origin"
-                />
+                    </>
+
+                ) : (
+                    <>
+                    <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
+                        { isSignup ? 'Sign Up' : 'Sign In' }
+                    </Button>
+                    </>
+                )}
+                <br />
+                <br />
+                {
+                    !isResetPassword && 
+                    <GoogleLogin
+                        clientId="957735014776-mk5n07i08ounim5fqh3tnspv3dq2kp46.apps.googleusercontent.com"
+                        render={(renderProps) => (
+                        <Button className={classes.googleButton} color="primary" fullWidth onClick={renderProps.onClick} disabled={renderProps.disabled} startIcon={<Icon/>} variant="contained">
+                            Google Sign In
+                        </Button>
+                        )}
+                        onSuccess={googleSuccess}
+                        onFailure={googleError}
+                        cookiePolicy="single_host_origin"
+                    />
+                }
+               
                 <Grid container justify="flex-end">
                     <Grid item>
                     <Button onClick={switchMode}>
@@ -140,8 +181,17 @@ const Auth = () => {
                     </Button>
                     </Grid>
                 </Grid>
+                <Grid container justify="flex-end">
+                    <Grid item>
+                    <Button onClick={setReset}>
+                        { isResetPassword ? 'Return to sign in' : "Forgot your password?" }
+                    </Button>
+                    </Grid>
+                </Grid>
                 </form>
             </Paper>
+            <br />
+            <br />
             </Container>
     );
 }

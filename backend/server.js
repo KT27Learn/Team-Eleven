@@ -5,12 +5,15 @@ const server = require("http").createServer(app);
 const { addUser, removeUser, getUser, getUsersInRoom } = require('./users');
 const cors = require('cors');
 const mongoose = require('mongoose');
+const sgMail = require('@sendgrid/mail');
+require('dotenv').config()
 
 const port = process.env.PORT || 5000;
 
 //setting up of backend server with CORS
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 //instance of socket io
 const io = require("socket.io")(server, {
@@ -75,6 +78,11 @@ io.on('connect', (socket) => {
     socket.on("candidate", (id, message) => {
         socket.to(id).emit("candidate", socket.id, message);
     });
+
+    //Livestreamer left room
+    socket.on("broadcaster left", roomID => {
+        socket.to(roomID).emit("broadcaster left");
+    }) 
 
     //Livestreamer ends broadcast
     socket.on("end broadcast", roomID => {
@@ -142,6 +150,7 @@ connection.once('open', () => {
 });
 
 //Routes to the different routes
+const postRouter = require('./routes/posts');
 const roomRouter = require('./routes/rooms');
 const libraryRouter = require('./routes/library');
 const usersRouter = require('./routes/users');
@@ -149,6 +158,7 @@ const sessionRouter = require('./routes/session');
 const favouritesRouter = require('./routes/favourites');
 
 app.use('/rooms', roomRouter);
+app.use('/posts', postRouter);
 app.use('/library', libraryRouter);
 app.use('/users', usersRouter);
 app.use('/session', sessionRouter);

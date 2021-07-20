@@ -2,6 +2,7 @@ import React from 'react';
 
 import Profile from './profile';
 import History from './history';
+import DetailedSession from './detailedsession'
 
 import { Grow, Grid, Container } from '@material-ui/core';
 
@@ -18,6 +19,7 @@ export default function ProfileHome() {
                         </Grid>
                         <Grid item xs={12} sm={7}>
                             <History/>
+                            <DetailedSession />
                         </Grid>
                     </Grid>
                 </Container>

@@ -23,7 +23,7 @@ const config = {
     ]
 };
 
-const ENDPOINT = 'https://team-eleven-backend.herokuapp.com/'
+const ENDPOINT = 'https://team-eleven-backend.herokuapp.com'
 
 const connectionOptions =  {
     "force new connection" : true,
@@ -85,6 +85,11 @@ export default function Viewer() {
           
         socketRef.current.on("broadcaster", () => {
             socketRef.current.emit("watcher", room);
+        });
+
+        socketRef.current.on("broadcaster left", () => {
+            alert("Broadcaster has left the room")
+            setBroadCastStatus(false);
         });
 
         socketRef.current.on("end broadcast", () => {

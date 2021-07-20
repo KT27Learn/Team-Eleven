@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import axios from 'axios';
 
 import useStyles from './styles';
 import { fetchRooms, selectAllRooms } from '../roomsslice';
@@ -12,6 +13,10 @@ function BroadcasterProfile( {room} ) {
     const classes = useStyles();
     const roomStatus = useSelector((state) => state.rooms.status);
     const roomsList = useSelector(selectAllRooms);
+    const [username, setUserName] = useState('');
+    const [avatarurl, setAvatarurl] = useState('');
+    const [userBio, setUserBio] = useState('');
+    const [avatarImageStatus, setAvatarImageStatus] = useState(false);
 
 
     useEffect(() => {
@@ -21,7 +26,31 @@ function BroadcasterProfile( {room} ) {
           dispatch(fetchRooms());
     
         }
-    
+
+        if (roomsList) {
+
+            const room = getRoom(roomsList);
+
+            async function fetchBroadcasterDetails(id) {
+                try {
+        
+                    const result = await axios.get(`https://team-eleven-backend.herokuapp.com/users/${id}`);
+                    setUserName(result.data.name);
+                    setAvatarurl(result.data.imageurl);
+                    setUserBio(result.data.bio);
+                    setAvatarImageStatus(true);
+        
+                } catch(error) {
+                    console.log(error);
+                }
+            }
+
+            console.log(room);
+        
+            fetchBroadcasterDetails(room.userid);
+
+        }
+        // eslint-disable-next-line
     }, [roomStatus, dispatch])
 
     /*
@@ -40,7 +69,7 @@ function BroadcasterProfile( {room} ) {
 
     return (
         <>
-            {!(roomStatus === 'succeeded') ? (
+            {!(avatarImageStatus) ? (
 
                 <CircularProgress />
 
@@ -55,10 +84,10 @@ function BroadcasterProfile( {room} ) {
                             justify="flex-start"
                         >
                             <Grid className={classes.profileContent}>
-                                <Avatar className={classes.purple} alt={getRoom(roomsList).username} src={getRoom(roomsList).profileurl} >{getRoom(roomsList).username.charAt(0)}</Avatar>
+                                <Avatar className={classes.purple} alt={username} src={avatarurl} >{username.charAt(0)}</Avatar>
                             </Grid>
                             <Typography className={classes.userName} variant="subtitle1">
-                                    {getRoom(roomsList).username}
+                                    {username}
                             </Typography>
                         </Grid>
                         <Grid className={classes.roomButton}>
@@ -76,10 +105,10 @@ function BroadcasterProfile( {room} ) {
                                 justify="flex-start"
                             >   
                                 <Typography variant="h6">Room Description:</Typography>
-                                <Typography variant="subtitle2">{getRoom(roomsList).description}</Typography>
+                                <Typography variant="subtitle2">{getRoom(roomsList).description ?? 'Welcome to my room!'}</Typography>
                                 <br />
                                 <Typography variant="h6">About Me:</Typography>
-                                <Typography variant="subtitle2">To implement bio feature</Typography>
+                                <Typography variant="subtitle2">{userBio ?? 'No bio at the moment'}</Typography>
                         </ Grid>
                     </Card>
                     <br />

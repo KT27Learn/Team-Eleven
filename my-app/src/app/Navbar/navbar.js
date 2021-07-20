@@ -52,6 +52,8 @@ const Navbar = () => {
      * Ensures user profile menu closes when user clicks elsewhere
      */
     const handleClose = () => {
+
+      setAnchorEl(null);
         
     };
 
@@ -63,6 +65,13 @@ const Navbar = () => {
       setAnchorEl(null);
       history.push('/profile');
       
+    }
+
+    const enterFriendList = () => {
+
+      setAnchorEl(null);
+      history.push('/friendlist');
+
     }
 
     /*
@@ -91,17 +100,27 @@ const Navbar = () => {
             >
               Rooms
             </Link>
-          </div>
-          <div className={classes.linkContainer}>
-              <Link
-                component="button"
-                variant="body2"
-                onClick={() => {
-                  history.push('/library');
-                }}
-              >
-                Library
-              </Link>
+
+            <Link
+              className={classes.link}
+              component="button"
+              variant="body2"
+              onClick={() => {
+                history.push('/library');
+              }}
+            >
+              Library
+            </Link>
+            <Link
+              className={classes.link}
+              component="button"
+              variant="body2"
+              onClick={() => {
+                history.push('/discover');
+              }}
+            >
+              Discover
+            </Link>
           </div>
           <Toolbar className={classes.toolbar}>
             {user ? (
@@ -117,7 +136,8 @@ const Navbar = () => {
                   open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  <MenuItem onClick={enterProfile}>Profile</MenuItem>
+                  <MenuItem onClick={enterProfile}>Profile Information</MenuItem>
+                  <MenuItem onClick={enterFriendList}>Friend Requests</MenuItem>
                   <MenuItem onClick={navLogOut}>Logout</MenuItem>
                 </Menu>
                 

@@ -3,9 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 export default makeStyles((theme) => ({
     roomContainer: {
     
-        display: 'flex',
         alignItems: 'center',
         width:'40vw',
+        display: 'flex',
 
     },
     roomContent: {
@@ -17,5 +17,10 @@ export default makeStyles((theme) => ({
 
         marginRight: '20px'
 
+    },
+    purple: {
+        margin: '10px',
+        width: '150px',
+        height: '150px',
     },
   }));

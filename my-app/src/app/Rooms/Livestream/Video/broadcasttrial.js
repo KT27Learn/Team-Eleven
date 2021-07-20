@@ -1,4 +1,4 @@
-import React, { useRef ,useState ,useEffect } from 'react';
+import React, { useRef , useState ,useEffect, useLayoutEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useHistory } from 'react-router-dom';
 import io from "socket.io-client";
@@ -26,7 +26,7 @@ const config = {
   ]
 };
 
-const ENDPOINT = 'https://team-eleven-backend.herokuapp.com/'
+const ENDPOINT = 'https://team-eleven-backend.herokuapp.com'
 
 const connectionOptions =  {
     "force new connection" : true,
@@ -47,15 +47,17 @@ export default function Broadcast() {
     const [muteStream, setMuteStream] = useState(false);
     const socketRef = useRef();
     const userVideo = useRef();
-
+    
     useEffect(() => {
         const { room } = queryString.parse(location.search);
         setRoomID(room);
         socketRef.current = io(ENDPOINT, connectionOptions);
-        navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" }, audio: true }).then(stream => {
+        navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then(stream => {
             userVideo.current.srcObject = stream;
             socketRef.current.emit("create broadcaster", room);
 
+        }).catch(error => {
+            console.log(error);
         });
         socketRef.current.on("watcher", id => {
             const peerConnection = new RTCPeerConnection(config);
@@ -107,17 +109,35 @@ export default function Broadcast() {
             
         });
 
-        return () => {
-            if (userVideo.current) {
-                // eslint-disable-next-line
-                userVideo.current.srcObject.getTracks().forEach(track => {
-                    track.stop();
-                });
-                socketRef.current.close();
-            }
-        }
+        window.onunload = window.onbeforeunload = () => {
+            socketRef.current.close();
+            userVideo.current.srcObject.getTracks().forEach(track => {
+                track.stop();
+            });
+            
+        };
+
+        /*return () => {
+            // eslint-disable-next-line
+            userVideo.current.getTracks().forEach(track => {
+                track.stop();
+            });
+            socketRef.current.emit("broadcaster left", room);
+            socketRef.current.close();
+                
+        }*/
         // eslint-disable-next-line
     }, []);
+
+    useLayoutEffect(() => () => {
+        
+        userVideo.current.srcObject.getTracks().forEach(track => {
+            track.stop();
+        });
+        socketRef.current.emit("broadcaster left", roomID);
+        socketRef.current.close();
+        // eslint-disable-next-line
+    }, [])
 
     /*
      * Ends the current livestream and emits to the backend to signal
