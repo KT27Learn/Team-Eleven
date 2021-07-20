@@ -148,7 +148,7 @@ function DiscoverProfile({userid}) {
                                 <Typography variant="subtitle1" align="center">No bio at the moment</Typography>
                             )}
                             <br />
-                            {(user && (user.result._id !== userid) && !checkFriendRequestStatus(user.result.friends)) ? (
+                            {(user && (user.result._id !== userid) && !checkFriendRequestStatus(user.result.friends) && !checkFriendRequestStatus(user.result.friendrequests)) ? (
                                 <>
                                     <Button variant="contained" color="secondary" onClick={sendRequest} align="center">
                                         Add Friend
