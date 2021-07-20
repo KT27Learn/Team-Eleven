@@ -18,7 +18,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 //instance of socket io
 const io = require("socket.io")(server, {
 	cors: {
-		origin: "https://orbital-team-eleven.vercel.app/",
+		origin: "http://localhost:3000",
 		methods: [ "GET", "POST" ]
 	}
 });

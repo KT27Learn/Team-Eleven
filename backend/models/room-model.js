@@ -4,8 +4,8 @@ const Schema = mongoose.Schema;
 
 const roomSchema = new Schema({
     username: { type: String, required: true},
-    avatarurl: {type: String, required: true},
     userid: {type: String, required: true},
+    avatarurl: {type:String, required: true},
     creatorid: {type: String, required: true},
     roomname: { type: String, required: true},
     description: { type: String, required: true},

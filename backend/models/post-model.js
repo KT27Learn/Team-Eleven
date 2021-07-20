@@ -7,7 +7,7 @@ const postSchema = new Schema({
     creatorid: {type: String, required: true},
     description: { type: String, required: true},
     imageurl: { type: String, required: false},
-    avatarurl: {type: String, required: true}
+    avatarurl: {type: String, required: true},
     
 }, {
     timestamps: true,

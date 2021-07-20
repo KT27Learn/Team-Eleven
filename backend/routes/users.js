@@ -345,6 +345,7 @@ router.route('/:id').get((req, res) => {
     UserModal.findById(req.params.id)
       .then(userdetails => {
         const details = {
+            userid: req.params.id,
             name: userdetails.name,
             imageurl: userdetails.imageUrl,
             bio: userdetails.bio,
