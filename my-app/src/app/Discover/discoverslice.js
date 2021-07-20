@@ -40,7 +40,7 @@ const discoverSlice = createSlice({
       state.status = 'succeeded';
       // Add any fetched rooms to the array
       if (action.payload) {
-        state.posts = state.posts.concat(action.payload);
+        state.posts = action.payload;
       }
 
     },
