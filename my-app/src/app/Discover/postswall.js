@@ -111,6 +111,13 @@ function PostsWall() {
     }
 
   }
+  
+  function refreshPosts() {
+
+    dispatch(fetchPosts())
+
+  }
+
 
     return (   
 
@@ -125,22 +132,21 @@ function PostsWall() {
           <Typography variant="h5" align="left">{viewFriendsOnly ? "Friends' Posts:" : "Posts:"}</Typography>
           </Grid>
           <Grid className={classes.searchBar}>
-              {user ? (
-                <>
-                <Grid>
-                  <Button variant="contained" color="primary" onClick={() => setViewFriendsOnly(!viewFriendsOnly)}>
-                    {viewFriendsOnly ? 'View all Posts' : "View Only Friends' Posts"}
-                  </Button>
-                  <Button className={classes.postButton} variant="contained" color="secondary" onClick={createPost}>
-                    Create Post
-                  </Button>
-                </Grid>
-                <br />
-                </>
-              ) : (
-                <>
-                </>
-              )}
+              <Grid>
+                <Button variant="contained" color="primary" onClick={refreshPosts}>
+                  Refresh Posts
+                </Button>
+                { user &&
+                  <>
+                    <Button className={classes.postButton} variant="contained" color="primary" onClick={() => setViewFriendsOnly(!viewFriendsOnly)}>
+                      {viewFriendsOnly ? 'View all Posts' : "View Only Friends' Posts"}
+                    </Button>
+                    <Button className={classes.postButton} variant="contained" color="secondary" onClick={createPost}>
+                      Create Post
+                    </Button>
+                  </>
+                }
+            </Grid>
           </Grid>
           {postStatus === 'loading' || postStatus === 'error'  ? <CircularProgress /> : (
             <>
