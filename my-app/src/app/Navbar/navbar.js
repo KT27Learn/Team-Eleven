@@ -92,11 +92,11 @@ const Navbar = () => {
           </div>
           <Grid 
             container
-            display="flex
             direction="row"
             justifyContent="space-evenly"
             alignItems="center"
           >
+            <Grid>
             <Link
               component="button"
               variant="body2"
@@ -106,7 +106,8 @@ const Navbar = () => {
             >
               Rooms
             </Link>
-
+            </Grid>
+            <Grid>
             <Link
               component="button"
               variant="body2"
@@ -116,6 +117,8 @@ const Navbar = () => {
             >
               Library
             </Link>
+            </Grid>
+            <Grid>
             <Link
               component="button"
               variant="body2"
@@ -125,6 +128,7 @@ const Navbar = () => {
             >
               Discover
             </Link>
+            </Grid>
           </Grid>
           <Toolbar className={classes.toolbar}>
             {user ? (
