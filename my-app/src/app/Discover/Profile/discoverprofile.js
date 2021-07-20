@@ -5,7 +5,7 @@ import useStyles from './styles';
 import { selectUserProfile,fetchUserProfile } from '../discoverslice';
 import { sendFriendRequest, removeFriendRequest } from '../../Auth/authSlice';
 
-import { CircularProgress, Card, CardContent, Avatar, Button, Typography, Menu, MenuItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { CircularProgress, Card, CardContent, Avatar, Button, Typography, Menu, MenuItem, ListItemIcon, ListItemText, Grid } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
 
@@ -147,53 +147,59 @@ function DiscoverProfile({userid}) {
                             ): (
                                 <Typography variant="subtitle1" align="center">No bio at the moment</Typography>
                             )}
-                            <br />
-                            { user && 
-                             <>
-                               {((user.result._id !== userid) && (!checkFriendRequestStatus(user.result.friends)) && (!checkFriendRequestStatus(user.result.friendrequests))) &&
-                                  <>
-                                      <Button variant="contained" color="secondary" onClick={sendRequest} align="center">
-                                          Add Friend
-                                      </Button>
-                                  </>
-                                }
-                                {checkFriendRequestStatus(user.result.friendrequests) && 
-                                    <>
-                                        <Button
-                                            aria-controls="customized-menu"
-                                            aria-haspopup="true"
-                                            variant="contained"
-                                            color="primary"
-                                            align="center"
-                                            onClick={handleClick}
+                            <Grid
+                                container
+                                alignItems="center"
+                                direction="column"
+                            >
+                                <br />
+                                { user && 
+                                 <>
+                                   {((user.result._id !== userid) && (!checkFriendRequestStatus(user.result.friends)) && (!checkFriendRequestStatus(user.result.friendrequests))) &&
+                                      <>
+                                          <Button variant="contained" color="secondary" onClick={sendRequest} align="center">
+                                              Add Friend
+                                          </Button>
+                                      </>
+                                    }
+                                    {checkFriendRequestStatus(user.result.friendrequests) && 
+                                        <>
+                                            <Button
+                                                aria-controls="customized-menu"
+                                                aria-haspopup="true"
+                                                variant="contained"
+                                                color="primary"
+                                                align="center"
+                                                onClick={handleClick}
+                                                >
+                                                Friend Request Sent
+                                            </Button>
+                                            <StyledMenu
+                                                id="customized-menu"
+                                                anchorEl={anchorEl}
+                                                keepMounted
+                                                open={Boolean(anchorEl)}
+                                                onClose={handleClose}
                                             >
-                                            Friend Request Sent
-                                        </Button>
-                                        <StyledMenu
-                                            id="customized-menu"
-                                            anchorEl={anchorEl}
-                                            keepMounted
-                                            open={Boolean(anchorEl)}
-                                            onClose={handleClose}
-                                        >
-                                            <StyledMenuItem onClick={remFriend}>
-                                            <ListItemIcon>
-                                                <InboxIcon fontSize="small" />
-                                            </ListItemIcon>
-                                            <ListItemText primary="Remove Friend Request" />
-                                            </StyledMenuItem>
-                                        </StyledMenu>
-                                    </>
-                                }
-                                {checkFriendRequestStatus(user.result.friends) && 
-                                    <>
-                                        <Button variant="contained" color="secondary" disabled align="center">
-                                            Current Friend
-                                        </Button>
-                                    </>
-                                }
-                            </>
-                        }
+                                                <StyledMenuItem onClick={remFriend}>
+                                                <ListItemIcon>
+                                                    <InboxIcon fontSize="small" />
+                                                </ListItemIcon>
+                                                <ListItemText primary="Remove Friend Request" />
+                                                </StyledMenuItem>
+                                            </StyledMenu>
+                                        </>
+                                    }
+                                    {checkFriendRequestStatus(user.result.friends) && 
+                                        <>
+                                            <Button variant="contained" color="secondary" disabled align="center">
+                                                Current Friend
+                                            </Button>
+                                        </>
+                                    }
+                                </>
+                            }
+                        </Grid>
                         </CardContent>
                     </Card>
                 </>
