@@ -92,6 +92,7 @@ const Navbar = () => {
           </div>
           <Grid 
             container
+            display="flex
             direction="row"
             justifyContent="space-evenly"
             alignItems="center"
