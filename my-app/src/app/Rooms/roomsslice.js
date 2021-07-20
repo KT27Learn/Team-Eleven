@@ -46,7 +46,7 @@ const roomsSlice = createSlice({
     [fetchRooms.fulfilled]: (state, action) => {
       state.status = 'succeeded';
       // Add any fetched rooms to the array
-      state.rooms = state.rooms.concat(action.payload);
+      state.rooms = action.payload;
       state.totalNumber = state.rooms.length;
 
     },
