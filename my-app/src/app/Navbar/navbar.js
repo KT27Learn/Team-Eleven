@@ -90,44 +90,39 @@ const Navbar = () => {
             <Typography component={link} to="/" className={classes.heading} variant="h2" align="center">Élèven</Typography>
             <img className={classes.image} src={elevenlogo} alt="icon"   height="120" />
           </div>
-          <Grid 
-            container
-            direction="row"
-            justifyContent="space-evenly"
-            alignItems="center"
-          >
+          <Grid>
             <Grid>
-            <Link
-              component="button"
-              variant="body2"
-              onClick={() => {
-                history.push('/');
-              }}
-            >
+                <Link
+                  component="button"
+                  variant="body2"
+                  onClick={() => {
+                    history.push('/');
+                  }}
+                >
               Rooms
             </Link>
             </Grid>
-            <Grid>
-            <Link
-              component="button"
-              variant="body2"
-              onClick={() => {
-                history.push('/library');
-              }}
-            >
-              Library
-            </Link>
+            <Grid className={classes.navlink}>
+                <Link
+                  component="button"
+                  variant="body2"
+                  onClick={() => {
+                    history.push('/library');
+                  }}
+                >
+                  Library
+                </Link>
             </Grid>
-            <Grid>
-            <Link
-              component="button"
-              variant="body2"
-              onClick={() => {
-                history.push('/discover');
-              }}
-            >
-              Discover
-            </Link>
+            <Grid className={classes.navlink}>
+                <Link
+                  component="button"
+                  variant="body2"
+                  onClick={() => {
+                    history.push('/discover');
+                  }}
+                >
+                  Discover
+                </Link>
             </Grid>
           </Grid>
           <Toolbar className={classes.toolbar}>
