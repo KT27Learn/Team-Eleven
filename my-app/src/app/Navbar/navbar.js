@@ -90,12 +90,7 @@ const Navbar = () => {
             <Typography component={link} to="/" className={classes.heading} variant="h2" align="center">Élèven</Typography>
             <img className={classes.image} src={elevenlogo} alt="icon"   height="120" />
           </div>
-          <Grid 
-            container
-            direction="row"
-            alignItems="center"
-            justify="flex-start"
-          >
+          <Grid className={classes.linkContainer}>
             <Link
               component="button"
               variant="body2"
