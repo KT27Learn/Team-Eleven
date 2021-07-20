@@ -6,7 +6,7 @@ import useStyles from './styles';
 import { logout } from '../Auth/authSlice';
 import elevenlogo from '../../assets/Eleven-Logo-final.png';
 
-import { AppBar, Typography, Toolbar, Avatar, Button, Menu, MenuItem, Link } from '@material-ui/core';
+import { AppBar, Grid, Typography, Toolbar, Avatar, Button, Menu, MenuItem, Link } from '@material-ui/core';
 
 const Navbar = () => {
 
@@ -90,7 +90,12 @@ const Navbar = () => {
             <Typography component={link} to="/" className={classes.heading} variant="h2" align="center">Élèven</Typography>
             <img className={classes.image} src={elevenlogo} alt="icon"   height="120" />
           </div>
-          <div className={classes.linkContainer}>
+          <Grid 
+            container
+            direction="row"
+            alignItems="center"
+            justify="flex-start"
+          >
             <Link
               component="button"
               variant="body2"
@@ -121,7 +126,7 @@ const Navbar = () => {
             >
               Discover
             </Link>
-          </div>
+          </Grid>
           <Toolbar className={classes.toolbar}>
             {user ? (
               <div className={classes.profile}>
