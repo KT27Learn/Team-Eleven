@@ -107,7 +107,7 @@ const Navbar = () => {
             </Link>
 
             <Link
-              className={classes.link}
+              className={classes.navlink}
               component="button"
               variant="body2"
               onClick={() => {
@@ -117,7 +117,7 @@ const Navbar = () => {
               Library
             </Link>
             <Link
-              className={classes.link}
+              className={classes.navlink}
               component="button"
               variant="body2"
               onClick={() => {
