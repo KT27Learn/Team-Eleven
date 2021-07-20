@@ -90,7 +90,12 @@ const Navbar = () => {
             <Typography component={link} to="/" className={classes.heading} variant="h2" align="center">Élèven</Typography>
             <img className={classes.image} src={elevenlogo} alt="icon"   height="120" />
           </div>
-          <Grid className={classes.linkContainer}>
+          <Grid 
+            container
+            direction="row"
+            justifyContent="space-evenly"
+            alignItems="center"
+          >
             <Link
               component="button"
               variant="body2"
@@ -102,7 +107,6 @@ const Navbar = () => {
             </Link>
 
             <Link
-              className={classes.navlink}
               component="button"
               variant="body2"
               onClick={() => {
@@ -112,7 +116,6 @@ const Navbar = () => {
               Library
             </Link>
             <Link
-              className={classes.navlink}
               component="button"
               variant="body2"
               onClick={() => {
