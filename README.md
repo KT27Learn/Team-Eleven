@@ -6,7 +6,7 @@ Orbital (Independent Software Development Project) is NUS School of Computing se
 
 ## élèven
 
-<img src="https://github.com/KT27Learn/Team-Eleven/blob/main/react-frontend/src/Eleven-Logo-final.png">
+<img src="https://github.com/KT27Learn/Team-Eleven/blob/main/my-app/src/assets/Eleven-Logo-final.png">
 
 **Project Poster:** [Link](https://drive.google.com/file/d/1J1SoVspMIXbZ-RvnQqcPzP4JZLPl35zY/view?usp=sharing)
 
@@ -26,13 +26,19 @@ Moreover, when your study companions or friends are too busy to meet for study s
 An all-in-one study social space enabling learners to plan their studies and be motivated by studying with friends or publicly live-streamed study sessions hosted by others. Users can browse and drop into relevant ‘study rooms’ based on studying methods (pomodoro), study subject (business, tech, science, math,...), personality (popular individual hosts: Ali Abdaal, Daniel Tamago). Users may also try different study methods, track study hours, plan study topics, explore study products and services, find others to share in group-plan services, among other planning and exploratory oriented features. 
 
 ### Current Features Implemented:
-* Accounts feature
-* Study Timer
+* Accounts feature 
+* Viewing past study session logs
+* Study Timer with to-do list feature
 * Library containing study methods
+* Study Rooms with real time chats and livestream
+* View collated study session history
+* 'Favourite' favourite study methods
 
 ### Milestones:
 
 **Milestone 1:** [Link to report](https://docs.google.com/document/d/1S_jRJ7nAw3r9DfxrVbhVZ2AA6zKMEGAQ6c4-XBwGQMc/edit?usp=sharing)
+
+**Milestone 2:** [Link to report](https://docs.google.com/document/d/1I0Y-GmkIGglrLGpt1A1H2gwPp2F8ec0U2gz5783TxHQ/edit?usp=sharing)
 
 ### Deployment:
 

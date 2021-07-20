@@ -61,7 +61,9 @@ export default function Viewer() {
                 socketRef.current.emit("answer", id, peerConnection.localDescription);
               }).catch(err => console.log(err));
             peerConnection.ontrack = event => {
-                streamVideo.current.srcObject = event.streams[0];
+                if (event.streams[0]) {
+                    streamVideo.current.srcObject = event.streams[0];
+                }
             };
             peerConnection.onicecandidate = event => {
               if (event.candidate) {

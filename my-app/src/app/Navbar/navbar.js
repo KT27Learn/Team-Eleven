@@ -85,11 +85,12 @@ const Navbar = () => {
 
     return (
         <AppBar className={classes.appBar} position="static" color="inherit">
+          <Toolbar >
           <div className={classes.brandContainer}>
-            <Typography component={link} to="/" className={classes.heading} variant="h2" align="center">Eleven</Typography>
+            <Typography component={link} to="/" className={classes.heading} variant="h2" align="center">Élèven</Typography>
             <img className={classes.image} src={elevenlogo} alt="icon"   height="120" />
           </div>
-          <div >
+          <div className={classes.linkContainer}>
             <Link
               component="button"
               variant="body2"
@@ -99,6 +100,7 @@ const Navbar = () => {
             >
               Rooms
             </Link>
+
             <Link
               className={classes.link}
               component="button"
@@ -144,6 +146,7 @@ const Navbar = () => {
               <Button onClick={routeToSignIn} variant="contained" color="primary">Sign In</Button>
             )}
           </Toolbar>
+         </Toolbar>
         </AppBar>
     );
 }
