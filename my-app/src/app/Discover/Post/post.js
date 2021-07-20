@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 import { Card, Grid, Avatar, Typography } from '@material-ui/core';
 import useStyles from './styles';
@@ -13,8 +14,28 @@ function Post({ post }) {
     const username = post.username;
     const creatorid = post.creatorid;
     const description = post.description;
-    const avatarurl = post.avatarurl;
+    const [avatarurl, setAvatarurl] = useState('');
     const imageurl = post.imageurl;
+    
+    useEffect(() => {
+
+        async function fetchUserDetails() {
+
+            try {
+        
+                const result = await axios.get(`http://localhost:5000/users/${post.creatorid}`);
+                setAvatarurl(result.data.imageurl);
+    
+            } catch(error) {
+                console.log(error);
+            }
+
+        }
+
+        fetchUserDetails();
+
+        // eslint-disable-next-line
+    }, [])
 
     function navigateUserProfile() {
 
