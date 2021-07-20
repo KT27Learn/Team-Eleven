@@ -10,6 +10,16 @@ const userSchema = mongoose.Schema({
     id: { type: String },
     imageUrl: {type: String},
     bio: {type: String},
+    friends: [{
+        friendid: {type: String },
+        friendname: {type: String },
+
+    }],
+    friendrequests: [{
+        friendid: {type: String },
+        friendname: {type: String },
+        sender: {type: Boolean}
+    }],
 
 });
 

@@ -17,6 +17,7 @@ router.route('/add').post(async (req, res) => {
     try {
 
       const username = req.body.username;
+      const userid = req.body.userid;
       const creatorid = req.body.creatorid;
       const roomname = req.body.roomname;
       const description = req.body.description;
@@ -24,7 +25,7 @@ router.route('/add').post(async (req, res) => {
       const subject = req.body.subject ?? '';
       const bio = req.body.bio ?? '';
 
-      const result = await Rooms.create({ username, roomname, creatorid ,description, studymethod, subject, bio });
+      const result = await Rooms.create({ username, userid, roomname, creatorid ,description, studymethod, subject, bio });
 
       res.status(200).json({result});
 

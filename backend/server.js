@@ -18,7 +18,7 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 //instance of socket io
 const io = require("socket.io")(server, {
 	cors: {
-		origin: "http://localhost:3000",
+		origin: "https://orbital-team-eleven.vercel.app/",
 		methods: [ "GET", "POST" ]
 	}
 });
@@ -78,6 +78,11 @@ io.on('connect', (socket) => {
     socket.on("candidate", (id, message) => {
         socket.to(id).emit("candidate", socket.id, message);
     });
+
+    //Livestreamer left room
+    socket.on("broadcaster left", roomID => {
+        socket.to(roomID).emit("broadcaster left");
+    }) 
 
     //Livestreamer ends broadcast
     socket.on("end broadcast", roomID => {
@@ -145,6 +150,7 @@ connection.once('open', () => {
 });
 
 //Routes to the different routes
+const postRouter = require('./routes/posts');
 const roomRouter = require('./routes/rooms');
 const libraryRouter = require('./routes/library');
 const usersRouter = require('./routes/users');
@@ -152,6 +158,7 @@ const sessionRouter = require('./routes/session');
 const favouritesRouter = require('./routes/favourites');
 
 app.use('/rooms', roomRouter);
+app.use('/posts', postRouter);
 app.use('/library', libraryRouter);
 app.use('/users', usersRouter);
 app.use('/session', sessionRouter);

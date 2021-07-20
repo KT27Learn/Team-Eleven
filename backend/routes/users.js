@@ -4,7 +4,6 @@ const router = require('express').Router();
 let UserModal = require('../models/user-model');
 const jwt = require('jsonwebtoken');
 const jwt_decode = require("jwt-decode");
-const sendMail = require('../Controllers/sendMail')
 const {google} = require('googleapis')
 const { cloudinary } = require('../Utils/cloudinary');
 const sgMail = require('@sendgrid/mail');
@@ -338,6 +337,159 @@ router.route('/setpassword').post(async (req, res) => {
         return res.status(500).json({message: err.message})
     }
     
+});
+
+//get a particular users current details
+router.route('/:id').get((req, res) => {
+    
+    UserModal.findById(req.params.id)
+      .then(userdetails => {
+        const details = {
+            name: userdetails.name,
+            imageurl: userdetails.imageUrl,
+            bio: userdetails.bio,
+        }
+        return res.json(details)})
+      .catch(err => {
+          console.log(err);
+          res.status(400).json('Error: ' + err)
+        });
+});
+
+//get a particular users current details
+router.route('/addfriend').post(async (req, res) => {
+    
+    const { senderid, sendername, receiverid, receivername } = req.body
+    try{
+
+        const sender = {
+            friendid: senderid, 
+            friendname: sendername,
+            sender: true
+        }
+        const receiver = {
+            friendid: receiverid,
+            friendname: receivername,
+            sender: false,
+        }
+        const senderResult = await UserModal.findOneAndUpdate({ _id: senderid },
+            { $push: {friendrequests: receiver } }
+        );
+
+        const receiverResult = await UserModal.findOneAndUpdate({ _id: receiverid },
+            { $push: {friendrequests: sender} }
+        );
+
+        res.status(200).json({ friend: receiver })
+
+
+    } catch(error) {
+        console.log(error);
+        return res.status(400).json('Error: ' + err)
+    }
+});
+
+//get a particular users current details
+router.route('/acceptfriend').post(async (req, res) => {
+    
+    const { senderid, sendername, receiverid, receivername } = req.body
+    try{
+
+        const sender = {
+            friendid: senderid, 
+            friendname: sendername,
+        }
+        const receiver = {
+            friendid: receiverid,
+            friendname: receivername,
+        }
+        const senderFirstResult = await UserModal.findOneAndUpdate({_id: senderid}, 
+            { $pull: { friendrequests: {friendid: receiverid} } },
+            { new: true },
+        );
+        const senderSecondResult = await UserModal.findOneAndUpdate({ _id: senderid },
+            { $push: {friends: receiver } },
+            { new: true },
+        );
+        const receiverFirstResult = await UserModal.updateOne({_id: receiverid},
+            { $pull: { friendrequests: { friendid: senderid } } },
+            { new: true }
+        ); 
+        const receiverSecondResult = await UserModal.findOneAndUpdate({ _id: receiverid },
+            { $push: {friends: sender} },
+            { new: true },
+        );
+        res.status(200).json({friends: senderSecondResult.friends, friendrequests: senderSecondResult.friendrequests});
+
+
+    } catch(error) {
+        console.log(error);
+        return res.status(400).json('Error: ' + err)
+    }
+});
+
+//get a particular users current details
+router.route('/removefriend').post(async (req, res) => {
+    
+    const { senderid, receiverid } = req.body
+    try{
+
+        const senderResult = await UserModal.findOneAndUpdate({_id: senderid}, 
+            { $pull: { friends: {friendid: receiverid} } },
+            { new: true },
+        );
+
+        const receiverResult = await UserModal.updateOne({_id: receiverid},
+            { $pull: { friends: { friendid: senderid } } },
+        ); 
+
+        res.status(200).json({friends:senderResult.friends});
+
+
+    } catch(error) {
+        console.log(error);
+        return res.status(400).json('Error: ' + err)
+    }
+});
+
+//get a particular users current details
+router.route('/removerequest').post(async (req, res) => {
+    
+    const { senderid, receiverid } = req.body
+    try{
+
+        const senderResult = await UserModal.findOneAndUpdate({_id: senderid}, 
+            { $pull: { friendrequests: {friendid: receiverid} } },
+            { new: true },
+        );
+
+        const receiverResult = await UserModal.updateOne({_id: receiverid},
+            { $pull: { friendrequests: { friendid: senderid } } },
+        ); 
+
+        res.status(200).json({friendrequests:senderResult.friendrequests});
+
+
+    } catch(error) {
+        console.log(error);
+        return res.status(400).json('Error: ' + err)
+    }
+});
+
+//find a particular study room for its details
+router.route('/updatefriends').post(async (req, res) => {
+    
+    const { userid } = req.body
+
+    try {
+
+        const result = await UserModal.findById(userid);
+        res.status(200).json({friends: result.friends, friendrequests: result.friendrequests})
+
+    } catch(error) {
+        console.log(error);
+        return res.status(400).json('Error: ' + error)
+    }
 });
 
 const createAccessToken = (payload) => {
