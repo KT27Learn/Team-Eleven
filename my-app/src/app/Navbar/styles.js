@@ -5,6 +5,9 @@ export default makeStyles((theme) => ({
   appBar: {
     borderRadius: 15,
     margin: '30px 0',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
     padding: '10px 50px',
     background: '#8AD5FF',
@@ -39,20 +42,12 @@ export default makeStyles((theme) => ({
   brandContainer: {
     display: 'flex',
     alignItems: 'center',
-    marginRight: '50px',
   },
   purple: {
     color: theme.palette.getContrastText(deepPurple[500]),
     backgroundColor: deepPurple[500],
   },
-  linkContainer: {
-    display: 'flex',
-    alignItems: 'center',
-    marginRight: '50px',
-    
-  },
-  navlink: {
-   marginLeft: '50px',
-    
+  link: {
+    marginLeft: '45px',
   }
 }));

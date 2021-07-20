@@ -24,7 +24,7 @@ function FriendRequest({request, details}) {
         async function fetchAvatarImage() {
             try {
 
-                const result = await axios.get(`http://localhost:5000/users/${details.friendid}`);
+                const result = await axios.get(`https://team-eleven-backend.herokuapp.com/users/${details.friendid}`);
                 setAvatarurl(result.data.imageurl);
                 setBio(result.data.bio);
                 setAvatarImageStatus(true);

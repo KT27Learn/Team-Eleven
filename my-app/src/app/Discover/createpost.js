@@ -20,33 +20,6 @@ function CreateRoom() {
     const [previewSource, setPreviewSource] = useState('');
     const [selectedFile, setSelectedFile] = useState();
 
-
-    /*
-     * Creates a new study room and dispatches the details to
-     * backend server to be saved into the database
-     * 
-     * @async
-     * 
-     */
-    /*const Create = async () => {
-
-        try {
-            dispatch(addNewPost({
-                    username: user.result.name,
-                    creatorid: user.result.id,
-                    description,
-                    imageurl,
-                    profileurl: user.result.imageUrl,
-                })
-            );
-            history.push(`/discover`);
-
-        } catch (error) {
-            alert(error);
-        }
-
-    }*/
-
     const handleFileInputChange = (e) => {
         const file = e.target.files[0];
         previewFile(file);
@@ -107,6 +80,13 @@ function CreateRoom() {
 
     }
 
+    /*
+     * Creates a new study room and dispatches the details to
+     * backend server to be saved into the database
+     * 
+     * @async
+     * 
+     */
     const createPost = async () => {
 
         try {

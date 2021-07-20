@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch } from 'react-redux';
-import axios from 'axios';
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 
 import useStyles from './styles';
+import { selectUserProfile,fetchUserProfile } from '../discoverslice';
 import { sendFriendRequest, removeFriendRequest } from '../../Auth/authSlice';
 
 import { CircularProgress, Card, CardContent, Avatar, Button, Typography, Menu, MenuItem, ListItemIcon, ListItemText } from '@material-ui/core';
@@ -46,31 +46,26 @@ function DiscoverProfile({userid}) {
     const dispatch = useDispatch();
 
     const user = JSON.parse(localStorage.getItem('profile'));
-    const [username, setUserName] = useState('');
-    const [avatarurl, setAvatarurl] = useState('');
-    const [userBio, setUserBio] = useState('');
-    const [avatarImageStatus, setAvatarImageStatus] = useState(false);
+    const profileDetails = useSelector(selectUserProfile);
+    const profileStatus = useSelector((state) => state.discover.profilestatus);
     const [anchorEl, setAnchorEl] = React.useState(null);
 
     useEffect(() => {
 
-        async function fetchAvatarImage() {
-            try {
+        if (profileStatus === 'idle') {
 
-                const result = await axios.get(`http://localhost:5000/users/${userid}`);
-                setUserName(result.data.name);
-                setAvatarurl(result.data.imageurl);
-                setUserBio(result.data.bio);
-                setAvatarImageStatus(true);
+            dispatch(fetchUserProfile({userid}));
 
-            } catch(error) {
-                console.log(error);
-            }
+        } 
+        
+        if (profileStatus === 'succeeded' && profileDetails.userid !== userid) {
+
+            dispatch(fetchUserProfile({userid}));
+
         }
 
-        fetchAvatarImage();
         // eslint-disable-next-line
-    }, []);
+    }, [profileStatus, dispatch])
 
     const sendRequest = async () => {
 
@@ -81,7 +76,7 @@ function DiscoverProfile({userid}) {
                 senderid: user.result._id,
                 sendername: user.result.name,
                 receiverid: userid,
-                receivername: username,
+                receivername: profileDetails.name,
             }
             dispatch(sendFriendRequest(usersDetails));
 
@@ -116,7 +111,7 @@ function DiscoverProfile({userid}) {
                 senderid: user.result._id,
                 sendername: user.result.name,
                 receiverid: userid,
-                receivername: username,
+                receivername: profileDetails.name,
             }
             dispatch(removeFriendRequest(usersDetails));
 
@@ -140,15 +135,15 @@ function DiscoverProfile({userid}) {
 
     return (
         <>
-            {avatarImageStatus ? (
+            {!(profileStatus === 'loading' || profileStatus === 'error' || profileStatus === 'idle') ? (
                 <>
                     <Card classname={classes.profileCard}>
                         <CardContent className={classes.profileContent}>
-                            <Avatar className={classes.purple} alt={username} src={avatarurl} >{username.charAt(0)}</Avatar>
-                            <Typography variant="h6" align="center">{username}</Typography>
+                            <Avatar className={classes.purple} alt={profileDetails.name} src={profileDetails.imageurl} >{profileDetails.name.charAt(0)}</Avatar>
+                            <Typography variant="h6" align="center">{profileDetails.name}</Typography>
                             <Typography variant="h6" align="center">Bio:</Typography>
-                            {userBio? (
-                                <Typography variant="subtitle1" align="center">{userBio}</Typography>
+                            {profileDetails.bio? (
+                                <Typography variant="subtitle1" align="center">{profileDetails.bio}</Typography>
                             ): (
                                 <Typography variant="subtitle1" align="center">No bio at the moment</Typography>
                             )}

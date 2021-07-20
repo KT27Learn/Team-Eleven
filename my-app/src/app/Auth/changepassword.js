@@ -47,10 +47,10 @@ const PasswordReset = () => {
                     let res;
                     if (user.result.password) {
         
-                        res = await axios.post('http://localhost:5000/users/changepassword', {password: password, newPassword, email: user.result.email}, {
+                        res = await axios.post('https://team-eleven-backend.herokuapp.com/users/changepassword', {password: password, newPassword, email: user.result.email}, {
                         })
                     } else {
-                        res = await axios.post('http://localhost:5000/users/setpassword', {password: password, email: user.result.email}, {
+                        res = await axios.post('https://team-eleven-backend.herokuapp.com/users/setpassword', {password: password, email: user.result.email}, {
                         })
                     }
                     
@@ -94,10 +94,10 @@ const PasswordReset = () => {
                     let res;
                     if (user.result.password) {
         
-                        res = await axios.post('http://localhost:5000/users/changepassword', {password: password, newPassword, email: user.result.email}, {
+                        res = await axios.post('https://team-eleven-backend.herokuapp.com/users/changepassword', {password: password, newPassword, email: user.result.email}, {
                         })
                     } else {
-                        res = await axios.post('http://localhost:5000/users/setpassword', {password: password, email: user.result.email}, {
+                        res = await axios.post('https://team-eleven-backend.herokuapp.com/users/setpassword', {password: password, email: user.result.email}, {
                         })
                     }
                     

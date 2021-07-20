@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom'
-import axios from 'axios';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
 
-import { Card, Grid, Avatar, Typography, CircularProgress } from '@material-ui/core';
+import { Card, Grid, Avatar, Typography } from '@material-ui/core';
 import useStyles from './styles';
 import Image from 'material-ui-image'
 
@@ -11,31 +10,11 @@ function Post({ post }) {
     const classes = useStyles();
     const history = useHistory();
 
-    const [username, setUserName] = useState('');
+    const username = post.username;
     const creatorid = post.creatorid;
     const description = post.description;
+    const avatarurl = post.avatarurl;
     const imageurl = post.imageurl;
-    const [avatarurl, setAvatarurl] = useState('');
-    const [avatarImageStatus, setAvatarImageStatus] = useState(false);
-    
-    useEffect(() => {
-
-        async function fetchAvatarImage() {
-            try {
-
-                const result = await axios.get(`http://localhost:5000/users/${creatorid}`);
-                setUserName(result.data.name);
-                setAvatarurl(result.data.imageurl);
-                setAvatarImageStatus(true);
-
-            } catch(error) {
-                console.log(error);
-            }
-        }
-
-        fetchAvatarImage();
-        // eslint-disable-next-line
-    }, []);
 
     function navigateUserProfile() {
 
@@ -44,8 +23,7 @@ function Post({ post }) {
 
     return (   
         <>
-            {avatarImageStatus ? (
-                <>
+
                     <Card className={classes.roomContainer}>
                         <Grid
                             container
@@ -56,7 +34,7 @@ function Post({ post }) {
                             <Grid className={classes.profileDetails}>
                                 <Avatar className={classes.purple} alt={username} src={avatarurl} onClick={navigateUserProfile}>{username.charAt(0)}</Avatar>
                                 <Typography className={classes.username} component="subtitle2" variant="subtitle2" onClick={navigateUserProfile}>
-                                {username}
+                                    {username}
                                 </Typography>
                             </Grid>
                             <Grid>
@@ -72,10 +50,6 @@ function Post({ post }) {
                         </Grid>
                     </Card>
                     <br />
-                </>
-            ) : ( 
-                <CircularProgress />
-            )}
         </>
     )
 }

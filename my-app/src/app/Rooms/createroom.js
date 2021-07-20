@@ -65,6 +65,7 @@ function CreateRoom() {
                 dispatch(addNewRoom({
                     username: user.result.name,
                     userid: user.result._id,
+                    avatarurl: user.result.imageUrl,
                     creatorid: id,
                     roomname: roomName,
                     description,

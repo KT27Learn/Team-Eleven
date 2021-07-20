@@ -20,7 +20,7 @@ const ActivateUser = () => {
         if(activation_token){
             const activationEmail = async () => {
                 try {
-                    await axios.post("http://localhost:5000/users/activate", {activation_token})
+                    await axios.post("https://team-eleven-backend.herokuapp.com/users/activate", {activation_token})
                     setSuccess(true)
                 } catch (err) {
                     console.log(err.response.data.msg)

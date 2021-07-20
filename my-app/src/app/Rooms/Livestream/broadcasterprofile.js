@@ -34,7 +34,7 @@ function BroadcasterProfile( {room} ) {
             async function fetchBroadcasterDetails(id) {
                 try {
         
-                    const result = await axios.get(`http://localhost:5000/users/${id}`);
+                    const result = await axios.get(`https://team-eleven-backend.herokuapp.com/users/${id}`);
                     setUserName(result.data.name);
                     setAvatarurl(result.data.imageurl);
                     setUserBio(result.data.bio);

@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
 
 import { Card, Grid, Button, Typography, Avatar } from '@material-ui/core';
 import useStyles from './styles';
@@ -16,10 +15,9 @@ function StudyRoom({ room }) {
     const roomCreator = room.username;
     const description = room.description;
     const studymethod = room.studymethod;
+    const avatarurl = room.avatarurl;
     const subject = room.subject;
     const userId = room.userid;
-    const [avatarurl, setAvatarurl] = useState('');
-    const [avatarImageStatus, setAvatarImageStatus] = useState(false);
 
     /*
      * Enters the livestream room of the current study room
@@ -48,24 +46,6 @@ function StudyRoom({ room }) {
         
 
     }
-
-    useEffect(() => {
-
-        async function fetchAvatarImage() {
-            try {
-
-                const result = await axios.get(`http://localhost:5000/users/${userId}`);
-                setAvatarurl(result.data.imageurl);
-                setAvatarImageStatus(true);
-
-            } catch(error) {
-                console.log(error);
-            }
-        }
-
-        fetchAvatarImage();
-        // eslint-disable-next-line
-    }, []);
 
     function firstLine(string) {
 
@@ -145,13 +125,9 @@ function StudyRoom({ room }) {
                 justify="flex-start"
                 alignItems="center"
             >
-                { avatarImageStatus &&
-                    <>
-                    <Grid>
-                        <Avatar className={classes.purple} align="center" alt={roomCreator} src={avatarurl} >{roomCreator.charAt(0)}</Avatar>
-                    </Grid>
-                    </>
-                }
+                <Grid>
+                    <Avatar className={classes.purple} align="center" alt={roomCreator} src={avatarurl} >{roomCreator.charAt(0)}</Avatar>
+                </Grid>
                 <Grid className={classes.roomContent}>
                     <Typography component="h5" variant="h5">
                         {roomNameResctrict(roomName)}

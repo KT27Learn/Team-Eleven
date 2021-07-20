@@ -24,3 +24,4 @@ export const acceptFriendRequest = (usersdetails) => API.post('/users/acceptfrie
 export const removeFriend = (usersdetails) => API.post('/users/removefriend', usersdetails);
 export const removeFriendRequest = (usersdetails) => API.post('/users/removerequest', usersdetails);
 export const updateFriends = (userid) => API.post('/users/updatefriends', userid);
+export const fetchUserProfile = (userid) => API.get(`/users/${userid.userid}`);
