@@ -148,53 +148,52 @@ function DiscoverProfile({userid}) {
                                 <Typography variant="subtitle1" align="center">No bio at the moment</Typography>
                             )}
                             <br />
-                            {(user && (user.result._id !== userid) && !checkFriendRequestStatus(user.result.friends) && !checkFriendRequestStatus(user.result.friendrequests)) ? (
-                                <>
-                                    <Button variant="contained" color="secondary" onClick={sendRequest} align="center">
-                                        Add Friend
-                                    </Button>
-                                </>
-                            ) : (
-                                <>
-                                </>
-                            )}
-                            {checkFriendRequestStatus(user.result.friendrequests) && 
-                                <>
-                                    
-                                    <Button
-                                        aria-controls="customized-menu"
-                                        aria-haspopup="true"
-                                        variant="contained"
-                                        color="primary"
-                                        align="center"
-                                        onClick={handleClick}
+                            { user && 
+                             <>
+                               {((user.result._id !== userid) && (!checkFriendRequestStatus(user.result.friends)) && (!checkFriendRequestStatus(user.result.friendrequests))) &&
+                                  <>
+                                      <Button variant="contained" color="secondary" onClick={sendRequest} align="center">
+                                          Add Friend
+                                      </Button>
+                                  </>
+                                }
+                                {checkFriendRequestStatus(user.result.friendrequests) && 
+                                    <>
+                                        <Button
+                                            aria-controls="customized-menu"
+                                            aria-haspopup="true"
+                                            variant="contained"
+                                            color="primary"
+                                            align="center"
+                                            onClick={handleClick}
+                                            >
+                                            Friend Request Sent
+                                        </Button>
+                                        <StyledMenu
+                                            id="customized-menu"
+                                            anchorEl={anchorEl}
+                                            keepMounted
+                                            open={Boolean(anchorEl)}
+                                            onClose={handleClose}
                                         >
-                                        Friend Request Sent
-                                    </Button>
-                                    <StyledMenu
-                                        id="customized-menu"
-                                        anchorEl={anchorEl}
-                                        keepMounted
-                                        open={Boolean(anchorEl)}
-                                        onClose={handleClose}
-                                    >
-                                        <StyledMenuItem onClick={remFriend}>
-                                        <ListItemIcon>
-                                            <InboxIcon fontSize="small" />
-                                        </ListItemIcon>
-                                        <ListItemText primary="Remove Friend Request" />
-                                        </StyledMenuItem>
-                                    </StyledMenu>
-                                </>
-                            }
-                            {checkFriendRequestStatus(user.result.friends) && 
-                                <>
-                                    <Button variant="contained" color="secondary" disabled align="center">
-                                        Current Friend
-                                    </Button>
-                                </>
-                            }
-
+                                            <StyledMenuItem onClick={remFriend}>
+                                            <ListItemIcon>
+                                                <InboxIcon fontSize="small" />
+                                            </ListItemIcon>
+                                            <ListItemText primary="Remove Friend Request" />
+                                            </StyledMenuItem>
+                                        </StyledMenu>
+                                    </>
+                                }
+                                {checkFriendRequestStatus(user.result.friends) && 
+                                    <>
+                                        <Button variant="contained" color="secondary" disabled align="center">
+                                            Current Friend
+                                        </Button>
+                                    </>
+                                }
+                            </>
+                        }
                         </CardContent>
                     </Card>
                 </>
