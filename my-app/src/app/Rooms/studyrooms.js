@@ -138,6 +138,12 @@ function StudyRooms() {
     }
 
   }
+  
+  function refreshRooms() {
+
+    dispatch(fetchRooms());
+
+  }
 
     return (   
 
@@ -184,6 +190,9 @@ function StudyRooms() {
                 </Button>
               </>
             }
+            <Button variant="contained" color="primary" onClick={refreshRooms} className={classes.refreshButton}>
+              Refresh Rooms List
+            </Button>
           </Grid>
           <br />
         </div>
