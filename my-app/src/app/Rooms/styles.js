@@ -32,5 +32,9 @@ export default makeStyles((theme) => ({
       margin: 100
       
     },
+    refreshButton: {
+
+        marginLeft: '25px',
+    }
     
   }));
