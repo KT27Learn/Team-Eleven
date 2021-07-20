@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 
 import { Card, Grid, Button, Typography, Avatar } from '@material-ui/core';
 import useStyles from './styles';
@@ -15,9 +16,29 @@ function StudyRoom({ room }) {
     const roomCreator = room.username;
     const description = room.description;
     const studymethod = room.studymethod;
-    const avatarurl = room.avatarurl;
+    const [avatarurl, setAvatarurl] = useState('');
     const subject = room.subject;
     const userId = room.userid;
+    
+    useEffect(() => {
+
+        async function fetchUserDetails() {
+
+            try {
+        
+                const result = await axios.get(`http://localhost:5000/users/${room.userid}`);
+                setAvatarurl(result.data.imageurl);
+    
+            } catch(error) {
+                console.log(error);
+            }
+
+        }
+
+        fetchUserDetails();
+
+        // eslint-disable-next-line
+    }, [])
 
     /*
      * Enters the livestream room of the current study room
