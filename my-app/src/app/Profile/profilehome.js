@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import useStyles from './styles';
 import Profile from './profile';
 import History from './history';
 import DetailedSession from './detailedsession'
@@ -9,7 +8,6 @@ import { Grow, Grid, Container, Radio, RadioGroup, FormControlLabel, FormControl
 
 export default function ProfileHome() {
 
-    const classes = useStyles();
     const [detailedSesh, setDetailedSesh] = useState(false);
 
     return (
