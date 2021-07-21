@@ -67,5 +67,20 @@ export default makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',
+    },
+    radioButton: {
+        marginLeft: '20px',
+    },
+    root: {
+        width: '100%',
+      },
+    heading: {
+        fontSize: theme.typography.pxToRem(15),
+        fontWeight: theme.typography.fontWeightRegular,
+    },
+    usernameContainer: {
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'row',
     }
   }));
