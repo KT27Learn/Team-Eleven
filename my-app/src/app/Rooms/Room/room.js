@@ -26,7 +26,7 @@ function StudyRoom({ room }) {
 
             try {
         
-                const result = await axios.get(`http://localhost:5000/users/${room.userid}`);
+                const result = await axios.get(`https://team-eleven-backend.herokuapp.com/users/${room.userid}`);
                 setAvatarurl(result.data.imageurl);
     
             } catch(error) {
