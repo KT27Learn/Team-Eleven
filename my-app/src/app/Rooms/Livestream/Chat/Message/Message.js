@@ -6,7 +6,7 @@ import './Message.css';
 const Message = ({ message: { text, user }, name }) => {
   let isSentByCurrentUser = false;
 
-  const trimmedName = name.trim().toLowerCase();
+  const trimmedName = name.trim().split(' ');
 
   if(user === trimmedName) {
     isSentByCurrentUser = true;
@@ -16,7 +16,26 @@ const Message = ({ message: { text, user }, name }) => {
     isSentByCurrentUser
       ? (
         <div className="messageContainer justifyEnd">
-          <p className="sentText pr-10">{trimmedName}</p>
+          {trimmedName.map((str, index) => {
+            if (index > 1) {
+              return (
+                <>
+                </>
+              )
+            } else if (index === 1) {
+              return (
+                <>
+                  <p className="sentText pr-10">{str.charAt(0)}.</p>
+                </>
+              )
+            } else {
+              return (
+                <>
+                  <p className="sentText pr-10">{str}</p>
+                </>
+              )
+            }
+          })}
           <div className="messageBox backgroundBlue">
             <p className="messageText colorWhite">{ReactEmoji.emojify(text)}</p>
           </div>
@@ -27,7 +46,27 @@ const Message = ({ message: { text, user }, name }) => {
             <div className="messageBox backgroundLight">
               <p className="messageText colorDark">{ReactEmoji.emojify(text)}</p>
             </div>
-            <p className="sentText pl-10 ">{user}</p>
+            {user.split(' ').map((str, index) => {
+            if (index > 1) {
+              return (
+                <>
+                </>
+              )
+
+            } else if (index === 1) {
+              return (
+                <>
+                  <p className="sentText pr-10">{str.charAt(0)}.</p>
+                </>
+              )
+            } else {
+              return (
+                <>
+                  <p className="sentText pr-10">{str}</p>
+                </>
+              )
+            }
+          })}
           </div>
         )
   );
