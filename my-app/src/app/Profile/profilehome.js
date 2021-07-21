@@ -26,19 +26,20 @@ export default function ProfileHome() {
                                 <FormLabel component="legend">Session History:</FormLabel>
                                 <RadioGroup row aria-label="position" name="position" defaultValue="top">
                                     <FormControlLabel
-                                        value="start"
+                                        value="top"
                                         checked={!detailedSesh}
                                         control={<Radio color="primary" />}
                                         label="Compiled History"
-                                        labelPlacement="start"
+                                        labelPlacement="top"
                                         onClick={() => setDetailedSesh(false)}
                                     />
                                     <FormControlLabel 
                                         className={classes.radioButton}
-                                        value="end" 
+                                        value="top" 
                                         checked={detailedSesh}
                                         control={<Radio color="primary" />} 
                                         label="Individual Sessions" 
+                                        labelPlacement="top"
                                         onClick={() => setDetailedSesh(true)}
                                     />
                                 </RadioGroup>
