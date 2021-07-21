@@ -24,7 +24,6 @@ export default makeStyles((theme) => ({
         backgroundColor: "#FFB673",
     },
     purple: {
-      backgroundColor: deepPurple[500],
       width: 150,
       height: 150,
       margin: 100
