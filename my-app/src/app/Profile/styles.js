@@ -73,10 +73,10 @@ export default makeStyles((theme) => ({
     },
     radioButtonTest: {
         marginRight: '30px',
-    }
+    },
     root: {
         width: '100%',
-      },
+    },
     heading: {
         fontSize: theme.typography.pxToRem(15),
         fontWeight: theme.typography.fontWeightRegular,
