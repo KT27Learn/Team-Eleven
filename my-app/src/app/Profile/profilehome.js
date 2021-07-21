@@ -24,18 +24,15 @@ export default function ProfileHome() {
                         <Grid item xs={12} sm={7}>
                             <FormControl component="fieldset">
                                 <FormLabel component="legend">Session History:</FormLabel>
-                                <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                                <RadioGroup aria-label="position" name="position" defaultValue="top">
                                     <FormControlLabel
-                                        className={classes.radioButtonTest}
-                                        value="start"
+                                        value="end" 
                                         checked={!detailedSesh}
                                         control={<Radio color="primary" />}
                                         label="Compiled History"
-                                        labelPlacement="start"
                                         onClick={() => setDetailedSesh(false)}
                                     />
                                     <FormControlLabel 
-                                        className={classes.radioButton}
                                         value="end" 
                                         checked={detailedSesh}
                                         control={<Radio color="primary" />} 
