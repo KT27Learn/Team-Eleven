@@ -20,6 +20,14 @@ const userSchema = mongoose.Schema({
         friendname: {type: String },
         sender: {type: Boolean}
     }],
+    pastrooms: [{
+        creatorid: {type: String, required: true},
+        roomname: { type: String, required: true},
+        description: { type: String, required: true},
+        studymethod: { type: String, required: true},
+        subject: { type: String, required: true},
+        count: {type: Number}
+    }]
 
 });
 
