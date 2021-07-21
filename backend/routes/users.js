@@ -160,6 +160,27 @@ router.route('/uploadprofilepicture').post(async (req, res) => {
     
 });
 
+router.route('/updatename').post(async (req, res) => {
+
+    const { userid, newname } = req.body
+    
+    try {
+        
+        const result = await UserModal.findOneAndUpdate({_id: userid}, {
+            name: newname,
+        });
+
+        res.json({ name: newname});
+
+    } catch (err) {
+        
+        console.error(err);
+        res.status(500).json({ err: 'Something went wrong' });
+    
+    }
+    
+});
+
 router.route('/updatebio').post(async (req, res) => {
 
     const { updatedBio, email } = req.body

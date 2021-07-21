@@ -7,6 +7,7 @@ export const signUp = (formData) => API.post('/users/signup', formData);
 export const googleSignIn = (googleData) => API.post('/users/googlesignin', googleData);
 export const updateProfilePicture = (pictureDetails) => API.post('/users/uploadprofilepicture', pictureDetails);
 export const updateBio = (newBio) => API.post('/users/updatebio', newBio);
+export const updateUsername = (userDetails) => API.post('/users/updatename', userDetails);
 export const fetchLibrary = () => API.get('/library/');
 export const fetchRooms = () => API.get('/rooms/');
 export const addRoom = (RoomDetails) => API.post('/rooms/add', RoomDetails);

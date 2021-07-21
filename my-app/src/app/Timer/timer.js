@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import alarm from "../../assets/timer-alarm.mp3";
 import useStyles from './styles';
@@ -14,12 +15,19 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TableFooter from '@material-ui/core/TableFooter';
+import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import PauseIcon from '@material-ui/icons/Pause';
 import BookIcon from '@material-ui/icons/Book';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/Delete';
+import FirstPageIcon from '@material-ui/icons/FirstPage';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import LastPageIcon from '@material-ui/icons/LastPage';
+import { useTheme } from '@material-ui/core/styles';
 
 function Timer( { match } ) {
   
@@ -43,6 +51,9 @@ function Timer( { match } ) {
   const [cumulatedSeconds, setCumulatedSeconds] = useState(0);
   const [cumulatedStudySeconds, setCumulatedStudySeconds] = useState(0);
   const [cumulatedBreakSeconds, setCumulatedBreakSeconds] = useState(0);
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const emptyRows = useState(rowsPerPage - Math.min(rowsPerPage, tasks.length - page * rowsPerPage));
 
   useEffect(() => {
 
@@ -172,15 +183,24 @@ function Timer( { match } ) {
    * 
    */
   function addTask() {
-    const newTasks = [
-      ...tasks,
-      {
-        description: newTaskText,
-        isComplete: false
-      }
-    ];
-    setTasks(newTasks);
-    setNewTaskText('');
+    if (newTaskText) {
+
+      const newTasks = [
+        ...tasks,
+        {
+          description: newTaskText,
+          isComplete: false
+        }
+      ];
+      setTasks(newTasks);
+      setNewTaskText('');
+
+    } else {
+
+      alert("Fill some text into the add task box first!");
+
+    }
+    
   }
 
   /*
@@ -217,6 +237,73 @@ function Timer( { match } ) {
 
     setTasks(newTasks);
   }
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  function TablePaginationActions(props) {
+    const classes = useStyles();
+    const theme = useTheme();
+    const { count, page, rowsPerPage, onChangePage } = props;
+  
+    const handleFirstPageButtonClick = (event) => {
+      onChangePage(event, 0);
+    };
+  
+    const handleBackButtonClick = (event) => {
+      onChangePage(event, page - 1);
+    };
+  
+    const handleNextButtonClick = (event) => {
+      onChangePage(event, page + 1);
+    };
+  
+    const handleLastPageButtonClick = (event) => {
+      onChangePage(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
+    };
+  
+    return (
+      <div className={classes.rootTable}>
+        <IconButton
+          onClick={handleFirstPageButtonClick}
+          disabled={page === 0}
+          aria-label="first page"
+        >
+          {theme.direction === 'rtl' ? <LastPageIcon /> : <FirstPageIcon />}
+        </IconButton>
+        <IconButton onClick={handleBackButtonClick} disabled={page === 0} aria-label="previous page">
+          {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+        </IconButton>
+        <IconButton
+          onClick={handleNextButtonClick}
+          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+          aria-label="next page"
+        >
+          {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+        </IconButton>
+        <IconButton
+          onClick={handleLastPageButtonClick}
+          disabled={page >= Math.ceil(count / rowsPerPage) - 1}
+          aria-label="last page"
+        >
+          {theme.direction === 'rtl' ? <FirstPageIcon /> : <LastPageIcon />}
+        </IconButton>
+      </div>
+    );
+  }
+  
+  TablePaginationActions.propTypes = {
+    count: PropTypes.number.isRequired,
+    onChangePage: PropTypes.func.isRequired,
+    page: PropTypes.number.isRequired,
+    rowsPerPage: PropTypes.number.isRequired,
+  };
   
   return (
     <Container className={classes.container}>
@@ -278,7 +365,7 @@ function Timer( { match } ) {
         <Typography variant="h4" align="center">Task List</Typography>
         {tasks.length > 0 ? (
           <TableContainer component={Paper}>
-            <Table className={classes.table} aria-label="simple table">
+            <Table className={classes.table} aria-label="custom pagination table">
               <TableHead>
                 <TableRow>
                   <TableCell align="center">No.</TableCell>
@@ -288,11 +375,18 @@ function Timer( { match } ) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {tasks.map((task, index) => (
+                {(rowsPerPage > 0
+                  ? tasks.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                  : tasks
+                ).map((task, index) => (
                   <TableRow key={index}>
-                    <TableCell align="center">{index}</TableCell>
-                    <TableCell align="center">{task.description}</TableCell>
-                    <TableCell align="center">
+                    <TableCell component="th" align="center" scope="row">
+                      {index + 1}
+                    </TableCell>
+                    <TableCell style={{ width: 160 }} align="center">
+                      {task.description}
+                    </TableCell>
+                    <TableCell style={{ width: 160 }} align="center">
                       <Checkbox
                           onChange={() => handleTaskCompletionToggled(task, index)} 
                           checked={task.isComplete}
@@ -306,12 +400,36 @@ function Timer( { match } ) {
                     </TableCell>
                   </TableRow>
                 ))}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 53 * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
+                )}
               </TableBody>
-          </Table>
-        </TableContainer>
+              <TableFooter>
+                <TableRow>
+                  <TablePagination
+                    rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+                    colSpan={3}
+                    count={tasks.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    SelectProps={{
+                      inputProps: { 'aria-label': 'rows per page' },
+                      native: true,
+                    }}
+                    onChangePage={handleChangePage}
+                    onChangeRowsPerPage={handleChangeRowsPerPage}
+                    ActionsComponent={TablePaginationActions}
+                  />
+                </TableRow>
+              </TableFooter>
+            </Table>
+          </TableContainer>
         ) : (
           <p>No tasks yet! Add one above!</p>
         )}
+      <br />
       </div>
        <Button
             variant="contained"

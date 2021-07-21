@@ -133,7 +133,6 @@ function Profile() {
                     <CardContent className={classes.profileContent}>
                         <Avatar className={classes.purple} alt={user.result.name} src={user.result.imageUrl} >{user.result.name.charAt(0)}</Avatar>                        
                         <Typography  variant="h6" align="center">{user.result.name}</Typography>
-                        <Typography  variant="h6" align="center">Email: {user.result.email}</Typography>
                         <Typography  variant="h6" align="center">Cumulative Study Hours:</Typography>
                         <Typography  variant="subtitle1" align="center">{hours < 10 ? "0" + hours : hours} hours: {minutes < 10 ? "0" + minutes: minutes} minutes: {seconds < 10 ? "0" + seconds : seconds} seconds</Typography>
                         {mostFrequentMethods && 

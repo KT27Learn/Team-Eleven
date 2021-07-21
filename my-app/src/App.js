@@ -10,7 +10,7 @@ import Library from './app/Library/libraryhome';
 import ProfileHome from './app/Profile/profilehome';
 import FriendList from './app/Profile/FriendList/friendlist';
 import RoomsList from './app/Rooms/roomhome';
-import CreateRoom from './app/Rooms/createroom'
+import CreateRoomHome from './app/Rooms/CreateRoom/createroomhome';
 import Timer from './app/Timer/timer';
 import Summary from './app/Timer/summary';
 import Broadcast from './app/Rooms/Livestream/broadcasthome';
@@ -47,7 +47,7 @@ const App = () => {
           <Route path="/discoverprofile/:id" exact component={DiscoverProfileHome} />
           <Route path="/friendlist" exact component={FriendList} />
           <Route path="/rooms" exact component={RoomsList} />
-          <Route path="/createroom" exact component={CreateRoom} />
+          <Route path="/createroom" exact component={CreateRoomHome} />
           <Route path="/" exact component={() => <Redirect to="/rooms" />} />
         </Switch>
       </Container>

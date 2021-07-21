@@ -1,6 +1,7 @@
 const path = require('path');
 const router = require('express').Router();
 let Rooms = require('../models/room-model');
+let UserModal = require('../models/user-model');
 
 //returns all study rooms in db
 router.route('/').get((req, res) => {
@@ -43,19 +44,70 @@ router.route('/add').post(async (req, res) => {
 });
 
 //find a particular study room and delete it
-router.route('/delete').post((req, res) => {
-  const RoomId = req.body.roomID;
-  const result = Rooms.findOneAndRemove({ creatorid: RoomId}, (err, docs) => {
+router.route('/delete').post(async (req, res) => {
+  const RoomId = req.body.roomID; 
 
-    if (err) {
+  try {
 
-      console.log(err);
-      res.status(404).json({message: err.message});
+    const result = await Rooms.findOneAndRemove({ creatorid: RoomId});
+
+    const userDetails = await UserModal.findById(result.userid);
+
+    let finalResult;
+
+    if (userDetails.pastrooms) {
+
+      const alreadyInRecords = userDetails.pastrooms.filter(room => room.creatorid === RoomId)
+
+      if (alreadyInRecords.length  === 0) {
+
+        const oldRoom = {
+
+          creatorid: RoomId,
+          roomname: result.roomname,
+          description: result.description,
+          studymethod: result.studymethod,
+          subject: result.subject,
+          count: 1,
     
+        }
+
+        userDetails.pastrooms.push(oldRoom);
+        finalResult = userDetails.pastrooms
+        userDetails.save();
+
+      } else {
+
+        const newCount = alreadyInRecords[0].count + 1;
+
+        const newUserDetails = await UserModal.findOneAndUpdate(
+          {_id: result.userid},
+          {$set: {"pastrooms.$[el].count": newCount } },
+          { 
+            arrayFilters: [{ "el.creatorid": RoomId }],
+            new: true
+          }
+        )
+        finalResult = newUserDetails.pastrooms;
+          
+
+      }
+
     } else {
-      res.status(200).json({ id: RoomId });
+
+      userDetails.pastrooms = [{oldRoom}];
+      await userDetails.save();
+      finalResult = [{oldRoom}];
+
     }
-  });
+    
+    res.status(200).json({ id: RoomId, pastrooms: finalResult });
+
+  } catch (err) {
+
+    res.status(404).json({message: err.message});
+
+  }
 
 });
 
