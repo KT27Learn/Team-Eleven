@@ -5,9 +5,10 @@ import { useHistory } from 'react-router-dom';
 import useStyles from './styles';
 import FavouriteMethods from './favouritemethods';
 import { selectAllPastLogs, fetchSessions } from './profileslice';
-import { updateProfilePicture, updateBio } from '../Auth/authSlice';
+import { updateProfilePicture, updateBio, updateUsername } from '../Auth/authSlice';
 
-import { Typography, Avatar, Button, Card, CardContent, TextField, Grid ,CircularProgress } from '@material-ui/core';
+import { Typography, Avatar, Button, Card, CardContent, TextField, Grid ,CircularProgress, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import CreateIcon from '@material-ui/icons/Create';
 import EditIcon from '@material-ui/icons/Edit';
 
 function Profile() {
@@ -20,9 +21,10 @@ function Profile() {
     const historyStatus = useSelector((state) => state.profile.status);
     const historyList = useSelector(selectAllPastLogs);
 
+    const [name, setName] = useState(user.result.name);
+    const [newName, setNewName] = useState(user.result.name);
     const [bio, setBio] = useState(user.result.bio);
     const [newBio, setNewBio] = useState(user.result.bio);
-    const [changeBio, setChangeBio] = useState(false);
     const [hours, setHours] = useState(0)
     const [minutes, setMintues] = useState(0);
     const [seconds, setSeconds] = useState(0);
@@ -32,6 +34,8 @@ function Profile() {
     const [fileInputState, setFileInputState] = useState('');
     const [previewSource, setPreviewSource] = useState('');
     const [selectedFile, setSelectedFile] = useState();
+    const [open, setOpen] = useState(false);
+    const [bioOpen, setBioOpen] = useState(false);
 
     useEffect(() => {
 
@@ -190,19 +194,11 @@ function Profile() {
 
     }
 
-    const cancelBioChanges = () => {
-
-        setNewBio(bio);
-        setChangeBio(!changeBio);
-
-    }
-
     const saveBioChanges = () => {
         
         dispatch(updateBio({ updatedBio: newBio, email: user.result.email }));
         setBio(newBio);
-        setChangeBio(!changeBio);
-        alert('Bio Successfully Changed')
+        setBioOpen(false);
     }
 
     const changePassword = () => {
@@ -210,6 +206,29 @@ function Profile() {
         history.push('/changepassword');
 
     }
+
+    const changeUsername = () => {
+        dispatch(updateUsername({ userid: user.result._id, newname: newName  }));
+        setOpen(false);
+        setName(newName);
+
+    }
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleBioClickOpen = () => {
+        setBioOpen(true);
+    };
+
+    const handleBioClose = () => {
+        setBioOpen(false);
+    };
 
     return (
         <>
@@ -235,7 +254,7 @@ function Profile() {
 
                         ) : (
                             <>
-                                <Avatar className={classes.purple} alt={user.result.name} src={user.result.imageUrl} >{user.result.name.charAt(0)}</Avatar>
+                                <Avatar className={classes.purple} alt={name} src={user.result.imageUrl} >{name.charAt(0)}</Avatar>
                             </>
                         )}
                         <form onSubmit={handleSubmitFile} className={classes.pictureForm}>
@@ -264,7 +283,18 @@ function Profile() {
                             </Button>
                         </Grid>
                         <br />
-                        <Typography  variant="h6" align="center">{user.result.name}</Typography>
+                        <Grid
+                            container
+                            alignItems="center"
+                            direction="column" 
+                        >
+                            <Grid className={classes.usernameContainer}>
+                                <Typography  variant="h6" align="center">{name}</Typography>
+                                <IconButton onClick={handleClickOpen}>
+                                    <CreateIcon />
+                                </IconButton>
+                            </Grid>
+                        </Grid>
                         <Typography  variant="h6" align="center">Email: {user.result.email}</Typography>
                         <Typography  variant="h6" align="center">Cumulative Study Hours:</Typography>
                         <Typography  variant="subtitle1" align="center">{hours < 10 ? "0" + hours : hours} hours: {minutes < 10 ? "0" + minutes: minutes} minutes: {seconds < 10 ? "0" + seconds : seconds} seconds</Typography>
@@ -295,59 +325,76 @@ function Profile() {
                 <Card className={classes.bioCard}>
                     <CardContent >
                         <Typography  variant="h6" align="center">About Me:</Typography>
-                        { changeBio ? (
-
-                            <>
-                                <TextField
-                                    id="outlined-multiline-static"
-                                    multiline
-                                    rows={4}
-                                    defaultValue="New Bio"
-                                    align="center"
-                                    value={newBio}
-                                    onChange={(e) => setNewBio(e.target.value)}
-                                    variant="outlined"
-                                />
-                            </>
-
-                        ) : (
-
-                            <>
-                                {bio? (
-                                    <>
-                                        <Typography  variant="subtitle2" align="center">{bio}</Typography>
-                                    </>
-                                ): (
-                                    <>
-                                        <Typography  variant="subtitle2" align="center">Create your own personalised bio! </Typography>
-                                    </>
-                                )}
-                            </>
-
-                        )
-
-                        }
+                            {bio? (
+                                <>
+                                    <Typography  variant="subtitle2" align="center">{bio}</Typography>
+                                </>
+                            ): (
+                                <>
+                                    <Typography  variant="subtitle2" align="center">No personalised bio yet </Typography>
+                                </>
+                            )}
                     </CardContent>
                     <Grid>
-                        {changeBio ? (  
-                            <>
-                                <Button variant="contained" color="primary" align="left" onClick={saveBioChanges}>
-                                    Save
-                                </Button>
-                                <Button className={classes.cancelButton} variant="contained" color="primary" align="right" onClick={cancelBioChanges}>
-                                    Cancel 
-                                </Button>
-                            </>
-                        ) : (
-                            <>
-                                <Button variant="contained" color="primary" align="center" onClick={() => setChangeBio(!changeBio)}>
-                                    Edit Bio
-                                </Button>
-                            </>
-                        )}
+                        <Button variant="contained" color="primary" align="center" onClick={handleBioClickOpen}>
+                            Edit Bio
+                        </Button>
                     </Grid>
                     <br />
                 </Card>
+                <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Edit Username</DialogTitle>
+                    <DialogContent>
+                    <DialogContentText>
+                        To change your username, please enter a new username below.
+                    </DialogContentText>
+                    <TextField
+                        autoFocus
+                        margin="dense"
+                        id="name"
+                        label="New Username"
+                        type="email"
+                        value={newName}
+                        onChange={(e) => setNewName(e.target.value)}
+                        fullWidth
+                    />
+                    </DialogContent>
+                    <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={changeUsername} color="primary">
+                        Submit
+                    </Button>
+                    </DialogActions>
+                </Dialog>
+                <Dialog open={bioOpen} onClose={handleBioClose} aria-labelledby="form-dialog-title">
+                    <DialogTitle id="form-dialog-title">Edit Username</DialogTitle>
+                    <DialogContent>
+                    <DialogContentText>
+                        To change your bio, please enter a new bio below.
+                    </DialogContentText>
+                        <TextField
+                            id="outlined-multiline-static"
+                            multiline
+                            rows={4}
+                            label="New Bio"
+                            defaultValue="New Bio"
+                            align="center"
+                            value={newBio}
+                            onChange={(e) => setNewBio(e.target.value)}
+                            variant="outlined"
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                    <Button onClick={handleBioClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={saveBioChanges} color="primary">
+                        Submit
+                    </Button>
+                    </DialogActions>
+                </Dialog>
                 
                 </>
             ) : (

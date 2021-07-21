@@ -60,6 +60,11 @@ const roomsSlice = createSlice({
     },
     [deleteRoom.fulfilled]: (state, action) => {
       state.rooms.filter(room => room._id !== action.payload.id);
+      var args = JSON.parse(window.localStorage.getItem("profile"));
+      args["result"]["pastrooms"] = action?.payload.pastrooms;
+      //Update the localStorage with new value
+      localStorage.setItem("profile", JSON.stringify(args));
+      window.location.href = '../';
     },
   },
 })

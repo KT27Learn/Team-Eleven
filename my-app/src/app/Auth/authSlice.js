@@ -49,6 +49,19 @@ export const authSlice = createSlice({
       //Update the localStorage with new value
       localStorage.setItem("profile", JSON.stringify(args));
     },
+    updateName: (state, action) => {
+
+      if (state.authData) {
+
+        state.authData.name = action?.payload.name;
+
+      }
+      
+      var args = JSON.parse(window.localStorage.getItem("profile"));
+      args["result"]["name"] = action?.payload.name;
+      //Update the localStorage with new value
+      localStorage.setItem("profile", JSON.stringify(args));
+    },
     updateFriendList: (state, action) => {
 
       var args = JSON.parse(window.localStorage.getItem("profile"));
@@ -89,7 +102,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const { login, logout, fetchPastSessionsLog, changeProfilePic, updateSelfBio, updateFriendList, updateRemovedFriend, updateSendFriendRequest, updateRemovedFriendRequest} = authSlice.actions;
+export const { login, logout, fetchPastSessionsLog, changeProfilePic, updateSelfBio, updateFriendList, updateRemovedFriend, updateSendFriendRequest, updateRemovedFriendRequest, updateName } = authSlice.actions;
 
 export const updateProfilePicture = (pictureDetails) => async (dispatch) => {
 
@@ -180,6 +193,22 @@ export const updateFriends = (userid) => async (dispatch) => {
     dispatch(updateFriendList(data));
 
   } catch(error) {
+
+    alert(error.message);
+    console.log(error);
+
+  }
+
+}
+
+export const updateUsername = (userDetails) => async (dispatch) => {
+
+  try {
+
+    const { data } = await api.updateUsername(userDetails);
+    dispatch(updateName(data));
+
+  } catch(error ) {
 
     alert(error.message);
     console.log(error);
