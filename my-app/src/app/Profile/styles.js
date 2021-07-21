@@ -71,6 +71,9 @@ export default makeStyles((theme) => ({
     radioButton: {
         marginLeft: '30px',
     },
+    radioButtonTest: {
+        marginRight: '30px',
+    }
     root: {
         width: '100%',
       },
