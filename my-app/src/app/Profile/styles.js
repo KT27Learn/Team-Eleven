@@ -69,7 +69,7 @@ export default makeStyles((theme) => ({
         flexDirection: 'column',
     },
     radioButton: {
-        marginLeft: '20px',
+        marginLeft: '30px',
     },
     root: {
         width: '100%',
