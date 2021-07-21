@@ -26,6 +26,7 @@ export default function ProfileHome() {
                                 <FormLabel component="legend">Session History:</FormLabel>
                                 <RadioGroup row aria-label="position" name="position" defaultValue="top">
                                     <FormControlLabel
+                                        className={classes.radioButtonTest}
                                         value="start"
                                         checked={!detailedSesh}
                                         control={<Radio color="primary" />}
