@@ -34,7 +34,7 @@ export default function ProfileHome() {
                                         onClick={() => setDetailedSesh(false)}
                                     />
                                     <FormControlLabel 
-                                        sx={{marginLeft: 2}}
+                                        className={classes.radioButton}
                                         value="end" 
                                         checked={detailedSesh}
                                         control={<Radio color="primary" />} 
