@@ -33,6 +33,14 @@ export const deleteRoom = createAsyncThunk(
   }
 )
 
+export const deleteRoomFromHistory = createAsyncThunk(
+  'rooms/deleteRoomFromHistory',
+  async (deletedRoom) => {
+    const response = await api.deleteRoomFromHistory(deletedRoom);
+    return response.data;
+  }
+)
+
 const roomsSlice = createSlice({
   name: 'rooms',
   initialState,
@@ -65,6 +73,13 @@ const roomsSlice = createSlice({
       //Update the localStorage with new value
       localStorage.setItem("profile", JSON.stringify(args));
       window.location.href = '../';
+    },
+    [deleteRoomFromHistory.fulfilled]: (state, action) => {
+      var args = JSON.parse(window.localStorage.getItem("profile"));
+      args["result"]["pastrooms"] = action?.payload.pastrooms;
+      //Update the localStorage with new value
+      localStorage.setItem("profile", JSON.stringify(args));
+      window.location.reload();
     },
   },
 })
