@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 
-import { Card, Grid, Button, Avatar, Typography, IconButton, Dialog, DialogActions, DialogContent, DialogTitle, DialogContentText    } from '@material-ui/core';
+import { Card, Grid, Button, Avatar, Typography, IconButton, Dialog, DialogActions, DialogContent, DialogTitle, DialogContentText } from '@material-ui/core';
 import { deletePost } from '../discoverslice';
 import useStyles from './styles';
 import Image from 'material-ui-image';
@@ -29,7 +29,7 @@ function Post({ post }) {
 
             try {
         
-                const result = await axios.get(`http://localhost:5000/users/${post.creatorid}`);
+                const result = await axios.get(`https://team-eleven-backend.herokuapp.com/users/${post.creatorid}`);
                 setAvatarurl(result.data.imageurl);
     
             } catch(error) {
