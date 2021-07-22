@@ -133,7 +133,7 @@ const Navbar = () => {
               <div className={classes.profile}>
                 <Avatar  className={classes.purple} alt={user.result.name} src={user.result.imageUrl}>{user.result.name.charAt(0)}</Avatar>
                 <Button aria-controls="profile-menu" aria-haspopup="true" onClick={handleClick}>
-                  <Typography className={classes.userName} variant="h6">{user.result.name}</Typography>
+                  <Typography className={classes.userName} variant="subtitle1">{user.result.name}</Typography>
                 </Button>
                 <Menu
                   id="profile-menu"
