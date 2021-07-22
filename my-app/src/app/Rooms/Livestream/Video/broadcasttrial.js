@@ -175,12 +175,11 @@ export default function Broadcast() {
         setStopVideo(!stopVideo);
         if (stopVideo) {
           
-          let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-          userVideo.current.srcObject = stream;
+          userVideo.current.srcObject.getVideoTracks()[0].enabled = true;
 
         } else {
           
-          userVideo.current.srcObject.getVideoTracks()[0].stop();
+          userVideo.current.srcObject.getVideoTracks()[0].enabled = false;
           
           
         }
