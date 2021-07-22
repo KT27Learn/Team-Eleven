@@ -173,8 +173,18 @@ export default function Broadcast() {
     const toggleVideo = async () => {
 
         setStopVideo(!stopVideo);
-        userVideo.current.srcObject.getVideoTracks()[0].enabled =
-        !(userVideo.current.srcObject.getVideoTracks()[0].enabled)
+        if (stopVideo) {
+          
+          let stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+          userVideo.current.srcObject = stream;
+
+        } else {
+          
+          userVideo.current.srcObject.getVideoTracks()[0].stop();
+          
+          
+        }
+        
 
     }
     
