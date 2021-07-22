@@ -26,7 +26,9 @@ export default makeStyles((theme) => ({
     purple: {
       width: 150,
       height: 150,
-      margin: 100
+      margin: 100,
+      color: '#000000',
+      backgroundColor: '#b673ff',
       
     },
     refreshButton: {
