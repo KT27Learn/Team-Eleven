@@ -182,7 +182,23 @@ export default function Broadcast() {
     return (
         <>
         <Container>
-            <video muted ref={userVideo} autoPlay playsInline /> 
+             {stopVideo ? (
+                
+                <>
+                    <Card className={classes.videoCard}>
+                        <CardContent className={classes.videoContent}>
+                            <Typography className={classes.videoText} variant="h5" color="white">Camera turned off</Typography>
+                        </CardContent>
+                    </Card>
+
+                </>
+
+            ) : (
+
+                <>
+                    <video muted ref={userVideo} autoPlay playsInline /> 
+                </>
+            )}
             <br />
             <br />
             <Button
