@@ -40,6 +40,38 @@ function RoomHistory() {
 
     }
 
+    const sortCount = (arr) => {
+
+        if (arr) {
+
+            const newArr = arr;
+
+            for (let i = 0; i < newArr.length; i++) {
+
+                for (let j = 0; j < (newArr.length - 1) - i; j++) {
+
+                    if (newArr[j].count < newArr[j + 1].count) {
+
+                        const temp = newArr[j];
+                        newArr[j] = newArr[j + 1];
+                        newArr[j + 1] = temp;
+
+                    }
+
+                }
+
+            }
+
+            return newArr;
+
+        } else {
+
+            return arr;
+
+        }
+
+    }
+
     return (
 
         <>
@@ -51,7 +83,7 @@ function RoomHistory() {
                             Choose from past rooms
                         </Typography>
 
-                        {user.result.pastrooms.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((room) => (
+                        {sortCount(user.result.pastrooms).slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((room) => (
                             <Grid key={room._id} item xs={12} sm={6} md={6}>
                                 <RoomCard room={room} />
                             </Grid>
