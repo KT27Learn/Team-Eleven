@@ -26,6 +26,14 @@ export const addNewPost = createAsyncThunk(
   }
 )
 
+export const deletePost = createAsyncThunk(
+  'discover/deletePost',
+  async (postId) => {
+    const response = await api.deletePost(postId);
+    return response.data
+  }
+)
+
 const discoverSlice = createSlice({
   name: 'discover',
   initialState,
@@ -50,6 +58,9 @@ const discoverSlice = createSlice({
     },
     [addNewPost.fulfilled]: (state, action) => {
       state.posts.push(action.payload.result);
+    },
+    [deletePost.fulfilled]: (state, action) => {
+      state.posts = state.posts.filter(post => post._id !== action.payload.postid);
     },
     [fetchUserProfile.pending]: (state, action) => {
       state.profilestatus = 'loading';
@@ -80,3 +91,4 @@ export const selectUserProfile = (state, postId) =>
 
 export const selectPostByUsername = (state, username) =>
   state.discover.posts.find((post) => post.username === username)
+
