@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { selectAllRooms, fetchRooms, addNewRoom} from '../roomsslice';
+import { selectAllRooms, fetchRooms, addNewRoom, deleteRoomFromHistory} from '../roomsslice';
 import useStyles from './styles';
 
 import { Card, Grid, Button, Typography } from '@material-ui/core';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 function RoomCard({ room }) {
 
@@ -131,6 +132,17 @@ function RoomCard({ room }) {
         
 
     }
+
+    function deleteFromHistory() {
+
+        const userDetails = {
+            roomID: creatorid, 
+            userid: user.result._id
+        }
+
+        dispatch(deleteRoomFromHistory(userDetails));
+
+    }
         
     return (   
         <>
@@ -168,6 +180,11 @@ function RoomCard({ room }) {
             <Grid className={classes.roomButton}>
                 <Button variant="contained" color="default" endIcon={<PlayArrowIcon/>} onClick={Create}>
                     Create Room
+                </Button>
+                <br />
+                <br />
+                <Button variant="contained" color="default" endIcon={<DeleteIcon/>} onClick={deleteFromHistory}>
+                    Delete Room
                 </Button>
             </Grid>
         </Card>
