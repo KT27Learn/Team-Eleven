@@ -50,4 +50,24 @@ router.route('/add').post(async (req, res) => {
     
 });
 
+//add a new post to db
+router.route('/delete').post(async (req, res) => {
+
+
+  const { postid } = req.body; 
+
+  try {
+
+    const result = await Post.findByIdAndDelete(postid);
+    res.status(200).json({ postid });
+
+  } catch (error) {
+
+    res.status(404).json({message: error.message})
+
+  }
+  
+});
+
+
 module.exports = router;
