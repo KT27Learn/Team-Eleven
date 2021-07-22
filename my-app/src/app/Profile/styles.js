@@ -1,5 +1,4 @@
 import { makeStyles } from '@material-ui/core/styles';
-import { deepPurple } from '@material-ui/core/colors';
 
 export default makeStyles((theme) => ({
     container: {
@@ -20,8 +19,8 @@ export default makeStyles((theme) => ({
         alignItems: 'center',
     },
     purple: {
-      color: theme.palette.getContrastText(deepPurple[500]),
-      backgroundColor: deepPurple[500],
+      color: '#000000',
+      backgroundColor: '#b673ff',
       width: 150,
       height: 150,
       margin: 100
