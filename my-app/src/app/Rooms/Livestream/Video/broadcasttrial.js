@@ -11,8 +11,6 @@ import { Container, Button } from '@material-ui/core';
 import VolumeOffIcon from '@material-ui/icons/VolumeOff';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import DeleteIcon from '@material-ui/icons/Delete';
-import VideocamOffIcon from '@material-ui/icons/VideocamOff';
-import VideocamIcon from '@material-ui/icons/Videocam';
 
 const peerConnections = {};
 const config = {
