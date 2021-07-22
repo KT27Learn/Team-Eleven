@@ -14,8 +14,8 @@ export default makeStyles((theme) => ({
         alignItems: 'center',
     },
     purple: {
-      color: "#FFFFFF",
-      backgroundColor: "#FFFFFF",
+      color: '#000000',
+      backgroundColor: '#b673ff',
       width: 150,
       height: 150,
       margin: 100
