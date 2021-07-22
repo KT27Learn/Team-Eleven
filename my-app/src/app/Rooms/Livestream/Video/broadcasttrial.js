@@ -7,10 +7,12 @@ import queryString from 'query-string';
 import { deleteRoom } from '../../roomsslice';
 import useStyles from './styles';
 
-import { Container, Button } from '@material-ui/core';
+import { Container, Button, Card, CardContent, Typography } from '@material-ui/core';
 import VolumeOffIcon from '@material-ui/icons/VolumeOff';
 import VolumeUpIcon from '@material-ui/icons/VolumeUp';
 import DeleteIcon from '@material-ui/icons/Delete';
+import VideocamOffIcon from '@material-ui/icons/VideocamOff';
+import VideocamIcon from '@material-ui/icons/Videocam';
 
 const peerConnections = {};
 const config = {
@@ -45,6 +47,7 @@ export default function Broadcast() {
     const [peerConnection] = useState([]);
     const [roomID, setRoomID] = useState('');
     const [muteStream, setMuteStream] = useState(false);
+    const [stopVideo, setStopVideo] = useState(false);
     const socketRef = useRef();
     const userVideo = useRef();
     
@@ -167,6 +170,14 @@ export default function Broadcast() {
 
     }
     
+    const toggleVideo = async () => {
+
+        setStopVideo(!stopVideo);
+        userVideo.current.srcObject.getVideoTracks()[0].enabled =
+        !(userVideo.current.srcObject.getVideoTracks()[0].enabled)
+
+    }
+    
 
     return (
         <>
@@ -192,7 +203,7 @@ export default function Broadcast() {
                         endIcon={<VolumeUpIcon />}
                         onClick={toggleAudio}
                     >
-                        Unmute Audio for Viewers
+                        Turn on Mic
                     </Button>
                 </>
 
@@ -206,8 +217,36 @@ export default function Broadcast() {
                         endIcon={<VolumeOffIcon />}
                         onClick={toggleAudio}
                     >
-                        Mute Audio for Viewers
+                        Turn off Mic
                     </Button>
+                </>
+
+            )}
+            {stopVideo ? (
+                <>
+                    <Button
+                        className={classes.streamerMuteAudioButton}
+                        color="secondary"
+                        variant="contained"
+                        endIcon={<VideocamIcon />}
+                        onClick={toggleVideo}
+                    >
+                        Start Camera
+                    </Button>
+                </>
+
+            ): (
+                <>
+                    <Button
+                        className={classes.streamerMuteAudioButton}
+                        color="secondary"
+                        variant="contained"
+                        endIcon={<VideocamOffIcon />}
+                        onClick={toggleVideo}
+                    >
+                        Stop Camera
+                    </Button>
+
                 </>
 
             )}
