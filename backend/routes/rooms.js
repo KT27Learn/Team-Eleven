@@ -111,6 +111,31 @@ router.route('/delete').post(async (req, res) => {
 
 });
 
+//find a particular study room and delete it
+router.route('/deleteroomfromhistory').post(async (req, res) => {
+  
+  const { roomID, userid } = req.body; 
+
+  try {
+
+    const newUserDetails = await UserModal.update(
+      {_id: userid},
+      {"$pull": { "pastrooms" : { "creatorid": roomID } }},
+      { safe: true, multi:true }
+    )
+    
+    const result = await UserModal.findById(userid);
+
+    res.status(200).json({ id: roomID, pastrooms: result.pastrooms });
+
+  } catch (err) {
+
+    res.status(404).json({message: err.message});
+
+  }
+
+});
+
 //find a particular study room for its details
 router.route('/:id').get((req, res) => {
     
