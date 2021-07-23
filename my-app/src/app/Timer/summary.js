@@ -51,29 +51,37 @@ function Summary() {
         <Container className={classes.container}>
             {user ? (
                 <>
-                <Card classname={classes.profileCard}>
-                    <CardContent className={classes.profileContent}>
-                        <Avatar className={classes.purple} align="center" alt={user.result.name} src={user.result.imageUrl} >{user.result.name.charAt(0)}</Avatar>
-                        <Typography  variant="h3" align="center">{user.result.name}</Typography>
-                        <Typography  variant="h5" align="center">Congrats on logging in a study session!</Typography>
-                        <Typography  variant="h5" align="center">Here are your stats: </Typography>
-                        <Typography  variant="h6" align="center">Cumulative Study Hours:</Typography>
-                        <Typography  variant="subtitle1" align="center">{hours < 10 ? "0" + hours : hours} hours: {minutes < 10 ? "0" + minutes: minutes} minutes: {seconds < 10 ? "0" + seconds : seconds} seconds</Typography>
-                        <Typography  variant="h6" align="center">Tasks that you have finished!</Typography>
-                        {session.session.tasks.filter((task) => task.isComplete).map((task) => (
-                            <Typography  variant="h5" align="center">{task.description}</Typography>
-                        ))}
-                        <Typography  variant="h6" align="center">Task you have yet to complete: </Typography>
-                        {session.session.tasks.filter((task) => !task.isComplete).map((task) => (
-                            <Typography  variant="h5" align="center">{task.description}</Typography>
-                        ))}
-                        <br></br>
-                    </CardContent>
-                </Card>
+                <Grid
+                    container
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                >
+                    <Avatar className={classes.purple} align="center" alt={user.result.name} src={user.result.imageUrl} >{user.result.name.charAt(0)}</Avatar>
+                    <Typography  variant="h3" align="center">{user.result.name}</Typography>
+                    <Typography  variant="h5" align="center">Congrats on logging in a study session!</Typography>
+                    <Typography  variant="h5" align="center">Here are your stats: </Typography>
+                    <Typography  variant="h6" align="center">Cumulative Study Hours:</Typography>
+                    <Typography  variant="subtitle1" align="center">{hours < 10 ? "0" + hours : hours} hours: {minutes < 10 ? "0" + minutes: minutes} minutes: {seconds < 10 ? "0" + seconds : seconds} seconds</Typography>
+                    <Typography  variant="h6" align="center">Tasks that you have finished!</Typography>
+                    {session.session.tasks.filter((task) => task.isComplete).map((task) => (
+                        <Typography  variant="h5" align="center">{task.description}</Typography>
+                    ))}
+                    <Typography  variant="h6" align="center">Task you have yet to complete: </Typography>
+                    {session.session.tasks.filter((task) => !task.isComplete).map((task) => (
+                        <Typography  variant="h5" align="center">{task.description}</Typography>
+                    ))}
+                    <br />                  
+                </Grid>
                 </>
             ) : (
-                <Card classname={classes.profileCard}>
-                <CardContent className={classes.profileContent}>
+                <>
+                <Grid
+                    container
+                    direction="column"
+                    justifyContent="center"
+                    alignItems="center"
+                >
                     <Typography  variant="h3" align="center">John Doe</Typography>
                     <Typography  variant="h5" align="center">Congrats on finishing a study session!</Typography>
                     <Typography  variant="h5" align="center">Please Log In the next time to sync your stats to your account!</Typography>
@@ -88,9 +96,9 @@ function Summary() {
                     {session.tasks.filter((task) => !task.isComplete).map((task) => (
                         <Typography  variant="h5" align="center">{task.description}</Typography>
                     ))}
-                    <br></br>
-                </CardContent>
-            </Card>
+                    <br />
+                </Grid>
+                </>
             )}
         </Container>
 
