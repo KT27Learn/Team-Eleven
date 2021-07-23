@@ -29,7 +29,7 @@ export default makeStyles((theme) => ({
 
       },
       profileContent: {
-            backgroundColor: "#FFB673",
+            backgroundColor: "#000000",
             alignItems: 'center',
       },
       purple: {
