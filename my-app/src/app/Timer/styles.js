@@ -22,9 +22,20 @@ export default makeStyles((theme) => ({
         alignItems: 'center',
    
       },
+      profileCard: {
+            height: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+
+      },
+      profileContent: {
+            backgroundColor: "#FFB673",
+            alignItems: 'center',
+      },
       purple: {
-        color: theme.palette.getContrastText(deepPurple[500]),
-        backgroundColor: deepPurple[500],
+        color: '#000000',
+        backgroundColor: '#b673ff',
         width: 150,
         height: 150,
         margin: 100
