@@ -34,5 +34,9 @@ export default makeStyles((theme) => ({
       table: {
         minWidth: 650,
       },
+      rootTable: {
+        flexShrink: 0,
+        marginLeft: theme.spacing(2.5),
+      },
 
   }));
