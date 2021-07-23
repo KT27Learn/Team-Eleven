@@ -381,7 +381,7 @@ function Timer( { match } ) {
                 ).map((task, index) => (
                   <TableRow key={index}>
                     <TableCell component="th" align="center" scope="row">
-                      {index + 1}
+                      {(page * rowsPerPage) + index + 1}
                     </TableCell>
                     <TableCell style={{ width: 160 }} align="center">
                       {task.description}
