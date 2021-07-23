@@ -15,7 +15,7 @@ export default makeStyles((theme) => ({
         
     },
     profileContent: {
-        backgroundColor: "#000000",
+        backgroundColor: "#FFB673",
         alignItems: 'center',
     },
     purple: {
