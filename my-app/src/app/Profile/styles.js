@@ -84,5 +84,9 @@ export default makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'row',
-    }
+    },
+    rootTable: {
+        flexShrink: 0,
+        marginLeft: theme.spacing(2.5),
+    },
   }));
