@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import useStyles from './styles';
 
-import { Typography, Avatar, Container, Card, CardContent } from '@material-ui/core';
+import { Typography, Avatar, Container, Grid } from '@material-ui/core';
 
 function Summary() {
 
