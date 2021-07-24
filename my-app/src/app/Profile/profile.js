@@ -219,6 +219,7 @@ function Profile() {
     };
 
     const handleClose = () => {
+        newName(name);
         setOpen(false);
     };
 
@@ -227,6 +228,7 @@ function Profile() {
     };
 
     const handleBioClose = () => {
+        setNewBio(bio)
         setBioOpen(false);
     };
 
