@@ -219,8 +219,8 @@ function Profile() {
     };
 
     const handleClose = () => {
-        newName(name);
         setOpen(false);
+        newName(name);
     };
 
     const handleBioClickOpen = () => {
@@ -228,8 +228,8 @@ function Profile() {
     };
 
     const handleBioClose = () => {
-        setNewBio(bio)
         setBioOpen(false);
+        setNewBio(bio);
     };
 
     return (
