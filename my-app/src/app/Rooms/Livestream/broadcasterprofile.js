@@ -1,82 +1,64 @@
 import React, { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import axios from 'axios';
+import queryString from 'query-string';
 
 import useStyles from './styles';
-import { fetchRooms, selectAllRooms } from '../roomsslice';
 
-import { Card, Grid, Button, Typography, Avatar, CircularProgress } from '@material-ui/core/';
+import { Card, Grid, Button, Typography, Avatar } from '@material-ui/core/';
 
 function BroadcasterProfile( {room} ) {
 
-    const dispatch = useDispatch();
     const classes = useStyles();
-    const roomStatus = useSelector((state) => state.rooms.status);
-    const roomsList = useSelector(selectAllRooms);
+    const location = useLocation();
+    const roomid = queryString.parse(location.search).room + '';
+    const userid = queryString.parse(location.search).userid + '';
+    const [description, setDescription] = useState('');
     const [username, setUserName] = useState('');
     const [avatarurl, setAvatarurl] = useState('');
     const [userBio, setUserBio] = useState('');
-    const [avatarImageStatus, setAvatarImageStatus] = useState(false);
-
 
     useEffect(() => {
 
-        if (roomStatus === 'idle') {
+        async function fetchBroadcasterDetails(id) {
+            try {
+                
+                const roomresult = await axios.get(`https://team-eleven-backend.herokuapp.com/rooms/${id}`)
+                setDescription(roomresult.data.description);
     
-          dispatch(fetchRooms());
-    
-        }
-
-        if (roomsList) {
-
-            const room = getRoom(roomsList);
-
-            async function fetchBroadcasterDetails(id) {
-                try {
-        
-                    const result = await axios.get(`https://team-eleven-backend.herokuapp.com/users/${id}`);
-                    setUserName(result.data.name);
-                    setAvatarurl(result.data.imageurl);
-                    setUserBio(result.data.bio);
-                    setAvatarImageStatus(true);
-        
-                } catch(error) {
-                    console.log(error);
-                }
+            } catch(error) {
+                console.log(error);
             }
-
-            console.log(room);
-        
-            fetchBroadcasterDetails(room.userid);
-
         }
+    
+        fetchBroadcasterDetails(roomid);
+
         // eslint-disable-next-line
-    }, [roomStatus, dispatch])
+    }, [])
 
-    /*
-     * Returns the room that has the same id as the current room
-     * 
-     * @param {Array} arr list of all study room
-     * @return {Object} room room object of the current room
-     * 
-     */
-    const getRoom = (array) => {
+    useEffect(() => {
 
-        const filteredRooms = array.filter(rm => rm.creatorid === room);
-        return filteredRooms[0];
+        async function fetchBroadcasterDetails(id) {
+            try {
+                
+                const result = await axios.get(`https://team-eleven-backend.herokuapp.com/users/${id}`);
+                setUserName(result.data.name);
+                setAvatarurl(result.data.imageurl);
+                setUserBio(result.data.bio);
+    
+            } catch(error) {
+                console.log(error);
+            }
+        }
+    
+        fetchBroadcasterDetails(userid);
 
-    }
+        // eslint-disable-next-line
+    }, [])
 
     return (
         <>
-            {!(avatarImageStatus) ? (
-
-                <CircularProgress />
-
-            ) : (
-
-                <>
-                    <Card className={classes.profileContainer}>
+            <Card className={classes.profileContainer}>
                         <Grid
                             container
                             direction="row"
@@ -105,7 +87,7 @@ function BroadcasterProfile( {room} ) {
                                 justify="flex-start"
                             >   
                                 <Typography variant="h6">Room Description:</Typography>
-                                <Typography variant="subtitle2">{getRoom(roomsList).description ?? 'Welcome to my room!'}</Typography>
+                                <Typography variant="subtitle2">{description ?? 'Welcome to my room!'}</Typography>
                                 <br />
                                 <Typography variant="h6">About Me:</Typography>
                                 <Typography variant="subtitle2">{userBio ?? 'No bio at the moment'}</Typography>
@@ -114,11 +96,6 @@ function BroadcasterProfile( {room} ) {
                     <br />
                     <br />
                     <br />
-
-                </>
-
-            )}
-            
         </>
 
     )
