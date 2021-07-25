@@ -54,13 +54,13 @@ function StudyRoom({ room }) {
 
             } else {
 
-                history.push(`/viewerstream?room=${room.creatorid}`);
+                history.push(`/viewerstream?room=${room.creatorid}&userid=${room.userid}`);
 
             }
 
         } else {
 
-            history.push(`/viewerstream?room=${room.creatorid}`);
+            history.push(`/viewerstream?room=${room.creatorid}&userid=${room.userid}`);
 
         }
         
