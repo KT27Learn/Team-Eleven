@@ -8,7 +8,7 @@ const Message = ({ message: { text, user }, name }) => {
 
   const trimmedName = name.trim().split(' ');
 
-  if(user === trimmedName) {
+  if(user === name.trim()) {
     isSentByCurrentUser = true;
   }
 
