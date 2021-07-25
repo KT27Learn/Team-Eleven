@@ -49,7 +49,7 @@ function Profile() {
         if (arr) {
 
             for (let i = 0; i < arr.length; i++) {
-                totalTime += arr[i].cumulatedtime;
+                totalTime += arr[i].cumulatedstudytime;
     
                 if (!frequencyListContents) {
     
@@ -109,12 +109,12 @@ function Profile() {
 
         }
         
-        const displayHours = Math.floor(totalTime / 216000);
+        const displayHours = Math.floor(totalTime / 3600);
         setHours(displayHours);
-        const tempMinutes = totalTime % 216000;
-        const displayMinutes = Math.floor(tempMinutes / 3600);
+        const tempMinutesInSeconds = totalTime % 3600;
+        const displayMinutes = Math.floor(tempMinutesInSeconds / 60);
         setMintues(displayMinutes);
-        const displaySeconds = tempMinutes % 3600;
+        const displaySeconds = tempMinutesInSeconds - (displayMinutes * 60);
         setSeconds(displaySeconds);
 
     }
