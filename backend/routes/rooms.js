@@ -139,10 +139,11 @@ router.route('/deleteroomfromhistory').post(async (req, res) => {
 //find a particular study room for its details
 router.route('/:id').get((req, res) => {
     
-    Rooms.findById(req.params.id)
+    Rooms.findOne({ creatorid: req.params.id})
       .then(room => res.json(room))
       .catch(err => res.status(400).json('Error: ' + err));
 });
+
 
 //update a particular rooms details
 router.route('/update/:id').post((req, res) => {
