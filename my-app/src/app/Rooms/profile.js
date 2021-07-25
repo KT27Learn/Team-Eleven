@@ -49,7 +49,7 @@ function Profile() {
         if (arr) {
 
             for (let i = 0; i < arr.length; i++) {
-                totalTime += arr[i].cumulatedstudytime;
+                totalTime += arr[i].cumulatedstudytime ?? 0;
     
                 if (!frequencyListContents) {
     
