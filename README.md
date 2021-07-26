@@ -27,18 +27,22 @@ An all-in-one study social space enabling learners to plan their studies and be 
 
 ### Current Features Implemented:
 * Accounts feature 
-* Viewing past study session logs
 * Study Timer with to-do list feature
 * Library containing study methods
 * Study Rooms with real time chats and livestream
 * View collated study session history
+* View individual study session history
 * 'Favourite' favourite study methods
+* Friend feature
+* Discover Post Wall 
 
 ### Milestones:
 
 **Milestone 1:** [Link to report](https://docs.google.com/document/d/1S_jRJ7nAw3r9DfxrVbhVZ2AA6zKMEGAQ6c4-XBwGQMc/edit?usp=sharing)
 
 **Milestone 2:** [Link to report](https://docs.google.com/document/d/1I0Y-GmkIGglrLGpt1A1H2gwPp2F8ec0U2gz5783TxHQ/edit?usp=sharing)
+
+**Milestone 3:** [Link to report](https://docs.google.com/document/d/1XyBQCTWKwDU1_28MlnwtCfPl7nbYne4UbZPVDGLpgd0/edit?usp=sharing)
 
 ### Deployment:
 
