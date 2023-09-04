@@ -29,7 +29,7 @@ function Post({ post }) {
 
             try {
         
-                const result = await axios.get(`https://team-eleven-backend.herokuapp.com/users/${post.creatorid}`);
+                const result = await axios.get(`https://team-eleven-backend-da7fbaef930b.herokuapp.com/users/${post.creatorid}`);
                 setAvatarurl(result.data.imageurl);
     
             } catch(error) {

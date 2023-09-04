@@ -96,7 +96,7 @@ const Auth = () => {
         
         try {
 
-            const res = await axios.post('https://team-eleven-backend.herokuapp.com/users/forgotpassword', {email})
+            const res = await axios.post('https://team-eleven-backend-da7fbaef930b.herokuapp.com/users/forgotpassword', {email})
             alert(res.data.message);
             history.push('/');
 

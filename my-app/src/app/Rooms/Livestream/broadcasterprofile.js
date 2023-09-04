@@ -23,7 +23,7 @@ function BroadcasterProfile( {room} ) {
         async function fetchBroadcasterDetails(id) {
             try {
                 
-                const roomresult = await axios.get(`https://team-eleven-backend.herokuapp.com/rooms/${id}`)
+                const roomresult = await axios.get(`https://team-eleven-backend-da7fbaef930b.herokuapp.com/rooms/${id}`)
                 setDescription(roomresult.data.description);
     
             } catch(error) {
@@ -41,7 +41,7 @@ function BroadcasterProfile( {room} ) {
         async function fetchBroadcasterDetails(id) {
             try {
                 
-                const result = await axios.get(`https://team-eleven-backend.herokuapp.com/users/${id}`);
+                const result = await axios.get(`https://team-eleven-backend-da7fbaef930b.herokuapp.com/users/${id}`);
                 setUserName(result.data.name);
                 setAvatarurl(result.data.imageurl);
                 setUserBio(result.data.bio);

@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: 'https://team-eleven-backend.herokuapp.com' });
+const API = axios.create({ baseURL: 'https://team-eleven-backend-da7fbaef930b.herokuapp.com/' });
 
 export const signIn = (formData) => API.post('/users/signin', formData);
 export const signUp = (formData) => API.post('/users/signup', formData);

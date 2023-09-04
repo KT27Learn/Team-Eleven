@@ -23,7 +23,7 @@ const config = {
     ]
 };
 
-const ENDPOINT = 'https://team-eleven-backend.herokuapp.com'
+const ENDPOINT = 'https://team-eleven-backend-da7fbaef930b.herokuapp.com'
 
 const connectionOptions =  {
     "force new connection" : true,
