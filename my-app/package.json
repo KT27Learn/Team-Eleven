@@ -40,6 +40,9 @@
     "videojs": "^1.0.0",
     "webrtc": "^1.14.1"
   },
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
