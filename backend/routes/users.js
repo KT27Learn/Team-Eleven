@@ -32,7 +32,7 @@ router.route('/signup').post(async (req, res) => {
 
         const activation_token = createActivationToken(newUser);
 
-        const url = `http://localhost:3000/activateuser/${activation_token}`
+        const url = `http://orbital-team-eleven.vercel.app/activateuser/${activation_token}`
 
         sgMail.setApiKey(process.env.SENDGRID_API_KEY)
         const msg = {
